@@ -1,8 +1,8 @@
 {
   "env": {
     "browser": true,
-    "es2021": true,
-    "node:":true
+    "node": true,
+    "es2021": true
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -12,6 +12,48 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "extends": ["eslint:recommended","plugin:@typescript-eslint/recommended","next","next/core-web-vitals","plugin:prettier/recommended"]
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/typescript",
+    "plugin:import/recommended",
+    "next",
+    "next/core-web-vitals",
+    "plugin:prettier/recommended"
+  ],
+  "rules": {
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index",
+          "object",
+          "type"
+        ],
+        "pathGroups": [
+          {
+            "pattern": "next",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "./*.scss",
+            "group": "sibling",
+            "position": "after"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["next", "./*.scss"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ]
+  }
 }
-
