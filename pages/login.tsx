@@ -13,17 +13,12 @@ export default function Login() {
     setPassword(e.target.value)
 
   const onLogin: React.FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault
-    try {
-      console.log(username)
-      router.push('/pick-a-color-and-draw')
-    } catch (e) {
-      console.log(e)
-    }
+    e.preventDefault()
+    router.push('/pick-a-color-and-draw')
   }
 
   return (
-    <form onSubmit={() => onLogin}>
+    <form onSubmit={onLogin}>
       <label htmlFor="email">
         아이디
         <input
