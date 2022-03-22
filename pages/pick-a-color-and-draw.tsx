@@ -1,13 +1,14 @@
-import { useAppDispatch, useAppSelector } from '../store/hooks'
-import { setFillColor, setStrokeColor } from '../store/colorSlice'
-import React, { useEffect, useRef, useState } from 'react'
+import React, {useEffect, useRef, useState} from 'react'
+
+import {setFillColor, setStrokeColor} from '../store/colorSlice'
+import {useAppDispatch, useAppSelector} from '../store/hooks'
 
 export default function Draw() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const contextRef = useRef<CanvasRenderingContext2D>()
   const [isDrawing, setIsDrawing] = useState(false)
 
-  const { fill, stroke } = useAppSelector((state) => state.color)
+  const {fill, stroke} = useAppSelector((state) => state.color)
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -32,7 +33,7 @@ export default function Draw() {
   const startDrawing: React.MouseEventHandler<HTMLCanvasElement> = ({
     nativeEvent
   }) => {
-    const { offsetX, offsetY } = nativeEvent
+    const {offsetX, offsetY} = nativeEvent
     contextRef.current?.beginPath()
     contextRef.current?.moveTo(offsetX, offsetY)
     setIsDrawing(true)
@@ -44,11 +45,9 @@ export default function Draw() {
     setIsDrawing(false)
   }
 
-  const draw: React.MouseEventHandler<HTMLCanvasElement> = ({
-    nativeEvent
-  }) => {
+  const draw: React.MouseEventHandler<HTMLCanvasElement> = ({nativeEvent}) => {
     if (!isDrawing) return
-    const { offsetX, offsetY } = nativeEvent
+    const {offsetX, offsetY} = nativeEvent
     contextRef.current?.lineTo(offsetX, offsetY)
     contextRef.current?.stroke()
   }
@@ -77,7 +76,7 @@ export default function Draw() {
         ref={canvasRef}
         width={'600px'}
         height={'600px'}
-        style={{ border: '1px solid black' }}
+        style={{border: '1px solid black'}}
         onMouseDown={startDrawing}
         onMouseUp={finishDrawing}
         onMouseMove={draw}
