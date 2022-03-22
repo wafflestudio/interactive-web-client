@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, {AxiosRequestConfig} from 'axios'
 import {useRouter} from 'next/router'
 import {useState} from 'react'
 
@@ -15,12 +15,17 @@ export default function Login() {
 
   const onLogin: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
-    router.push('/pick-a-color-and-draw')
+    router.push('/drag-and-drop')
   }
 
   const onPing = async () => {
+    const config: AxiosRequestConfig = {
+      method: 'GET',
+      baseURL: '/api',
+      url: '/ping'
+    }
     try {
-      const response = await axios.get('/api/ping')
+      const response = await axios(config)
       console.log(response)
     } catch (e) {
       console.log(e)
