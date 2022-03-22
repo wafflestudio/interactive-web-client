@@ -15,9 +15,9 @@ const instance = axios.create({
 
 const setHeaderToken = (newToken: string | null) => {
   if (newToken) {
-    instance.defaults.headers.common['Authentication'] = newToken
+    instance.defaults.headers.common['Authorization'] = newToken
   } else {
-    delete instance.defaults.headers.common['Authentication']
+    delete instance.defaults.headers.common['Authorization']
   }
 }
 
