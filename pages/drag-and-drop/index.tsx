@@ -57,14 +57,34 @@ export default function DragAndDrop() {
 
   return (
     <div className={styles.container} ref={containerRef}>
-      <svg onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
-        <rect width="50px" height="50px" fill="#5ae07e" />
+      <svg>
+        <rect
+          onMouseDown={onMouseDown}
+          onMouseUp={onMouseUp}
+          width="50px"
+          height="50px"
+          fill="#5ae07e"
+        />
       </svg>
-      <svg onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
-        <rect width="50px" height="50px" r="50px" fill="#e8dd68" />
+      <svg>
+        <rect
+          onMouseDown={onMouseDown}
+          onMouseUp={onMouseUp}
+          width="50px"
+          height="50px"
+          r="50px"
+          fill="#e8dd68"
+        />
       </svg>
-      <svg onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
-        <rect width="50px" height="50px" r="50px" fill="#857bed" />
+      <svg>
+        <rect
+          onMouseDown={onMouseDown}
+          onMouseUp={onMouseUp}
+          width="50px"
+          height="50px"
+          r="50px"
+          fill="#857bed"
+        />
       </svg>
     </div>
   )
