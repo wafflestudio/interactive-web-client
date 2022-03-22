@@ -14,7 +14,7 @@ export default function DragAndDrop() {
   useEffect(() => {
     // 마운트될때 div(container)에 속한 svg들을 리덕스(objects)에 저장
     const svgObjects = containerRef.current?.children
-    svgObjects && dispatch(getObjects(svgObjects)) // div 안의 svg들을 objects(리덕스 스토어)에 저장
+    svgObjects && dispatch(getObjects(svgObjects))
   }, [])
 
   const move: MouseEventHandler = (e) => {
@@ -49,7 +49,9 @@ export default function DragAndDrop() {
   const onMouseUp: MouseEventHandler = (e) => {
     ;(e.target as SVGRectElement).removeEventListener(
       'mousemove',
-      (e: MouseEvent) => move(e)
+      (e: MouseEvent) => {
+        move(e)
+      }
     )
   }
 
