@@ -1,4 +1,5 @@
 // 현재 움직이고 있는(mousedown된) 오브젝트(target)와 x, y 위치입니다.
+// position에서 drag로 이름을 바꿨습니다
 
 import {ObjectDataType} from '../dummies/dummyInterface'
 
@@ -13,6 +14,7 @@ type DragState = {
   target: ObjectDataType
 }
 
+//start, move end는 각각 mousedown, mousemove, mouseup 시에 호출됩니다
 export const startDrag = (target: ObjectDataType) => ({
   type: START_DRAG,
   payload: target
@@ -42,6 +44,8 @@ function drag(state: DragState = initialState, action: DragAction): DragState {
     case MOVE_DRAG:
       return {
         isOn: true,
+        //target 의 x y 좌표에 mousemove event 의 변화량(movementX, Y)를 더합니다
+        //debounce 는 되지 않았습니다
         target: {
           ...state.target,
           x: state.target.x + action.payload.x,

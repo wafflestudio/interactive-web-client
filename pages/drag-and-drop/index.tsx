@@ -12,10 +12,12 @@ import styles from './DragAndDrop.module.scss'
 
 export default function DragAndDrop() {
   const dispatch = useDispatch()
+  //redux 에서 모든 objects 의 배열 가져옴
   const objects = useSelector((state: RootState) => {
     return state.objects
   })
 
+  //API 호출을 통한 데이터 로드를 대신하는 부분
   useEffect(() => {
     dispatch(getObjects(sampleObjectDummy))
   }, [])

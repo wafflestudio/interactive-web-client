@@ -7,6 +7,8 @@ import {updateObject} from '../../../modules/objects'
 
 import styles from './DynamicCanvas.module.scss'
 
+//드래그 중의 프리뷰 개체가 표시될 canvas 컴포넌트입니다
+
 const DynamicCanvas = () => {
   const dispatch = useDispatch()
   const dragTarget = useSelector((state: RootState) => state.drag.target)

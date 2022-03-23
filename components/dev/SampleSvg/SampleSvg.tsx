@@ -11,6 +11,8 @@ interface SampleSvgProps {
   item: ObjectDataType
 }
 
+//objects에 저장된 데이터를 바탕으로 svg 엘리먼트를 만들어 렌더합니다
+
 const SampleSvg = ({item}: SampleSvgProps) => {
   const dispatch = useDispatch()
   const style = {
