@@ -10,6 +10,8 @@ const nextConfig = {
           destination: 'https://iwe-server.shop/:path*'
         }
       ]
+    } else {
+      return []
     }
   }
 }
