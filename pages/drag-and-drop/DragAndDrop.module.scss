@@ -1,8 +1,17 @@
 .container {
-  position: relative;
+  position: absolute;
+  width:100%;
+  height:100%;
+}
 
-  svg {
-    width: 100px;
-    height: 100px;
+.dynamicCanvas{
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top:0;
+  left:0;
+  &.off{
+    display: none;
   }
 }
