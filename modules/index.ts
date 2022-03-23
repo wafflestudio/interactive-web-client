@@ -1,10 +1,10 @@
 import {combineReducers} from 'redux'
 
+import drag from './drag'
 import objects from './objects'
-import position from './position'
 
 const rootReducer = combineReducers({
-  position,
+  drag,
   objects
 })
 

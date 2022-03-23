@@ -11,5 +11,6 @@ export interface ObjectDataType {
   svgData: SvgDataType
   x: number
   y: number
+  isVisible: boolean
   // element: HTMLCollection | any
 }

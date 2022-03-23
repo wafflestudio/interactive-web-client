@@ -1,16 +1,18 @@
 import {useEffect} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 
-import SampleSvg from '../../components/dev/SampleSvg'
+import DynamicCanvas from '../../components/dev/DynamicCanvas/DynamicCanvas'
+import Indicator from '../../components/dev/Indicator/Indicator'
+import SampleSvg from '../../components/dev/SampleSvg/SampleSvg'
 import {sampleObjectDummy} from '../../dummies/sampleObjectDummy'
 import {RootState} from '../../modules'
-import {getObjects} from '../../modules/objects'
+import {getObjects, updateObject} from '../../modules/objects'
 
 import styles from './DragAndDrop.module.scss'
 
 export default function DragAndDrop() {
   const dispatch = useDispatch()
-  const data = useSelector((state: RootState) => {
+  const objects = useSelector((state: RootState) => {
     return state.objects
   })
 
@@ -19,10 +21,14 @@ export default function DragAndDrop() {
   }, [])
 
   return (
-    <div className={styles.container}>
-      {data.map((item, index) => {
-        return <SampleSvg key={index} item={item} />
-      })}
-    </div>
+    <>
+      <div className={styles.container}>
+        {objects.map((item, index) => {
+          return <SampleSvg key={index} item={item} />
+        })}
+      </div>
+      <DynamicCanvas />
+      <Indicator />
+    </>
   )
 }

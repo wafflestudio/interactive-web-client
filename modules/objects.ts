@@ -3,22 +3,35 @@
 import {ObjectDataType} from '../dummies/dummyInterface'
 
 const GET_OBJECTS = 'objects/GET_OBJECTS' as const
+const UPDATE_OBJECT = 'objects/UPDATE_OBJECT' as const
 
 export const getObjects = (objects: ObjectDataType[]) => ({
   type: GET_OBJECTS,
   payload: objects
 })
 
-type ObjectsAction = ReturnType<typeof getObjects>
+export const updateObject = (targetObject: ObjectDataType) => ({
+  type: UPDATE_OBJECT,
+  payload: targetObject
+})
 
-const initialState: ObjectDataType[] = [] // new HTMLCollection()이 안돼서 빈 HTMLCollection object를 만들지 못해 부득이하게 any를 썼습니다..
+type ObjectsAction =
+  | ReturnType<typeof getObjects>
+  | ReturnType<typeof updateObject>
+
+const initialState: ObjectDataType[] = []
+
 function objects(
-  state = initialState,
+  state: ObjectDataType[] = initialState,
   action: ObjectsAction
 ): ObjectDataType[] {
   switch (action.type) {
     case GET_OBJECTS:
       return action.payload
+    case UPDATE_OBJECT:
+      return state.map((item) =>
+        item.id !== action.payload.id ? item : action.payload
+      )
     default:
       return state
   }
