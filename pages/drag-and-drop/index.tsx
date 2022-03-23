@@ -24,13 +24,13 @@ export default function DragAndDrop() {
 
   return (
     <>
+      <Indicator />
       <div className={styles.container}>
         {objects.map((item, index) => {
           return <SampleSvg key={index} item={item} />
         })}
       </div>
       <DynamicCanvas />
-      <Indicator />
     </>
   )
 }
