@@ -5,6 +5,7 @@ export interface SvgDataType {
   height?: number
   fill?: string
   stroke?: string
+  src?: string
 }
 
 // 각 오브젝트들의 비주얼 데이터(svgData), 아이디, 좌표값(좌상단의), 보이는 지 여부를 담은 데이터입니다

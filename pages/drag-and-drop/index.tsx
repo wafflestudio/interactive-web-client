@@ -6,7 +6,7 @@ import Indicator from '../../components/dev/Indicator/Indicator'
 import SampleSvg from '../../components/dev/SampleSvg/SampleSvg'
 import {sampleObjectDummy} from '../../dummies/sampleObjectDummy'
 import {RootState} from '../../modules'
-import {getObjects, updateObject} from '../../modules/objects'
+import {saveObjects, updateObject} from '../../modules/objects'
 
 import styles from './DragAndDrop.module.scss'
 
@@ -19,7 +19,7 @@ export default function DragAndDrop() {
 
   //API 호출을 통한 데이터 로드를 대신하는 부분
   useEffect(() => {
-    dispatch(getObjects(sampleObjectDummy))
+    dispatch(saveObjects(sampleObjectDummy))
   }, [])
 
   return (

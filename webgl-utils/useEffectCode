@@ -1,0 +1,49 @@
+// if (!dynamicCanvasRef.current) {
+//   return
+// }
+// const gl = dynamicCanvasRef.current.getContext('webgl', {alpha: false})
+// if (!gl) {
+//   return
+// }
+// gl.clearColor(0, 0, 0, 0)
+// gl.clear(gl.COLOR_BUFFER_BIT)
+// let program
+// if (dragTarget.svgData?.fill)
+//   const vertexShader = setShader(gl, gl.VERTEX_SHADER, vsRectSource)
+//   const fragmentShader = setShader(
+//     gl,
+//     gl.FRAGMENT_SHADER,
+//     fsRectSource(dragTarget.svgData.fill)
+//   )
+//   if (!vertexShader || !fragmentShader) {
+//     return
+//   }
+//   program = setProgram(gl, vertexShader, fragmentShader)
+//   if (program) {
+//     const position = gl.getAttribLocation(program, 'a_position')
+//     const positionBuffer = gl.createBuffer()
+//     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
+//     gl.bufferData(
+//       gl.ARRAY_BUFFER,
+//       new Float32Array(
+//         getRectPositions(dragTarget, [
+//           dynamicCanvasRef.current.width,
+//           dynamicCanvasRef.current.height
+//         ])
+//       ),
+//       gl.DYNAMIC_DRAW
+//     )
+//
+//     //이미지나 다른 도형 shader 만들고 나면 아래 내용은 gl loop 쪽으로 빼기
+//     resizeCanvasToDisplaySize(gl.canvas)
+//     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height)
+//     gl.clearColor(0, 0, 0, 0)
+//     gl.clear(gl.COLOR_BUFFER_BIT)
+//     gl.useProgram(program)
+//     gl.enableVertexAttribArray(position)
+//     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer)
+//     gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0)
+//     const resolutionUniform = gl.getUniformLocation(program, 'u_resolution')
+//     gl.uniform2f(resolutionUniform, gl.canvas.width, gl.canvas.height)
+//   }
+/

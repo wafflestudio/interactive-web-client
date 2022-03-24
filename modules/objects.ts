@@ -2,11 +2,11 @@
 
 import {ObjectDataType} from '../dummies/dummyInterface'
 
-const GET_OBJECTS = 'objects/GET_OBJECTS' as const
+const SAVE_OBJECTS = 'objects/GET_OBJECTS' as const
 const UPDATE_OBJECT = 'objects/UPDATE_OBJECT' as const
 
-export const getObjects = (objects: ObjectDataType[]) => ({
-  type: GET_OBJECTS,
+export const saveObjects = (objects: ObjectDataType[]) => ({
+  type: SAVE_OBJECTS,
   payload: objects
 })
 
@@ -16,7 +16,7 @@ export const updateObject = (targetObject: ObjectDataType) => ({
 })
 
 type ObjectsAction =
-  | ReturnType<typeof getObjects>
+  | ReturnType<typeof saveObjects>
   | ReturnType<typeof updateObject>
 
 const initialState: ObjectDataType[] = []
@@ -26,7 +26,7 @@ function objects(
   action: ObjectsAction
 ): ObjectDataType[] {
   switch (action.type) {
-    case GET_OBJECTS:
+    case SAVE_OBJECTS:
       return action.payload
     case UPDATE_OBJECT:
       return state.map((item) =>
