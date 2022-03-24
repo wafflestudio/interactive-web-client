@@ -6,18 +6,19 @@ import {endDrag, moveDrag} from '../../../modules/drag'
 import {updateObject} from '../../../modules/objects'
 
 import styles from './DynamicCanvas.module.scss'
-import {Canvas} from "@react-three/fiber";
-
-//드래그 중의 프리뷰 개체가 표시될 canvas 컴포넌트입니다
+import {Canvas, useFrame} from '@react-three/fiber'
+import {RectMesh} from './RectMesh'
 
 const DynamicCanvas = () => {
   const dispatch = useDispatch()
   const dragTarget = useSelector((state: RootState) => state.drag.target)
   const isDragOn = useSelector((state: RootState) => state.drag.isOn)
+  const canvasRef = useRef<HTMLDivElement>(null)
 
   return (
-    <Canvas
-      className={`${styles.dynamicCanvas} ${isDragOn? ``: styles.off}`}
+    <div
+      ref={canvasRef}
+      className={`${styles.dynamicCanvas} ${isDragOn ? `` : styles.off}`}
       onMouseMove={(e) => {
         dispatch(moveDrag(e.nativeEvent.movementX, e.nativeEvent.movementY))
       }}
@@ -30,7 +31,11 @@ const DynamicCanvas = () => {
         })
       }}
     >
-    </Canvas>
+      <Canvas
+      camera={{position: [0, 0, 10]}}>
+        <RectMesh dragTarget={dragTarget} canvasSize={!!canvasRef.current? {width: canvasRef.current.clientWidth, height: canvasRef.current.clientHeight} : undefined} />
+      </Canvas>
+    </div>
   )
 }
 
