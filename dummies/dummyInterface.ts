@@ -1,8 +1,8 @@
 // svg 개체의 종류와 크기, 색상을 결정하는 데이터입니다
 export interface SvgDataType {
   svgType: string
-  width?: number
-  height?: number
+  width: number
+  height: number
   fill?: string
   stroke?: string
   src?: string
