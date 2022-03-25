@@ -48,7 +48,6 @@
           }
         ],
         "pathGroupsExcludedImportTypes": ["next", "./*.scss"],
-        "newlines-between": "always",
         "alphabetize": {
           "order": "asc",
           "caseInsensitive": true
