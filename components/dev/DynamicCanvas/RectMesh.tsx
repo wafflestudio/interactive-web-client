@@ -32,23 +32,25 @@ export const RectMesh = ({
   const {viewport} = useThree()
 
   useFrame(({mouse}) => {
-    if (meshRef.current?.position && canvasSize) {
-      const x = (dragTarget.x / canvasSize.width - 0.5) * viewport.width
-      const y = (0.5 - dragTarget.y / canvasSize.height) * viewport.height
-      meshRef.current.position.set(x, y, 0)
-      meshRef.current.rotateX(-0.1)
-      meshRef.current.rotateY(0.1)
+    if (meshRef !== null) {
+      if (meshRef.current?.position && canvasSize) {
+        const x = (dragTarget.x / canvasSize.width - 0.5) * viewport.width
+        const y = (0.5 - dragTarget.y / canvasSize.height) * viewport.height
+        meshRef.current.position.set(x, y, 0)
+        meshRef.current.rotateX(-0.1)
+        meshRef.current.rotateY(0.1)
 
-      for (let i = 0; i < fixedObjs.length; i++) {
-        const obj = fixedObjs[i]
-        if (
-          getDistance(dragTarget.x, dragTarget.y, obj.x, obj.y) <
-          dragTarget.svgData.width + obj.svgData.width
-        ) {
-          // 고정된 오브젝트들 위치 변경
-          // dispatch(
-          //   updateObject({...obj, svgData: {...obj.svgData, fill: '#ff8080'}})
-          // )
+        for (let i = 0; i < fixedObjs.length; i++) {
+          const obj = fixedObjs[i]
+          if (
+            getDistance(dragTarget.x, dragTarget.y, obj.x, obj.y) <
+            dragTarget.svgData.width + obj.svgData.width
+          ) {
+            // 고정된 오브젝트들 위치 변경
+            // dispatch(
+            //   updateObject({...obj, svgData: {...obj.svgData, fill: '#ff8080'}})
+            // )
+          }
         }
       }
     }
@@ -60,7 +62,7 @@ export const RectMesh = ({
 
   return (
     <mesh ref={meshRef}>
-      <boxBufferGeometry args={[1, 1, 1]} />
+      <boxBufferGeometry args={[0.5, 0.5, 0.5]} />
       <meshBasicMaterial color={dragTarget.svgData.fill} />
     </mesh>
   )
