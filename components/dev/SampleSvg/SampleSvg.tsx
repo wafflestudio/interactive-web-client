@@ -34,7 +34,9 @@ const SampleSvg = ({item}: SampleSvgProps) => {
         onMouseDown={(e) => {
           batch(() => {
             dispatch(updateObject({...item, isVisible: false}))
-            dispatch(startDrag(item))
+            dispatch(
+              startDrag(item, e.nativeEvent.offsetX, e.nativeEvent.offsetY)
+            )
           })
         }}
       />

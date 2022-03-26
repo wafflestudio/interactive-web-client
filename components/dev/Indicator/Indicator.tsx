@@ -18,6 +18,8 @@ const Indicator = () => {
   }
   return (
     <div className={styles.indicator}>
+      <div>[ Change render mode ]</div>
+      <br />
       <div className={styles.buttons}>
         <div
           className={styles.buttonDiv}

@@ -12,12 +12,17 @@ const emptyTarget = {} as ObjectDataType
 type DragState = {
   isOn: boolean
   target: ObjectDataType
+  modify: {x: number; y: number}
 }
 
 //start, move end는 각각 mousedown, mousemove, mouseup 시에 호출됩니다
-export const startDrag = (target: ObjectDataType) => ({
+export const startDrag = (
+  target: ObjectDataType,
+  modifyX: number,
+  modifyY: number
+) => ({
   type: START_DRAG,
-  payload: target
+  payload: {target, modifyX, modifyY}
 })
 
 export const moveDrag = (x: number, y: number) => ({
@@ -32,30 +37,37 @@ type DragAction =
   | ReturnType<typeof moveDrag>
   | ReturnType<typeof endDrag>
 
-const initialState: DragState = {isOn: false, target: emptyTarget}
+const initialState: DragState = {
+  isOn: false,
+  target: emptyTarget,
+  modify: {x: 0, y: 0}
+}
 
 function drag(state: DragState = initialState, action: DragAction): DragState {
   switch (action.type) {
     case START_DRAG:
       return {
         isOn: true,
-        target: action.payload
+        target: action.payload.target,
+        modify: {
+          x: action.payload.modifyX,
+          y: action.payload.modifyY
+        }
       }
     case MOVE_DRAG:
       return {
-        isOn: true,
-        //target 의 x y 좌표에 mousemove event 의 변화량(movementX, Y)를 더합니다
-        //debounce 는 되지 않았습니다
+        ...state,
         target: {
           ...state.target,
-          x: state.target.x + action.payload.x,
-          y: state.target.y + action.payload.y
+          x: action.payload.x - state.modify.x,
+          y: action.payload.y - state.modify.y
         }
       }
     case END_DRAG:
       return {
         isOn: false,
-        target: emptyTarget
+        target: emptyTarget,
+        modify: {x: 0, y: 0}
       }
     default:
       return state
