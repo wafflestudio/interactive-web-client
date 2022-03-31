@@ -1,0 +1,59 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches:
+      - main
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-20.04
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Repo checkout
+        uses: actions/checkout@v2
+
+      # Runs a set of commands using the runners shell
+      - name: Install Dependencies
+        run: 
+          yarn install
+          
+      - name: Build
+        run:
+          next build
+          
+      - name: Make Tar File
+        run: tar -cpvzf ./$GITHUB_SHA.tgz *
+        shell: bash
+        
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          
+      - name: Upload to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.tgz s3://iwe-code-deploy/build/$GITHUB_SHA.tgz
+          
+      - name: Deploy
+        run:
+          aws deploy create-deployment --application-name interactive-client \
+            --file-exists-behavior OVERWRITE \
+            --deployment-config-name CodeDeployDefault.AllAtOnce \
+            --deployment-group-name interactive-client-ec2 \
+            --s3-location bucket=iwe-code-deploy,bundleType=tgz,key=build/$GITHUB_SHA.tgz
+            
