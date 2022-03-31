@@ -28,6 +28,7 @@ jobs:
           yarn install
           
       - name: Build
+        run:
           next build
           
       - name: Make Tar File
