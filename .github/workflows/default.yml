@@ -34,7 +34,24 @@ jobs:
       - name: Make Tar File
         run: tar -cpvzf ./$GITHUB_SHA.tgz *
         shell: bash
+        
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
           
       - name: Upload to S3
         run:
-          |
+          aws s3 cp \
+            --region ap-northeast-2 \
+            ./$GITHUB_SHA.tgz s3://iwe-code-depoly/build/$GITHUB_SHA.tgz
+          
+      - name: Code Deploy
+        run:
+          aws deploy code-deployment --application-name interactive-client \
+            --file-exists-behavior OVERWRITE \
+            --deployment-group-name interactive-client-ec2 \
+            -s3-location bucket=iwe-code-deploy,bundleType=tgz,key=build/$GITHUB_SHA.tgz
+            
