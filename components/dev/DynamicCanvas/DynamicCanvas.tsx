@@ -34,17 +34,18 @@ const DynamicCanvas = () => {
     if (canvasRef.current !== null) {
       const ctx = canvasRef.current.getContext('2d')
       if (isDragOn && ctx) {
-        if (dragTarget.svgData.fill){
-        drawRect(
-          ctx,
-          {
-            x: dragTarget.x,
-            y: dragTarget.y,
-            w: dragTarget.svgData.width,
-            h: dragTarget.svgData.height
-          },
-          dragTarget.svgData.fill
-        )}
+        if (dragTarget.svgData.fill) {
+          drawRect(
+            ctx,
+            {
+              x: dragTarget.x,
+              y: dragTarget.y,
+              w: dragTarget.svgData.width,
+              h: dragTarget.svgData.height
+            },
+            dragTarget.svgData.fill
+          )
+        }
       }
     }
   }, [dragTarget])

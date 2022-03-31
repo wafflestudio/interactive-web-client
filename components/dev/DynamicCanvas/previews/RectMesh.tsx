@@ -3,6 +3,7 @@ import {useEffect, useRef} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {ObjectDataType} from '../../../../dummies/dummyInterface'
 import {updateObject} from '../../../../modules/objects'
+import {Mesh} from 'three'
 
 type RectMeshProps = {
   fixedObjs: ObjectDataType[]
@@ -28,7 +29,7 @@ export const RectMesh = ({
   canvasSize
 }: RectMeshProps) => {
   // const dispatch = useDispatch()
-  const meshRef = useRef<JSX.IntrinsicElements['mesh']>(null)
+  const meshRef = useRef<Mesh>(null)
   const {viewport} = useThree()
 
   useFrame(({mouse}) => {
@@ -43,6 +44,7 @@ export const RectMesh = ({
             (dragTarget.y + dragTarget.svgData.height / 2) /
               canvasSize.height) *
           viewport.height
+
         meshRef.current.position.set(x, y, 0)
         meshRef.current.rotateX(-0.1)
         meshRef.current.rotateY(0.1)
