@@ -53,8 +53,5 @@ jobs:
           
       - name: App Deploy
         run:
-          aws deploy create-deployment --application-name interactive-client \
-            --deployment-config-name CodeDeployDefault.OneAtATime \
-            --deployment-group-name interactive-client-ec2 \
-            --s3-location bucket=iwe-code-deploy,bundleType=tgz,key=build/$GITHUB_SHA.tgz
+          aws deploy create-deployment --application-name interactive-client --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name interactive-client-ec2 --s3-location bucket=iwe-code-deploy,bundleType=tgz,key=build/$GITHUB_SHA.tgz
             
