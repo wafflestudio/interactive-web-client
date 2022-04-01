@@ -9,6 +9,3 @@ if [ -d /home/ubuntu/interactive-web-client/ ]; then
 fi
 mkdir -vp /home/ubuntu/interactive-web-client/
 
-cd ~
-npm install pm2 -g
-pm2 delete all
