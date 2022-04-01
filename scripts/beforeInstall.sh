@@ -8,6 +8,9 @@ if [ -d /home/ubuntu/interactive-web-client/ ]; then
     rm -rf /home/ubuntu/interactive-web-client/
 fi
 mkdir -vp /home/ubuntu/interactive-web-client/
-npm install pm2 -g
+
+REPOSITORY=/home/ubuntu/interactive-web-client
+cd $REPOSITORY
+
 pm2 delete all
 
