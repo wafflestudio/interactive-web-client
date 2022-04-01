@@ -8,3 +8,4 @@ if [ -d /home/ubuntu/interactive-web-client/ ]; then
     rm -rf /home/ubuntu/interactive-web-client/
 fi
 mkdir -vp /home/ubuntu/interactive-web-client/
+pnm2 delete all
