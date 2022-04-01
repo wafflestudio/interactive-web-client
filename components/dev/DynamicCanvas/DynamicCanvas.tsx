@@ -74,10 +74,10 @@ const DynamicCanvas = () => {
           const y = e.nativeEvent.offsetY;
           dispatch(moveDrag(x, y));
           //마우스 이벤트 쓰로틀링
-          // setThrottle(true)
+          // setThrottle(true);
           // setTimeout(() => {
-          //   setThrottle(false)
-          // }, 10)
+          //   setThrottle(false);
+          // }, 10);
         }
       }}
       onMouseUp={(e) => {
