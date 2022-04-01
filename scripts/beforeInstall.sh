@@ -12,5 +12,3 @@ mkdir -vp /home/ubuntu/interactive-web-client/
 REPOSITORY=/home/ubuntu/interactive-web-client
 cd $REPOSITORY
 
-pm2 delete all
-
