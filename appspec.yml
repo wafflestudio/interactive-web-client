@@ -1,0 +1,13 @@
+version: 0.0
+os: linux
+files:
+        - sources: /
+          destination: /home/ubuntu/interactive-web-client
+          overwrite: yes
+
+permissions:
+        - object: /home/ubuntu
+          owner: ubuntu
+          group: ubuntu
+          mode: 755
+          
