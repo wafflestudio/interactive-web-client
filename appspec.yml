@@ -12,7 +12,7 @@ permissions:
           mode: 755
 hooks:
         BeforeInstall:
-                - location: scripts/beforeInstall.bash
+                - location: scripts/beforeInstall.sh
         AfterInstall:
-                - location: scripts/afterInstall.bash
+                - location: scripts/afterInstall.sh
           
