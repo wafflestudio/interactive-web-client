@@ -10,4 +10,5 @@ fi
 mkdir -vp /home/ubuntu/interactive-web-client/
 
 source /home/ubuntu/.profile
+npm install pm2 -g
 pm2 delete all
