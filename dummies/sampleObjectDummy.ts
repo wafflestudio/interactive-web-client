@@ -1,25 +1,25 @@
-import {ObjectDataType} from './dummyInterface'
+import { ObjectDataType } from "./dummyInterface";
 
 export const sampleObjectDummy: ObjectDataType[] = [
   {
     id: 0,
-    svgData: {svgType: 'rect', width: 50, height: 50, fill: '#5ae07e'},
-    x: 100,
+    svgData: { svgType: "rect", width: 50, height: 50, fill: "#5ae07e" },
+    x: 600,
     y: 100,
-    isVisible: true
+    isVisible: true,
   },
   {
     id: 1,
-    svgData: {svgType: 'rect', width: 50, height: 50, fill: '#e8dd68'},
-    x: 200,
+    svgData: { svgType: "rect", width: 50, height: 50, fill: "#e8dd68" },
+    x: 700,
     y: 200,
-    isVisible: true
+    isVisible: true,
   },
   {
     id: 2,
-    svgData: {svgType: 'rect', width: 50, height: 50, fill: '#857bed'},
-    x: 300,
+    svgData: { svgType: "rect", width: 50, height: 50, fill: "#857bed" },
+    x: 800,
     y: 300,
-    isVisible: true
-  }
-]
+    isVisible: true,
+  },
+];

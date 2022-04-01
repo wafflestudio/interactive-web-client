@@ -25,9 +25,11 @@ const SampleSvg = ({ item }: SampleSvgProps) => {
       className={`${styles.sampleSvg} ${item.isVisible ? `` : styles.off}`}
       style={style}
     >
-      <rect
-        width={`${item.svgData.width}px`}
-        height={`${item.svgData.height}px`}
+      <ellipse
+        cx={`${item.svgData.width / 2}px`}
+        cy={`${item.svgData.height / 2}px`}
+        rx={`${item.svgData.width / 2}px`}
+        ry={`${item.svgData.height / 2}px`}
         fill={item.svgData.fill}
         onMouseDown={(e) => {
           batch(() => {
