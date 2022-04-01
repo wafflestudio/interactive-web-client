@@ -1,3 +1,5 @@
+source /home/ubuntu/.profile
+
 REPOSITORY=/home/ubuntu/interactive-web-client
 cd $REPOSITORY
 
