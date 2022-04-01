@@ -9,6 +9,5 @@ if [ -d /home/ubuntu/interactive-web-client/ ]; then
 fi
 mkdir -vp /home/ubuntu/interactive-web-client/
 
-REPOSITORY=/home/ubuntu/interactive-web-client
-cd $REPOSITORY
-
+source /home/ubuntu/.profile
+pm2 delete all
