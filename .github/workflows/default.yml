@@ -31,7 +31,7 @@ jobs:
           
       - name: App Build
         run:
-          yarn build
+          npm run build
           
       - name: Make Tar File
         run: tar -cpvzf ./$GITHUB_SHA.tgz *
