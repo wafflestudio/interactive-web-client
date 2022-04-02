@@ -6,8 +6,8 @@ fi
 mkdir -vp /home/ubuntu/interactive-web-client/
 
 
-cd /home/ubuntu/interactive-web-client/
-sudo source /home/ubuntu/.profile
-sudo apt-get install npm
+#cd /home/ubuntu/interactive-web-client/
+#sudo source /home/ubuntu/.profile
+#sudo apt-get install npm
 #npm install pm2 -g
 #pm2 delete all
