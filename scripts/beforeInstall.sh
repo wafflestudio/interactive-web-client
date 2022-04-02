@@ -5,7 +5,9 @@ if [ -d /home/ubuntu/interactive-web-client/ ]; then
 fi
 mkdir -vp /home/ubuntu/interactive-web-client/
 
-#source /home/ubuntu/.profile
+
+cd /home/ubuntu/interactive-web-client/
+source /home/ubuntu/.profile
 #sudo apt-get install npm
 #npm install pm2 -g
-#pm2 delete all
+pm2 delete all
