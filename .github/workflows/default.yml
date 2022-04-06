@@ -34,7 +34,8 @@ jobs:
           npm run build
           
       - name: Make Tar File
-        run: tar -cpvzf ./$GITHUB_SHA.tgz *
+        run:
+          tar -cpvzf ./$GITHUB_SHA.tgz .next/
         shell: bash
         
       - name: Configure AWS Credentials
