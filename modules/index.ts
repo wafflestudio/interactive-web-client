@@ -1,15 +1,18 @@
-import {combineReducers} from 'redux'
-
-import drag from './drag'
-import objects from './objects'
-import testType from './testType'
+import { combineReducers } from "redux";
+import animate from "./animate";
+import areas from "./areas";
+import drag from "./drag";
+import objects from "./objects";
+import testType from "./testType";
 
 const rootReducer = combineReducers({
   drag,
   objects,
-  testType
-})
+  testType,
+  areas,
+  animate,
+});
 
-export default rootReducer
+export default rootReducer;
 
-export type RootState = ReturnType<typeof rootReducer>
+export type RootState = ReturnType<typeof rootReducer>;

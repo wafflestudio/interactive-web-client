@@ -1,21 +1,21 @@
-const SET_TESTTYPE = 'testType/SET_TESTTYPE' as const
+const SET_TESTTYPE = "testType/SET_TESTTYPE" as const;
 
 export const setTestType = (input: number) => ({
   type: SET_TESTTYPE,
-  payload: input
-})
+  payload: input,
+});
 
-type TestTypeAction = ReturnType<typeof setTestType>
+type TestTypeAction = ReturnType<typeof setTestType>;
 
-const initialState = 0
+const initialState = 0;
 
-function testType(state = initialState, action: TestTypeAction) {
+const testType = (state = initialState, action: TestTypeAction) => {
   switch (action.type) {
     case SET_TESTTYPE:
-      return action.payload
+      return action.payload;
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default testType
+export default testType;
