@@ -35,7 +35,7 @@ jobs:
           
       - name: Make Tar File
         run:
-          tar -cpvzf ./$GITHUB_SHA.tgz .next/
+          find ./ -name "appspec.yml"  -o -name ".next/" | xargs tar -cpvzf ./$GITHUB_SHA.tgz
         shell: bash
         
       - name: Configure AWS Credentials
