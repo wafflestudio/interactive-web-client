@@ -29,7 +29,6 @@ const DragAndDrop = () => {
 
   return (
     <>
-      <Indicator />
       <div className={styles.container}>
         {areas.map((item, index) => {
           return <SampleArea key={index} item={item} />;
@@ -38,6 +37,7 @@ const DragAndDrop = () => {
           return <SampleSvg key={index} item={item} />;
         })}
       </div>
+      <Indicator />
       <DynamicCanvas />
     </>
   );

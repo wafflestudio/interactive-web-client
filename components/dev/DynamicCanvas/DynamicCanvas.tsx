@@ -1,12 +1,15 @@
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useEffect, useRef, useState } from "react";
+import {MouseEventHandler, useEffect, useRef, useState} from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../modules";
 import { endDrag, moveDrag } from "../../../modules/drag";
 import { updateObject } from "../../../modules/objects";
-import { drawEllipse, drawRect } from "./previews/canvasRect";
+import { drawEllipse } from "./previews/canvasRect";
 import { RectMesh } from "./previews/RectMesh";
 import styles from "./DynamicCanvas.module.scss";
+import { contain, scalify } from "../../../functions/physics/basics";
+import { inferTo } from "@react-spring/core";
+import { getRawProjectId } from "next/dist/telemetry/project-id";
 
 const DynamicCanvas = () => {
   const dispatch = useDispatch();
@@ -18,12 +21,33 @@ const DynamicCanvas = () => {
     return state.objects;
   });
   const fixedObjs = objects.filter((object) => object.id != dragTarget.id);
+  const areas = useSelector((state: RootState) => state.areas);
   const isDragOn = useSelector((state: RootState) => state.drag.isOn);
   const isAnimateOn = useSelector((state: RootState) => state.animate.isOn);
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const testTypeNumber = useSelector((state: RootState) => state.testType);
   const [throttle, setThrottle] = useState<boolean>(false);
+
+  const handleDragEnd : MouseEventHandler<HTMLDivElement> = (e) => {
+    batch(() => {
+      let gridPosition;
+      areas.map((area) => {
+        if (contain.detected(scalify.area(area), scalify.object(dragTarget))) {
+          gridPosition = contain.gridify(
+            scalify.gridArea(area),
+            scalify.object(dragTarget),
+          );
+        }
+      });
+      if (gridPosition){
+        dispatch(updateObject({...dragTarget, x: gridPosition.x, y: gridPosition.y}))
+      } else {
+        dispatch(updateObject(dragTarget));
+      }
+      dispatch(endDrag());
+    });
+  };
 
   useEffect(() => {
     if (canvasRef.current !== null) {
@@ -45,11 +69,14 @@ const DynamicCanvas = () => {
               w: item.svgData.width,
               h: item.svgData.height,
             },
-            item.svgData.fill,
+            item.svgData.fill ? item.svgData.fill : "rgba(0,0,0,0)",
           );
         });
       }
       if (isDragOn && ctx) {
+        // if (fixedObjs.map((obj)=>{
+        //   contain.detected(obj, dragTarget)
+        // }))
         drawEllipse(
           ctx,
           {
@@ -58,7 +85,7 @@ const DynamicCanvas = () => {
             w: dragTarget.svgData.width,
             h: dragTarget.svgData.height,
           },
-          dragTarget.svgData.fill,
+          dragTarget.svgData.fill ? dragTarget.svgData.fill : "rgba(0,0,0,0)",
         );
       }
     }
@@ -80,14 +107,7 @@ const DynamicCanvas = () => {
           // }, 10);
         }
       }}
-      onMouseUp={(e) => {
-        batch(() => {
-          if (dragTarget) {
-            dispatch(updateObject(dragTarget));
-          }
-          dispatch(endDrag());
-        });
-      }}
+      onMouseUp={handleDragEnd}
     >
       {testTypeNumber === 0 && <canvas ref={canvasRef} />}
       {testTypeNumber === 1 && (
