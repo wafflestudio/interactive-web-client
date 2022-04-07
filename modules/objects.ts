@@ -2,8 +2,8 @@
 
 import { ObjectDataType } from "../dummies/dummyInterface";
 
-const UPDATE_OBJECT = "objects/UPDATE_OBJECT" as const;
-const SAVE_OBJECTS = "objects/GET_OBJECTS" as const;
+export const UPDATE_OBJECT = "objects/UPDATE_OBJECT" as const;
+export const SAVE_OBJECTS = "objects/GET_OBJECTS" as const;
 
 export const saveObjects = (objects: ObjectDataType[]) => ({
   type: SAVE_OBJECTS,

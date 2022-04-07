@@ -10,6 +10,7 @@ import { RootState } from "../../modules";
 import { saveAreas } from "../../modules/areas";
 import { saveObjects, updateObject } from "../../modules/objects";
 import styles from "./DragAndDrop.module.scss";
+import AnimationCanvas from "../../components/dev/AnimationCanvas/AnimationCanvas";
 
 const DragAndDrop = () => {
   const dispatch = useDispatch();
@@ -38,6 +39,7 @@ const DragAndDrop = () => {
         })}
       </div>
       <Indicator />
+      <AnimationCanvas />
       <DynamicCanvas />
     </>
   );

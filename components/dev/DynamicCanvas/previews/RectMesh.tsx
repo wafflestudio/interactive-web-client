@@ -3,9 +3,9 @@ import {useEffect, useRef} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {ObjectDataType} from '../../../../dummies/dummyInterface'
 import {updateObject} from '../../../../modules/objects'
+import {Mesh} from "three";
 
 type RectMeshProps = {
-  fixedObjs: ObjectDataType[]
   dragTarget: ObjectDataType
   canvasSize?: {width: number; height: number}
 }
@@ -23,12 +23,11 @@ const getDistance = (
 }
 
 export const RectMesh = ({
-  fixedObjs,
   dragTarget,
   canvasSize
 }: RectMeshProps) => {
   // const dispatch = useDispatch()
-  const meshRef = useRef<JSX.IntrinsicElements['mesh']>(null)
+  const meshRef = useRef<Mesh>(null)
   const {viewport} = useThree()
 
   useFrame(({mouse}) => {

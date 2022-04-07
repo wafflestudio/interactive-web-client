@@ -11,3 +11,8 @@ export interface GridScale extends Scale {
   column: number;
   row: number;
 }
+
+export interface GridPosition {
+  x: number;
+  y: number;
+}
