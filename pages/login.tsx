@@ -61,7 +61,9 @@ export default function Login() {
         />
       </label>
       <button type="submit">로그인</button>
-      <button onClick={onPing}>핑</button>
+      <button type="button" onClick={onPing}>
+        핑
+      </button>
     </form>
   )
 }
