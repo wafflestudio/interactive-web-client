@@ -22,6 +22,7 @@ const AnimationCanvas = () => {
   // const areas = useSelector((state: RootState) => state.areas);
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
   const animationCanvasRef = useRef<HTMLCanvasElement>(null);
+  const refIsOn = useSelector((state: RootState) => state.canvasRef.isOn);
 
   console.log("canvas re-rendered");
   // useEffect(() => {
@@ -99,33 +100,28 @@ const AnimationCanvas = () => {
   //   }
   // }, [animateCollisionArr]);
   //
-  // useEffect(() => {
-  //   if (animationCanvasRef.current !== null) {
-  //     animationCanvasRef.current.width = animationCanvasRef.current.clientWidth;
-  //     animationCanvasRef.current.height =
-  //       animationCanvasRef.current.clientHeight;
-  //   }
-  // }, [animationCanvasRef]);
-  //
-  // useEffect(() => {
-  //   if (animationCanvasRef.current !== null) {
-  //     dispatch(saveCanvasRef(animationCanvasRef));
-  //     setInterval(() => {
-  //       console.log("interval");
-  //       dispatch(renderCanvasRef());
-  //     }, 50);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (animationCanvasRef.current !== null) {
+      animationCanvasRef.current.width = animationCanvasRef.current.clientWidth;
+      animationCanvasRef.current.height =
+        animationCanvasRef.current.clientHeight;
+      dispatch(saveCanvasRef(animationCanvasRef));
+    }
+  }, [animationCanvasRef]);
+
+  useEffect(() => {
+    if (animationCanvasRef.current !== null) {
+      setInterval(() => {
+        console.log("interval");
+        dispatch(renderCanvasRef());
+      }, 100);
+    }
+  }, []);
 
   return (
     <div
       ref={canvasWrapperRef}
-      className={
-        `${styles.animationCanvas}`
-        // !!animateGridSlideArr.length || !!animateCollisionArr.length
-        //   ? ``
-        //   : styles.off
-      }
+      className={`${styles.animationCanvas} ${refIsOn ? `` : styles.off}`}
     >
       <canvas ref={animationCanvasRef} />
     </div>

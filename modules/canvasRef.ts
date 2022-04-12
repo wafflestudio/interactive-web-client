@@ -1,10 +1,17 @@
+import { bool } from "prop-types";
 import { RefObject } from "react";
 
+const TOGGLE_REF = "canvasRef/TOGGLE_REF" as const;
 const SAVE_REF = "canvasRef/SAVE_REF" as const;
 export const RENDER_REF = "canvasRef/RENDER_REF" as const;
+
 export const saveCanvasRef = (ref: RefObject<HTMLCanvasElement>) => ({
   type: SAVE_REF,
   payload: ref,
+});
+export const toggleCanvasRef = (bool: boolean) => ({
+  type: TOGGLE_REF,
+  payload: bool,
 });
 
 export const renderCanvasRef = () => ({
@@ -12,6 +19,7 @@ export const renderCanvasRef = () => ({
 });
 
 type canvasRefAction =
+  | ReturnType<typeof toggleCanvasRef>
   | ReturnType<typeof saveCanvasRef>
   | ReturnType<typeof renderCanvasRef>;
 interface stateType {
@@ -27,7 +35,9 @@ const canvasRef = (
 ) => {
   switch (action.type) {
     case SAVE_REF:
-      return { ref: action.payload };
+      return { ...state, ref: action.payload };
+    case TOGGLE_REF:
+      return { ...state, isOn: bool };
     case RENDER_REF:
       return state;
     default:
