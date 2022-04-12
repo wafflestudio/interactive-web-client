@@ -1,10 +1,18 @@
 import { Middleware } from "redux";
-import { GridPosition } from "../functions/physics/physicsInterface";
-import { collision, contain, scalify } from "../functions/physics/basics";
+import { drawEllipse } from "../components/dev/DynamicCanvas/previews/canvasRect";
 import { AreaDataType, ObjectDataType } from "../dummies/dummyInterface";
-import objects, { UPDATE_OBJECT, updateObject } from "./objects";
+import { fps, friction } from "../functions/animation/environment";
+import { collision, contain, scalify } from "../functions/physics/basics";
+import { GridPosition } from "../functions/physics/physicsInterface";
+import {
+  addAnimateCollision,
+  addAnimateGridSlide,
+  removeAnimateCollision,
+  updateTargetCollision,
+} from "./animate";
+import { RENDER_REF } from "./canvasRef";
 import { MOVE_DRAG } from "./drag";
-import { addAnimateCollision, addAnimateGridSlide } from "./animate";
+import objects, { UPDATE_OBJECT, updateObject } from "./objects";
 
 const myMiddleware: Middleware<unknown, any, any> =
   (store) => (next) => (action) => {
@@ -68,7 +76,7 @@ const myMiddleware: Middleware<unknown, any, any> =
                 { x: payload.speedX, y: payload.speedY },
                 scalify.object(fixedObj),
               );
-              console.log("initial speed: ", vSpeed);
+              // console.log("initial speed: ", vSpeed);
               store.dispatch(
                 addAnimateCollision({ target: fixedObj, vSpeed: vSpeed }),
               );
@@ -80,6 +88,75 @@ const myMiddleware: Middleware<unknown, any, any> =
         });
     }
 
+    //다시 그리기
+    if (type === RENDER_REF) {
+      const ref = store.getState().canvasRef.ref;
+      const ctx = ref.current.getContext("2d");
+      const animateCollisionArr = store.getState().animate.collisionArr;
+
+      if (animateCollisionArr.length > 0) {
+        ctx.clearRect(0, 0, ref.current.width, ref.current.height);
+
+        if (!!animateCollisionArr.length && ctx) {
+          animateCollisionArr.forEach((animation) => {
+            // 속도가 1보다 작을 때 멈춤
+            if (animation.vSpeed.scalar < 0.5) {
+              store.dispatch(updateObject(animation.target));
+              store.dispatch(removeAnimateCollision(animation.target));
+            } else {
+              const newSpeedX =
+                (Math.max(
+                  animation.vSpeed.scalar -
+                    (Math.sign(animation.vSpeed.scalar) * friction) / fps,
+                  0,
+                ) *
+                  animation.vSpeed.x) /
+                animation.vSpeed.scalar;
+              const newSpeedY =
+                (Math.max(
+                  animation.vSpeed.scalar -
+                    (Math.sign(animation.vSpeed.scalar) * friction) / fps,
+                  0,
+                ) *
+                  animation.vSpeed.y) /
+                animation.vSpeed.scalar;
+
+              store.dispatch(
+                updateTargetCollision({
+                  ...animation,
+                  target: {
+                    ...animation.target,
+                    x: animation.target.x + animation.vSpeed.x,
+                    y: animation.target.y + animation.vSpeed.y,
+                  },
+                  vSpeed: {
+                    x: newSpeedX,
+                    y: newSpeedY,
+                    scalar: Math.sqrt(
+                      newSpeedX * newSpeedX + newSpeedY * newSpeedY,
+                    ),
+                  },
+                }),
+              );
+            }
+          });
+          animateCollisionArr.forEach((animation) => {
+            drawEllipse(
+              ctx,
+              {
+                x: animation.target.x,
+                y: animation.target.y,
+                w: animation.target.svgData.width,
+                h: animation.target.svgData.height,
+              },
+              animation.target.svgData.fill
+                ? animation.target.svgData.fill
+                : "rgba(0,0,0,0)",
+            );
+          });
+        }
+      }
+    }
     if (!result) {
       result = next(action);
     }
