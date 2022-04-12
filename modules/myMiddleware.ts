@@ -10,7 +10,7 @@ import {
   removeAnimateCollision,
   updateTargetCollision,
 } from "./animate";
-import { RENDER_REF } from "./canvasRef";
+import { RENDER_REF, toggleCanvasRef } from "./canvasRef";
 import { MOVE_DRAG } from "./drag";
 import objects, { UPDATE_OBJECT, updateObject } from "./objects";
 
@@ -77,6 +77,7 @@ const myMiddleware: Middleware<unknown, any, any> =
                 scalify.object(fixedObj),
               );
               // console.log("initial speed: ", vSpeed);
+              store.dispatch(toggleCanvasRef(true));
               store.dispatch(
                 addAnimateCollision({ target: fixedObj, vSpeed: vSpeed }),
               );
@@ -103,6 +104,7 @@ const myMiddleware: Middleware<unknown, any, any> =
             if (animation.vSpeed.scalar < 0.5) {
               store.dispatch(updateObject(animation.target));
               store.dispatch(removeAnimateCollision(animation.target));
+              store.dispatch(toggleCanvasRef(false));
             } else {
               const newSpeedX =
                 (Math.max(
