@@ -1,5 +1,6 @@
 import axios from 'axios'
 import {useState} from 'react'
+import {api} from './api/api'
 
 import {onPing} from './login'
 
@@ -26,15 +27,7 @@ export default function Login() {
     e.preventDefault()
 
     try {
-      const response = await axios.post(
-        'http://iwe-server.shop/api/v1/users/signup',
-        {
-          user_id,
-          username,
-          email,
-          password
-        }
-      )
+      const response = api._signup({user_id, username, email, password})
       console.log(response)
     } catch (e) {
       console.log(e)

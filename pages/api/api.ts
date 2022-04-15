@@ -1,74 +1,104 @@
 import axios from 'axios'
 
+interface LoginRequest {
+  user_id: string
+  password: string
+}
+
+interface SignupRequest extends LoginRequest {
+  email: string
+  username: string
+}
+
+interface PutmeRequest {
+  email: string
+  username: string
+}
+
 interface User {
   id: number
   username: string
 }
 
-interface SignupResponse extends User {
-  accessToken: string
-}
+// interface SignupResponse extends User {
+//   accessToken: string
+// }
 
 const instance = axios.create({
-  baseURL: 'URL'
+  baseURL: 'http://iwe-server.shop/api/v1'
 })
 
-const setHeaderToken = (newToken: string | null) => {
-  if (newToken) {
-    instance.defaults.headers.common['Authorization'] = newToken
-  } else {
-    delete instance.defaults.headers.common['Authorization']
-  }
-}
+// const setHeaderToken = (newToken: string | null) => {
+//   if (newToken) {
+//     instance.defaults.headers.common['Authorization'] = newToken
+//   } else {
+//     delete instance.defaults.headers.common['Authorization']
+//   }
+// }
 
-const ACCESS_TOKEN_KEY = 'accessToken'
-const loadToken = (): string | null => localStorage.getItem(ACCESS_TOKEN_KEY)
-const storeToken = (newToken: string | null) => {
-  if (newToken) {
-    localStorage.setItem(ACCESS_TOKEN_KEY, newToken)
-  } else {
-    localStorage.removeItem(ACCESS_TOKEN_KEY)
-  }
-}
+// const ACCESS_TOKEN_KEY = 'accessToken'
+// const loadToken = (): string | null => localStorage.getItem(ACCESS_TOKEN_KEY)
+// const storeToken = (newToken: string | null) => {
+//   if (newToken) {
+//     localStorage.setItem(ACCESS_TOKEN_KEY, newToken)
+//   } else {
+//     localStorage.removeItem(ACCESS_TOKEN_KEY)
+//   }
+// }
 
-export type AccessToken = string
+// export type AccessToken = string
 
-// used later in AuthPage
-export const _setAccessToken = (token: AccessToken | null) => {
-  setHeaderToken(token)
-  storeToken(token)
-}
-// used later in AuthPage
-export const _getAccessToken = () => loadToken()
+// // used later in AuthPage
+// export const _setAccessToken = (token: AccessToken | null) => {
+//   setHeaderToken(token)
+//   storeToken(token)
+// }
+// // used later in AuthPage
+// export const _getAccessToken = () => loadToken()
 
-setHeaderToken(loadToken())
+// setHeaderToken(loadToken())
+
 export const api = {
-  ping: async () => (await instance.get<string>('/api/ping/')).data,
-
-  _signin: async (email: string, password: string): Promise<AccessToken> => {
-    const response = await instance.post<{accessToken: string}>(
-      '/api/user/signin/',
-      {
-        email: email,
-        password: password
-      }
-    )
-    return response.data.accessToken
+  ping: async () => {
+    const response = await instance.get('http://iwe-server.shop/ping/')
+    return response
   },
 
-  _signup: async (username: string, email: string, password: string) => {
-    const response = await instance.post<SignupResponse>('/api/user/signup/', {
-      username: username,
-      email: email,
-      password: password
+  _signup: async ({user_id, username, email, password}: SignupRequest) => {
+    const response = await instance.post<User>('/signup/', {
+      user_id,
+      username,
+      email,
+      password
     })
-    return {
-      token: response.data.accessToken,
-      userInfo: response.data
-    }
+    return response
   },
 
-  _signout: async () => {
-    await instance.post('/api/user/signout/')
+  _login: async ({user_id, password}: LoginRequest) => {
+    const response = await instance.post<User>('/login/', {
+      user_id,
+      password
+    })
+    return response
+  },
+
+  _getme: async () => {
+    const response = await instance.get<User>('/users/me/')
+    return response
+  },
+
+  _putme: async ({username, email}: PutmeRequest) => {
+    const response = await instance.put<User>('/users/me/', {username, email})
+    return response
+  },
+
+  _deleteme: async () => {
+    await instance.delete<User>('/users/me/')
+    return
+  },
+
+  _getuser: async (id: number) => {
+    const response = await instance.get<User>(`/users/${id}/`)
+    return response
   }
 }
