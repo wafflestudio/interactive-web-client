@@ -65,7 +65,7 @@ export const api = {
   },
 
   _signup: async ({user_id, username, email, password}: SignupRequest) => {
-    const response = await instance.post<User>('/signup/', {
+    const response = await instance.post<User>('/users/signup/', {
       user_id,
       username,
       email,
@@ -75,7 +75,7 @@ export const api = {
   },
 
   _login: async ({user_id, password}: LoginRequest) => {
-    const response = await instance.post<User>('/login/', {
+    const response = await instance.post<User>('/users/login/', {
       user_id,
       password
     })
