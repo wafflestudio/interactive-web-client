@@ -37,7 +37,7 @@ const canvasRef = (
     case SAVE_REF:
       return { ...state, ref: action.payload };
     case TOGGLE_REF:
-      return { ...state, isOn: bool };
+      return { ...state, isOn: action.payload };
     case RENDER_REF:
       return state;
     default:

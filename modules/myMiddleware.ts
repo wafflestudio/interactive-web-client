@@ -13,6 +13,7 @@ import {
 import { RENDER_REF, toggleCanvasRef } from "./canvasRef";
 import { MOVE_DRAG } from "./drag";
 import objects, { UPDATE_OBJECT, updateObject } from "./objects";
+import { CollisionAnimation } from "../functions/animation/animationInterface";
 
 const myMiddleware: Middleware<unknown, any, any> =
   (store) => (next) => (action) => {
@@ -99,13 +100,26 @@ const myMiddleware: Middleware<unknown, any, any> =
         ctx.clearRect(0, 0, ref.current.width, ref.current.height);
 
         if (!!animateCollisionArr.length && ctx) {
-          animateCollisionArr.forEach((animation) => {
+          animateCollisionArr.forEach((animation: CollisionAnimation) => {
             // 속도가 1보다 작을 때 멈춤
             if (animation.vSpeed.scalar < 0.5) {
               store.dispatch(updateObject(animation.target));
               store.dispatch(removeAnimateCollision(animation.target));
               store.dispatch(toggleCanvasRef(false));
             } else {
+              drawEllipse(
+                ctx,
+                {
+                  x: animation.target.x,
+                  y: animation.target.y,
+                  w: animation.target.svgData.width,
+                  h: animation.target.svgData.height,
+                },
+                animation.target.svgData.fill
+                  ? animation.target.svgData.fill
+                  : "rgba(0,0,0,0)",
+              );
+
               const newSpeedX =
                 (Math.max(
                   animation.vSpeed.scalar -
@@ -141,20 +155,6 @@ const myMiddleware: Middleware<unknown, any, any> =
                 }),
               );
             }
-          });
-          animateCollisionArr.forEach((animation) => {
-            drawEllipse(
-              ctx,
-              {
-                x: animation.target.x,
-                y: animation.target.y,
-                w: animation.target.svgData.width,
-                h: animation.target.svgData.height,
-              },
-              animation.target.svgData.fill
-                ? animation.target.svgData.fill
-                : "rgba(0,0,0,0)",
-            );
           });
         }
       }

@@ -107,14 +107,14 @@ const AnimationCanvas = () => {
         animationCanvasRef.current.clientHeight;
       dispatch(saveCanvasRef(animationCanvasRef));
     }
-  }, [animationCanvasRef]);
+  });
 
   useEffect(() => {
     if (animationCanvasRef.current !== null) {
       setInterval(() => {
         console.log("interval");
         dispatch(renderCanvasRef());
-      }, 100);
+      }, 10);
     }
   }, []);
 
