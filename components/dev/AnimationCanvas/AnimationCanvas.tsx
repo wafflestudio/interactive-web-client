@@ -107,7 +107,7 @@ const AnimationCanvas = () => {
         animationCanvasRef.current.clientHeight;
       dispatch(saveCanvasRef(animationCanvasRef));
     }
-  });
+  }, [refIsOn]);
 
   useEffect(() => {
     if (animationCanvasRef.current !== null) {
