@@ -25,7 +25,7 @@ interface User {
 // }
 
 const instance = axios.create({
-  baseURL: 'http://iwe-server.shop/api/v1'
+  baseURL: '/api/v1'
 })
 
 // const setHeaderToken = (newToken: string | null) => {
@@ -59,13 +59,8 @@ const instance = axios.create({
 // setHeaderToken(loadToken())
 
 export const api = {
-  ping: async () => {
-    const response = await instance.get('http://iwe-server.shop/ping/')
-    return response
-  },
-
   _signup: async ({user_id, username, email, password}: SignupRequest) => {
-    const response = await instance.post<User>('/users/signup/', {
+    const response = await instance.post<User>('/signup/', {
       user_id,
       username,
       email,
@@ -75,7 +70,7 @@ export const api = {
   },
 
   _login: async ({user_id, password}: LoginRequest) => {
-    const response = await instance.post<User>('/users/login/', {
+    const response = await instance.post<User>('/login/', {
       user_id,
       password
     })
@@ -83,22 +78,22 @@ export const api = {
   },
 
   _getme: async () => {
-    const response = await instance.get<User>('/users/me/')
+    const response = await instance.get<User>('/me/')
     return response
   },
 
   _putme: async ({username, email}: PutmeRequest) => {
-    const response = await instance.put<User>('/users/me/', {username, email})
+    const response = await instance.put<User>('/me/', {username, email})
     return response
   },
 
   _deleteme: async () => {
-    await instance.delete<User>('/users/me/')
+    await instance.delete<User>('/me/')
     return
   },
 
   _getuser: async (id: number) => {
-    const response = await instance.get<User>(`/users/${id}/`)
+    const response = await instance.get<User>(`/${id}/`)
     return response
   }
 }

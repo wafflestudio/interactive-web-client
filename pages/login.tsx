@@ -1,9 +1,10 @@
+import axios from 'axios'
 import {useState} from 'react'
-import {api} from './api/api'
+import {api} from '../api/api'
 
 export const onPing = async () => {
   try {
-    const response = api.ping()
+    const response = axios.get('/ping')
     console.log(response)
   } catch (e) {
     console.log(e)
@@ -25,7 +26,7 @@ export default function Login() {
     e.preventDefault()
 
     try {
-      const response = api._login({user_id, password})
+      const response = await api._login({user_id, password})
       console.log(response)
     } catch (e) {
       console.log(e)
