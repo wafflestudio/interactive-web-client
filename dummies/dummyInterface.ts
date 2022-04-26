@@ -23,9 +23,12 @@ export interface GeometryType {
 }
 
 export interface ObjectDataType {
-  id: number;
+  id: number; //중복 없게
+  name: string;
   svgData: SvgDataType;
   geometry: GeometryType;
+  attribute: object;
+  tags: string[];
   visibility: boolean;
   zIndex?: number;
 }
