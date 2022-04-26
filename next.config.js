@@ -1,12 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  trailingSlash: true,
 
   async rewrites() {
     return [
       {
-        source: '/:path*',
-        destination: 'http://iwe-server.shop/:path*'
+        source: '/ping/',
+        destination: 'http://iwe-server.shop/api/v1/ping/'
+      },
+      {
+        source: '/api/v1/:path*',
+        destination: 'http://iwe-server.shop/api/v1/:path*'
       }
     ]
   }
