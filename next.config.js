@@ -10,8 +10,8 @@ const nextConfig = {
         destination: 'http://iwe-server.shop/api/v1/ping/'
       },
       {
-        source: '/api/v1/:path*',
-        destination: 'http://iwe-server.shop/api/v1/:path*'
+        source: '/api/v1/:path*/',
+        destination: 'http://iwe-server.shop/api/v1/:path*/'
       }
     ]
   }
