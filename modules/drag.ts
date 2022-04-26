@@ -3,9 +3,9 @@
 
 import { ObjectDataType } from "../dummies/dummyInterface";
 
-const START_DRAG = "drag/START_DRAG" as const;
-const MOVE_DRAG = `drag/MOVE_DRAG` as const;
-const END_DRAG = "drag/END_DRAG" as const;
+export const START_DRAG = "drag/START_DRAG" as const;
+export const MOVE_DRAG = `drag/MOVE_DRAG` as const;
+export const END_DRAG = "drag/END_DRAG" as const;
 
 const emptyTarget = {} as ObjectDataType;
 
@@ -25,9 +25,9 @@ export const startDrag = (
   payload: { target, modifyX, modifyY },
 });
 
-export const moveDrag = (x: number, y: number) => ({
+export const moveDrag = (x: number, y: number, speedX: number, speedY: number) => ({
   type: MOVE_DRAG,
-  payload: { x, y },
+  payload: { x, y, speedX, speedY },
 });
 
 export const endDrag = () => ({ type: END_DRAG });
