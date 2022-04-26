@@ -7,11 +7,12 @@ interface SampleDivProps {
 }
 
 const SampleDiv = ({ item }: SampleDivProps) => {
+  const geometry = item.geometry;
   const style = {
-    width: item.divData.width,
-    height: item.divData.height,
-    left: item.x,
-    top: item.y,
+    width: geometry.w,
+    height: geometry.h,
+    left: geometry.x,
+    top: geometry.y,
     border: `2px solid ${item.divData.stroke}`,
     backgroundColor: item.divData.fill,
   };

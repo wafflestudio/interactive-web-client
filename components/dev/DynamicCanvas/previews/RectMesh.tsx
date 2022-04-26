@@ -1,9 +1,7 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Mesh } from "three";
 import { ObjectDataType } from "../../../../dummies/dummyInterface";
-import { updateObject } from "../../../../modules/objects";
 
 type RectMeshProps = {
   dragTarget: ObjectDataType;

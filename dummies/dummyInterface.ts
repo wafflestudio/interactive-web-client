@@ -1,35 +1,35 @@
 // svg 개체의 종류와 크기, 색상을 결정하는 데이터입니다
 export interface SvgDataType {
   svgType: string;
-  width: number;
-  height: number;
   fill?: string;
   stroke?: string;
   src?: string;
 }
 
-// 각 오브젝트들의 비주얼 데이터(svgData), 아이디, 좌표값(좌상단의), 보이는 지 여부를 담은 데이터입니다
-export interface ObjectDataType {
-  id: number;
-  x: number;
-  y: number;
-  svgData: SvgDataType;
-  isVisible: boolean;
-}
-
 export interface divDataType {
   divType: string;
-  width: number;
-  height: number;
   fill?: string;
   stroke: string;
   src?: string;
 }
 
-export interface AreaDataType {
-  id: number;
+export interface GeometryType {
   x: number;
   y: number;
+  w: number;
+  h: number;
+}
+
+export interface ObjectDataType {
+  id: number;
+  svgData: SvgDataType;
+  geometry: GeometryType;
+  visibility: boolean;
+}
+
+export interface AreaDataType {
+  id: number;
   divData: divDataType;
-  isVisible: boolean;
+  geometry: GeometryType;
+  visibility: boolean;
 }

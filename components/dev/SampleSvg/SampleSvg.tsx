@@ -1,7 +1,7 @@
 import { batch, useDispatch } from "react-redux";
 import { ObjectDataType } from "../../../dummies/dummyInterface";
 import { startDrag } from "../../../modules/drag";
-import { updateObject } from "../../../modules/objects";
+import { updateObject } from "../../../modules/staticObjects";
 import styles from "./SampleSvg.module.scss";
 
 interface SampleSvgProps {
@@ -13,27 +13,28 @@ interface SampleSvgProps {
 
 const SampleSvg = ({ item }: SampleSvgProps) => {
   const dispatch = useDispatch();
+  const geometry = item.geometry;
   const style = {
-    width: item.svgData.width,
-    height: item.svgData.height,
-    left: item.x,
-    top: item.y,
+    width: geometry.w,
+    height: geometry.h,
+    left: geometry.x,
+    top: geometry.y,
   };
 
   return (
     <svg
-      className={`${styles.sampleSvg} ${item.isVisible ? `` : styles.off}`}
+      className={`${styles.sampleSvg} ${item.visibility ? `` : styles.off}`}
       style={style}
     >
       <ellipse
-        cx={`${item.svgData.width / 2}px`}
-        cy={`${item.svgData.height / 2}px`}
-        rx={`${item.svgData.width / 2}px`}
-        ry={`${item.svgData.height / 2}px`}
+        cx={`${geometry.w / 2}px`}
+        cy={`${geometry.h / 2}px`}
+        rx={`${geometry.w / 2}px`}
+        ry={`${geometry.h / 2}px`}
         fill={item.svgData.fill}
         onMouseDown={(e) => {
           batch(() => {
-            dispatch(updateObject({ ...item, isVisible: false }));
+            dispatch(updateObject({ ...item, visibility: false }));
             dispatch(
               startDrag(item, e.nativeEvent.offsetX, e.nativeEvent.offsetY),
             );

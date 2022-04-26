@@ -5,13 +5,10 @@ export const sampleAreaDummy: AreaDataType[] = [
     id: 0,
     divData: {
       divType: "area",
-      width: 400,
-      height: 900,
       fill: "#cccccc",
       stroke: "black",
     },
-    x: 20,
-    y: 20,
-    isVisible: true,
+    geometry: { x: 20, y: 20, w: 400, h: 900 },
+    visibility: true,
   },
 ];

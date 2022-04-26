@@ -18,26 +18,26 @@ export const renderCanvasRef = () => ({
   type: RENDER_REF,
 });
 
-type canvasRefAction =
+type canvasRefActionType =
   | ReturnType<typeof toggleCanvasRef>
   | ReturnType<typeof saveCanvasRef>
   | ReturnType<typeof renderCanvasRef>;
-interface stateType {
-  isOn: boolean;
+interface canvasRefStateType {
+  exist: boolean;
   ref?: RefObject<HTMLCanvasElement>;
 }
 
-const initialState: stateType = { isOn: false };
+const initialState: canvasRefStateType = { exist: false };
 
 const canvasRef = (
-  state: stateType = initialState,
-  action: canvasRefAction,
+  state: canvasRefStateType = initialState,
+  action: canvasRefActionType,
 ) => {
   switch (action.type) {
     case SAVE_REF:
       return { ...state, ref: action.payload };
     case TOGGLE_REF:
-      return { ...state, isOn: bool };
+      return { ...state, exist: action.payload};
     case RENDER_REF:
       return state;
     default:

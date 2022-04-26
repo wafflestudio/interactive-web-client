@@ -25,7 +25,12 @@ export const startDrag = (
   payload: { target, modifyX, modifyY },
 });
 
-export const moveDrag = (x: number, y: number, speedX: number, speedY: number) => ({
+export const moveDrag = (
+  x: number,
+  y: number,
+  speedX: number,
+  speedY: number,
+) => ({
   type: MOVE_DRAG,
   payload: { x, y, speedX, speedY },
 });
@@ -62,8 +67,11 @@ const drag = (
         ...state,
         target: {
           ...state.target,
-          x: action.payload.x - state.modify.x,
-          y: action.payload.y - state.modify.y,
+          geometry: {
+            ...state.target.geometry,
+            x: action.payload.x - state.modify.x,
+            y: action.payload.y - state.modify.y,
+          },
         },
       };
     case END_DRAG:

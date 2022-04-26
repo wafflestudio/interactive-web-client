@@ -3,13 +3,13 @@ import animate from "./animate";
 import areas from "./areas";
 import canvasRef from "./canvasRef";
 import drag from "./drag";
-import objects from "./objects";
+import staticObjects from "./staticObjects";
 import testType from "./testType";
 import user from "./user";
 
 const rootReducer = combineReducers({
   drag,
-  objects,
+  staticObjects,
   testType,
   user,
   areas,

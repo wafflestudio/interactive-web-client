@@ -1,18 +1,18 @@
 import { Middleware } from "redux";
-import { drawEllipse } from "../components/dev/DynamicCanvas/previews/canvasRect";
-import { AreaDataType, ObjectDataType } from "../dummies/dummyInterface";
-import { fps, friction } from "../functions/animation/environment";
-import { collision, contain, scalify } from "../functions/physics/basics";
-import { GridPosition } from "../functions/physics/physicsInterface";
+import { drawEllipse } from "../../components/dev/DynamicCanvas/previews/canvasRect";
+import { AreaDataType, ObjectDataType } from "../../dummies/dummyInterface";
+import { fps, friction } from "../../functions/animation/environment";
+import { collision, contain, scalify } from "../../functions/physics/basics";
+import { GridPosition } from "../../functions/physics/physicsInterface";
 import {
   addAnimateCollision,
   addAnimateGridSlide,
   removeAnimateCollision,
   updateTargetCollision,
-} from "./animate";
-import { RENDER_REF, toggleCanvasRef } from "./canvasRef";
-import { MOVE_DRAG } from "./drag";
-import objects, { UPDATE_OBJECT, updateObject } from "./objects";
+} from "../animate";
+import { RENDER_REF, toggleCanvasRef } from "../canvasRef";
+import { MOVE_DRAG } from "../drag";
+import staticObjects, { UPDATE_OBJECT, updateObject } from "../staticObjects";
 
 const myMiddleware: Middleware<unknown, any, any> =
   (store) => (next) => (action) => {

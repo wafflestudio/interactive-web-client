@@ -7,7 +7,7 @@ import {
   updateTargetCollision,
 } from "../../../modules/animate";
 import { renderCanvasRef, saveCanvasRef } from "../../../modules/canvasRef";
-import { updateObject } from "../../../modules/objects";
+import { updateObject } from "../../../modules/staticObjects";
 import { drawEllipse } from "../DynamicCanvas/previews/canvasRect";
 import styles from "./AnimationCanvas.module.scss";
 
@@ -100,23 +100,7 @@ const AnimationCanvas = () => {
   //   }
   // }, [animateCollisionArr]);
   //
-  useEffect(() => {
-    if (animationCanvasRef.current !== null) {
-      animationCanvasRef.current.width = animationCanvasRef.current.clientWidth;
-      animationCanvasRef.current.height =
-        animationCanvasRef.current.clientHeight;
-      dispatch(saveCanvasRef(animationCanvasRef));
-    }
-  }, [animationCanvasRef]);
 
-  useEffect(() => {
-    if (animationCanvasRef.current !== null) {
-      setInterval(() => {
-        console.log("interval");
-        dispatch(renderCanvasRef());
-      }, 100);
-    }
-  }, []);
 
   return (
     <div

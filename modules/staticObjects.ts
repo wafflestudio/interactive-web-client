@@ -2,8 +2,8 @@
 
 import { ObjectDataType } from "../dummies/dummyInterface";
 
-export const UPDATE_OBJECT = "objects/UPDATE_OBJECT" as const;
-export const SAVE_OBJECTS = "objects/GET_OBJECTS" as const;
+export const UPDATE_OBJECT = "staticObjects/UPDATE_OBJECT" as const;
+export const SAVE_OBJECTS = "staticObjects/GET_OBJECTS" as const;
 
 export const saveObjects = (objects: ObjectDataType[]) => ({
   type: SAVE_OBJECTS,
@@ -21,7 +21,7 @@ type ObjectsAction =
 
 const initialState: ObjectDataType[] = [];
 
-const objects = (
+const staticObjects = (
   state: ObjectDataType[] = initialState,
   action: ObjectsAction,
 ): ObjectDataType[] => {
@@ -37,4 +37,4 @@ const objects = (
   }
 };
 
-export default objects;
+export default staticObjects;

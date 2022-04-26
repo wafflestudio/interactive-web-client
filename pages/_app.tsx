@@ -3,9 +3,9 @@ import { Provider } from "react-redux";
 import {applyMiddleware, createStore} from "redux";
 import rootReducer from "../modules";
 import "../styles/globals.css";
-import myMiddleware from "../modules/myMiddleware";
+import graphicsMiddleware from "../modules/middlewares/graphicsMiddleware";
 
-const store = createStore(rootReducer, applyMiddleware(myMiddleware));
+const store = createStore(rootReducer, applyMiddleware(graphicsMiddleware));
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
