@@ -1,5 +1,6 @@
+import HomeMain from './Main/HomeMain'
 import PageHead from './PageHead'
-import SideBar from './SideBar'
+import SideBar from './Sidebar/SideBar'
 import styles from './HomePage.module.scss'
 
 export default function HomePage() {
@@ -9,6 +10,7 @@ export default function HomePage() {
       <div className={styles.wrapper}>
         <div className={styles.container}>
           <SideBar />
+          <HomeMain />
         </div>
       </div>
     </>

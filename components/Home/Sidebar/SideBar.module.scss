@@ -1,15 +1,16 @@
-@import '../../styles/colors';
+@use '../../../styles/colors';
 
 .container {
   width: 273px;
   height: 1080px;
   border: 1px solid #fcba03;
   padding: 9px;
+  font-size: 32px;
 
   .logo {
     width: 251px;
     height: 88px;
-    background: $background-color;
+    background: colors.$background-color;
     font-size: 64px;
   }
 
@@ -23,7 +24,7 @@
       width: 62px;
       height: 62px;
       border-radius: 50%;
-      background: $background-color;
+      background: colors.$background-color;
     }
   }
 

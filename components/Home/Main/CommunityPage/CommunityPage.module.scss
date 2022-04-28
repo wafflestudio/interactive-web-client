@@ -1,0 +1,46 @@
+@use '../../../../styles/size';
+@use '../../../../styles/colors';
+
+.container {
+  width: size.$home-main-components-width;
+  height: 220px;
+  margin-top: 40px;
+  position: relative;
+
+  .moreButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  .pageList {
+    margin-top: 15px;
+    overflow-x: auto;
+    white-space: nowrap;
+
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+
+    li {
+      width: 226px;
+      height: 166px;
+      margin-right: 64px;
+      background: colors.$background-color;
+      display: inline-block;
+    }
+  }
+
+  button {
+    position: absolute;
+    top: 130px;
+
+    &.slideLeft {
+      left: 30px;
+    }
+
+    &.slideRight {
+      right: 30px;
+    }
+  }
+}
