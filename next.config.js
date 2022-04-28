@@ -7,7 +7,7 @@ const nextConfig = {
     return [
       {
         source: '/ping/',
-        destination: 'http://iwe-server.shop/api/v1/ping/'
+        destination: 'http://iwe-server.shop/ping/'
       },
       {
         source: '/api/v1/:path*/',
