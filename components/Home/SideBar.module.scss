@@ -1,0 +1,37 @@
+@import '../../styles/colors';
+
+.container {
+  width: 273px;
+  height: 1080px;
+  border: 1px solid #fcba03;
+  padding: 9px;
+
+  .logo {
+    width: 251px;
+    height: 88px;
+    background: $background-color;
+    font-size: 64px;
+  }
+
+  .userProfile {
+    width: 251px;
+    height: 300px;
+    margin-top: 10px;
+    border: 1px dotted #4287f5;
+
+    .profileImage {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: $background-color;
+    }
+  }
+
+  .navigator {
+    margin-top: 10px;
+
+    .community li {
+      margin-left: 30px;
+    }
+  }
+}

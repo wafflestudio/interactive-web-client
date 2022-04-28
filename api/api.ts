@@ -1,4 +1,5 @@
 import axios from 'axios'
+import UserDataType from '../types/types'
 
 interface LoginRequest {
   user_id: string
@@ -12,11 +13,6 @@ interface SignupRequest extends LoginRequest {
 
 interface PutmeRequest {
   email: string
-  username: string
-}
-
-interface User {
-  id: number
   username: string
 }
 
@@ -60,7 +56,7 @@ const instance = axios.create({
 
 export const api = {
   _signup: async ({user_id, username, email, password}: SignupRequest) => {
-    const response = await instance.post<User>('/signup/', {
+    const response = await instance.post<UserDataType>('/signup/', {
       user_id,
       username,
       email,
@@ -70,7 +66,7 @@ export const api = {
   },
 
   _login: async ({user_id, password}: LoginRequest) => {
-    const response = await instance.post<User>('/login/', {
+    const response = await instance.post<UserDataType>('/login/', {
       user_id,
       password
     })
@@ -78,22 +74,22 @@ export const api = {
   },
 
   _getme: async () => {
-    const response = await instance.get<User>('/me/')
+    const response = await instance.get<UserDataType>('/me/')
     return response
   },
 
   _putme: async ({username, email}: PutmeRequest) => {
-    const response = await instance.put<User>('/me/', {username, email})
+    const response = await instance.put<UserDataType>('/me/', {username, email})
     return response
   },
 
   _deleteme: async () => {
-    await instance.delete<User>('/me/')
+    await instance.delete<UserDataType>('/me/')
     return
   },
 
   _getuser: async (id: number) => {
-    const response = await instance.get<User>(`/${id}/`)
+    const response = await instance.get<UserDataType>(`/${id}/`)
     return response
   }
 }

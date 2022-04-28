@@ -1,6 +1,9 @@
 import axios from 'axios'
+import {useRouter} from 'next/router'
 import {useState} from 'react'
+import {useDispatch} from 'react-redux'
 import {api} from '../api/api'
+import {setUser} from '../modules/user'
 
 export const onPing = async () => {
   try {
@@ -15,6 +18,10 @@ export default function Login() {
   const [user_id, setUserId] = useState('')
   const [password, setPassword] = useState('')
 
+  const dispatch = useDispatch()
+
+  const router = useRouter()
+
   const onUserIdChange: React.ChangeEventHandler<HTMLInputElement> = ({
     target
   }) => setUserId(target.value)
@@ -26,8 +33,13 @@ export default function Login() {
     e.preventDefault()
 
     try {
-      const response = await api._login({user_id, password})
-      console.log(response)
+      const {data} = await api._login({user_id, password})
+      console.log(data)
+
+      data.isLoggedIn = true
+      dispatch(setUser(data))
+
+      router.push('/')
     } catch (e) {
       console.log(e)
     }
