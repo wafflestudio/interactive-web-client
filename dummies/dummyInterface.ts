@@ -28,7 +28,7 @@ export interface ObjectDataType {
   svgData: SvgDataType;
   geometry: GeometryType;
   attribute: object;
-  tags: string[];
+  tag: string[];
   visibility: boolean;
   zIndex?: number;
 }
