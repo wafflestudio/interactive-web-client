@@ -1,8 +1,9 @@
 import Link from 'next/link'
 import {useRef} from 'react'
+import {CategoryType} from '../../../../types/types'
 import styles from './CommunityPage.module.scss'
 
-export default function CommunityPage({category}: {category: string}) {
+export default function CommunityPage({category}: {category: CategoryType}) {
   const pageListContainer = useRef<HTMLUListElement>(null)
 
   const pageList = [{id: 0}, {id: 1}, {id: 2}, {id: 3}, {id: 4}]
@@ -17,9 +18,13 @@ export default function CommunityPage({category}: {category: string}) {
   return (
     <div className={styles.container}>
       <div className={styles.categoryHeader}>
-        <div>{category}</div>
+        <div>
+          <Link href={`/works/${category.path}`}>
+            <a>{category.name}</a>
+          </Link>
+        </div>
         <button className={styles.moreButton}>
-          <Link href={'/works'}>
+          <Link href={`/works/${category.path}`}>
             <a>더보기</a>
           </Link>
         </button>
@@ -30,7 +35,7 @@ export default function CommunityPage({category}: {category: string}) {
             <li key={page.id}>
               <Link href={`/works/${page.id}`}>
                 <a>
-                  <div></div>
+                  <div className={styles.thumbnail} />
                 </a>
               </Link>
             </li>

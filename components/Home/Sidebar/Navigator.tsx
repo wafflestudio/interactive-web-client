@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import {useSelector} from 'react-redux'
+import {categoryList} from '../../../constants/constants'
 import {RootState} from '../../../modules'
 import styles from './SideBar.module.scss'
 
@@ -11,15 +12,15 @@ export default function Navigator() {
       <ul>
         <ul className={styles.community}>
           커뮤니티
-          <li>
-            <Link href={'/works/sample'}>샘플 페이지</Link>
-          </li>
-          <li>
-            <Link href={'/works/new'}>신규 페이지</Link>
-          </li>
-          <li>
-            <Link href={'/works/hot'}>핫한 페이지</Link>
-          </li>
+          {categoryList.map((category) => {
+            return (
+              <li key={category.id}>
+                <Link href={`/works/${category.path}`}>
+                  <a>{category.navigator}</a>
+                </Link>
+              </li>
+            )
+          })}
         </ul>
         {isLoggedIn ? (
           <li>
