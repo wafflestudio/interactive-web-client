@@ -1,0 +1,10 @@
+@use '../../../../styles/size';
+@use '../../../../styles/colors';
+
+.notice {
+  width: size.$home-main-components-width;
+  height: 166px;
+  background: colors.$background-color;
+  border-radius: 10px;
+  margin-bottom: 44px;
+}

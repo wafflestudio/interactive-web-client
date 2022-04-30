@@ -1,32 +1,45 @@
-import axios, {AxiosRequestConfig} from 'axios'
+import axios from 'axios'
 import {useRouter} from 'next/router'
 import {useState} from 'react'
+import {useDispatch} from 'react-redux'
+import {api} from '../api/api'
+import {setUser} from '../modules/user'
+
+export const onPing = async () => {
+  try {
+    const response = axios.get('/ping')
+    console.log(response)
+  } catch (e) {
+    console.log(e)
+  }
+}
 
 export default function Login() {
-  const [username, setUsername] = useState('')
+  const [user_id, setUserId] = useState('')
   const [password, setPassword] = useState('')
+
+  const dispatch = useDispatch()
 
   const router = useRouter()
 
-  const onUsernameChange: React.ChangeEventHandler<HTMLInputElement> = (e) =>
-    setUsername(e.target.value)
-  const onPasswordChange: React.ChangeEventHandler<HTMLInputElement> = (e) =>
-    setPassword(e.target.value)
+  const onUserIdChange: React.ChangeEventHandler<HTMLInputElement> = ({
+    target
+  }) => setUserId(target.value)
+  const onPasswordChange: React.ChangeEventHandler<HTMLInputElement> = ({
+    target
+  }) => setPassword(target.value)
 
-  const onLogin: React.FormEventHandler<HTMLFormElement> = (e) => {
+  const onLogin: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
-    router.push('/drag-and-drop')
-  }
 
-  const onPing = async () => {
-    const config: AxiosRequestConfig = {
-      method: 'GET',
-      baseURL: '/api',
-      url: '/ping'
-    }
     try {
-      const response = await axios(config)
-      console.log(response)
+      const {data} = await api._login({user_id, password})
+      console.log(data)
+
+      data.isLoggedIn = true
+      dispatch(setUser(data))
+
+      router.push('/')
     } catch (e) {
       console.log(e)
     }
@@ -34,14 +47,14 @@ export default function Login() {
 
   return (
     <form onSubmit={onLogin}>
-      <label htmlFor="email">
+      <label htmlFor="user_id">
         아이디
         <input
           type="text"
-          id="email"
-          name="email"
-          value={username}
-          onChange={onUsernameChange}
+          id="user_id"
+          name="user_id"
+          value={user_id}
+          onChange={onUserIdChange}
         />
       </label>
       <label htmlFor="password">
@@ -55,7 +68,9 @@ export default function Login() {
         />
       </label>
       <button type="submit">로그인</button>
-      <button onClick={onPing}>핑</button>
+      <button type="button" onClick={onPing}>
+        핑
+      </button>
     </form>
   )
 }
