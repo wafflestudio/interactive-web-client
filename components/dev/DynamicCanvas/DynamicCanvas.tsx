@@ -4,18 +4,22 @@ import { batch, useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../modules";
 import { endDrag, moveDrag } from "../../../modules/drag";
 import { updateObject } from "../../../modules/objects";
-import { drawRect } from "./previews/canvasRect";
+import { drawEllipse, drawRect } from "./previews/canvasRect";
 import { RectMesh } from "./previews/RectMesh";
 import styles from "./DynamicCanvas.module.scss";
 
 const DynamicCanvas = () => {
   const dispatch = useDispatch();
   const dragTarget = useSelector((state: RootState) => state.drag.target);
+  const animateTargetArr = useSelector(
+    (state: RootState) => state.animate.targetArr,
+  );
   const objects = useSelector((state: RootState) => {
     return state.objects;
   });
   const fixedObjs = objects.filter((object) => object.id != dragTarget.id);
   const isDragOn = useSelector((state: RootState) => state.drag.isOn);
+  const isAnimateOn = useSelector((state: RootState) => state.animate.isOn);
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const testTypeNumber = useSelector((state: RootState) => state.testType);
@@ -31,19 +35,31 @@ const DynamicCanvas = () => {
   useEffect(() => {
     if (canvasRef.current !== null) {
       const ctx = canvasRef.current.getContext("2d");
-      if (isDragOn && ctx) {
-        if (dragTarget.svgData.fill) {
-          drawRect(
+      if (isAnimateOn && ctx) {
+        animateTargetArr.forEach((item) => {
+          drawEllipse(
             ctx,
             {
-              x: dragTarget.x,
-              y: dragTarget.y,
-              w: dragTarget.svgData.width,
-              h: dragTarget.svgData.height,
+              x: item.x,
+              y: item.y,
+              w: item.svgData.width,
+              h: item.svgData.height,
             },
-            dragTarget.svgData.fill,
+            item.svgData.fill,
           );
-        }
+        });
+      }
+      if (isDragOn && ctx) {
+        drawEllipse(
+          ctx,
+          {
+            x: dragTarget.x,
+            y: dragTarget.y,
+            w: dragTarget.svgData.width,
+            h: dragTarget.svgData.height,
+          },
+          dragTarget.svgData.fill,
+        );
       }
     }
   }, [dragTarget]);

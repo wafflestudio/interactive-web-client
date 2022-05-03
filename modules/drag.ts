@@ -9,11 +9,11 @@ const END_DRAG = "drag/END_DRAG" as const;
 
 const emptyTarget = {} as ObjectDataType;
 
-type DragState = {
+interface DragState {
   isOn: boolean;
   target: ObjectDataType;
   modify: { x: number; y: number };
-};
+}
 
 //start, move end는 각각 mousedown, mousemove, mouseup 시에 호출됩니다
 export const startDrag = (
