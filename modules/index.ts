@@ -1,17 +1,20 @@
-import {combineReducers} from 'redux'
-
-import drag from './drag'
-import objects from './objects'
-import testType from './testType'
-import user from './user'
+import { combineReducers } from "redux";
+import animate from "./animate";
+import areas from "./areas";
+import canvasRef from "./canvasRef";
+import drag from "./drag";
+import staticObjects from "./staticObjects";
+import user from "./user";
 
 const rootReducer = combineReducers({
   drag,
-  objects,
-  testType,
-  user
-})
+  staticObjects,
+  user,
+  areas,
+  animate,
+  canvasRef,
+});
 
-export default rootReducer
+export default rootReducer;
 
-export type RootState = ReturnType<typeof rootReducer>
+export type RootState = ReturnType<typeof rootReducer>;
