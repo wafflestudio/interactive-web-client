@@ -9,20 +9,17 @@ const graphicsMiddleware: Middleware<unknown, RootState> =
   (store) => (next) => (action) => {
     let result;
 
-    //Canvas
-
     //Drag
     if (action.type === START_DRAG) {
-      store.dispatch(toggleCanvasRef(true));
     }
-
     if (action.type === MOVE_DRAG) {
     }
-
     if (action.type === END_DRAG) {
       store.dispatch(updateObject(store.getState().drag.target));
       store.dispatch(toggleCanvasRef(false));
     }
+
+    //Animate
 
     //Render
     if (action.type === RENDER_REF) {
@@ -38,7 +35,6 @@ const graphicsMiddleware: Middleware<unknown, RootState> =
         );
       }
     } else {
-      // console.log(action.type);
     }
 
     if (!result) {

@@ -1,15 +1,17 @@
 // svg 개체의 종류와 크기, 색상을 결정하는 데이터입니다
 export interface SvgDataType {
-  svgType: string;
+  //drawing은 우리가 에디터에서 직접 그린 오브젝트 (충돌 영역 표시 등)
+  svgType: "rect" | "ellipse" | "path" | "drawing" | "image" | "text";
   fill?: string;
   stroke?: string;
+  d?: string;
   src?: string;
 }
 
-export interface divDataType {
+export interface DivDataType {
   divType: string;
   fill?: string;
-  stroke: string;
+  stroke?: string;
   src?: string;
 }
 
@@ -25,11 +27,23 @@ export interface ObjectDataType {
   svgData: SvgDataType;
   geometry: GeometryType;
   visibility: boolean;
+  zIndex?: number;
+}
+
+//이게 필요한가?
+export interface TextboxDataType {
+  id: number;
+  divData: DivDataType;
+  geometry: GeometryType;
+  innerText: string;
+  visibility: boolean;
+  zIndex?: number;
 }
 
 export interface AreaDataType {
   id: number;
-  divData: divDataType;
+  divData: DivDataType;
   geometry: GeometryType;
   visibility: boolean;
+  zIndex?: number;
 }

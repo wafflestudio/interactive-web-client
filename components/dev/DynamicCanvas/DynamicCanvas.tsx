@@ -1,12 +1,7 @@
-import { Canvas } from "@react-three/fiber";
-import { MouseEventHandler, useEffect, useRef, useState } from "react";
-import { batch, useDispatch, useSelector } from "react-redux";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../modules";
 import { renderCanvasRef, saveCanvasRef } from "../../../modules/canvasRef";
-import { endDrag, moveDrag } from "../../../modules/drag";
-import { updateObject } from "../../../modules/staticObjects";
-import { drawEllipse } from "./previews/canvasRect";
-import { RectMesh } from "./previews/RectMesh";
 import styles from "./DynamicCanvas.module.scss";
 
 const DynamicCanvas = () => {
@@ -14,51 +9,30 @@ const DynamicCanvas = () => {
 
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const testTypeNumber = useSelector((state: RootState) => state.testType);
-  const [throttle, setThrottle] = useState<boolean>(false);
-  const refIsOn = useSelector((state: RootState) => state.canvasRef.exist);
+  const isDrag = useSelector((state: RootState) => state.drag.isOn);
 
-  const render = () => {
+  const draw = () => {
     dispatch(renderCanvasRef());
-    window.requestAnimationFrame(render);
+    if (isDrag) {
+      window.requestAnimationFrame(draw);
+    }
   };
 
-  const handleDragEnd: MouseEventHandler<HTMLDivElement> = (e) => {
-    batch(() => {
-      dispatch(endDrag());
-    });
-  };
   useEffect(() => {
     if (canvasRef.current !== null) {
       canvasRef.current.width = canvasRef.current.clientWidth;
       canvasRef.current.height = canvasRef.current.clientHeight;
       dispatch(saveCanvasRef(canvasRef));
     }
-  }, [canvasRef, refIsOn]);
+  }, [canvasRef]);
 
   useEffect(() => {
-    render();
-  }, []);
+    draw();
+  }, [isDrag]);
 
   return (
-    <div
-      ref={canvasWrapperRef}
-      className={`${styles.dynamicCanvas} ${refIsOn ? `` : styles.off}`}
-      onMouseMove={(e) => {
-        if (!throttle) {
-          const x = e.nativeEvent.offsetX;
-          const y = e.nativeEvent.offsetY;
-          dispatch(moveDrag(x, y, e.movementX, e.movementY));
-          // 마우스 이벤트 쓰로틀링
-          setThrottle(true);
-          setTimeout(() => {
-            setThrottle(false);
-          }, 5);
-        }
-      }}
-      onMouseUp={handleDragEnd}
-    >
-      {testTypeNumber === 0 && <canvas ref={canvasRef} />}
+    <div ref={canvasWrapperRef} className={`${styles.dynamicCanvas}`}>
+      <canvas ref={canvasRef} />
     </div>
   );
 };

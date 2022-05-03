@@ -1,6 +1,6 @@
 import { batch, useDispatch } from "react-redux";
 import { ObjectDataType } from "../../../dummies/dummyInterface";
-import { startDrag } from "../../../modules/drag";
+import { endDrag, moveDrag, startDrag } from "../../../modules/drag";
 import { updateObject } from "../../../modules/staticObjects";
 import styles from "./SampleSvg.module.scss";
 
@@ -33,6 +33,7 @@ const SampleSvg = ({ item }: SampleSvgProps) => {
         ry={`${geometry.h / 2}px`}
         fill={item.svgData.fill}
         onMouseDown={(e) => {
+          console.log("Click Success");
           batch(() => {
             dispatch(updateObject({ ...item, visibility: false }));
             dispatch(
