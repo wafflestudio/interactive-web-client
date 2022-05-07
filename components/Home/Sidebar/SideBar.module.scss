@@ -12,6 +12,7 @@
     height: 88px;
     background: colors.$background-color;
     font-size: 64px;
+    cursor: pointer;
   }
 
   .userProfile {
@@ -33,6 +34,12 @@
 
     .community li {
       margin-left: 30px;
+      .communityLink{
+        &:hover {
+          color:gray;
+          text-decoration: underline;
+        }
+      }
     }
   }
 }
