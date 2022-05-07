@@ -8,6 +8,9 @@
   font-size: 32px;
 
   .logo {
+    display:flex;
+    align-items: center;
+    justify-content: center;
     width: 251px;
     height: 88px;
     background: colors.$background-color;
@@ -20,12 +23,19 @@
     height: 300px;
     margin-top: 10px;
     border: 1px dotted #4287f5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
     .profileImage {
       width: 62px;
       height: 62px;
       border-radius: 50%;
+      margin: 30px;
       background: colors.$background-color;
+    }
+    .toUser{
+      margin-top:32px;
     }
   }
 
