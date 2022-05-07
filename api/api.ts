@@ -11,9 +11,9 @@ interface SignupRequest extends LoginRequest {
   username: string;
 }
 
-interface PutmeRequest {
-  email: string;
-  username: string;
+export interface PutmeRequest {
+  email?: string;
+  username?: string;
 }
 
 // interface SignupResponse extends User {
@@ -80,15 +80,24 @@ export const api = {
   },
 
   _putme: async ({ username, email }: PutmeRequest) => {
-    const response = await instance.put<UserDataType>("/me/", {
-      username,
-      email,
-    });
+    const response = await instance.put<UserDataType>(
+      "/users/me/",
+      {
+        username,
+        email,
+      },
+      {
+        headers: {
+          "X-CSRFToken":
+            "N6L771aXIfvhDOk3dN3b2GRUOIky7uQgVqT8WilkA3MyLzf4P4gnfwkdtx9ctvTa",
+        },
+      },
+    );
     return response;
   },
 
   _deleteme: async () => {
-    await instance.delete<UserDataType>("/me/");
+    await instance.delete<UserDataType>("/users/me/");
     return;
   },
 
