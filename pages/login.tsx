@@ -4,10 +4,11 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { api } from "../api/api";
 import { setUser } from "../modules/user";
+import styles from "./loginAndSignup.module.scss";
 
 export const onPing = async () => {
   try {
-    const response = axios.get("/ping");
+    const response = await axios.get("/ping");
     console.log(response);
   } catch (e) {
     console.log(e);
@@ -45,31 +46,33 @@ export default function Login() {
   };
 
   return (
-    <form onSubmit={onLogin}>
-      <label htmlFor="user_id">
-        아이디
-        <input
-          type="text"
-          id="user_id"
-          name="user_id"
-          value={user_id}
-          onChange={onUserIdChange}
-        />
-      </label>
-      <label htmlFor="password">
-        비밀번호
-        <input
-          type="password"
-          id="password"
-          name="password"
-          value={password}
-          onChange={onPasswordChange}
-        />
-      </label>
-      <button type="submit">로그인</button>
-      <button type="button" onClick={onPing}>
-        핑
-      </button>
-    </form>
+    <div className={styles.container}>
+      <form className={styles.form} onSubmit={onLogin}>
+        <label htmlFor="user_id">
+          아이디:
+          <input
+            type="text"
+            id="user_id"
+            name="user_id"
+            value={user_id}
+            onChange={onUserIdChange}
+          />
+        </label>
+        <label htmlFor="password">
+          비밀번호:
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={password}
+            onChange={onPasswordChange}
+          />
+        </label>
+        <button type="submit">로그인</button>
+        <button type="button" onClick={onPing}>
+          핑
+        </button>
+      </form>
+    </div>
   );
 }
