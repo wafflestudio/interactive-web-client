@@ -13,6 +13,7 @@ import {
 import { RENDER_REF, toggleCanvasRef } from "../canvasRef";
 import { MOVE_DRAG } from "../drag";
 import staticObjects, { UPDATE_OBJECT, updateObject } from "../staticObjects";
+import { CollisionAnimation } from "../../functions/animation/animationInterface";
 
 const myMiddleware: Middleware<unknown, any, any> =
   (store) => (next) => (action) => {
@@ -54,7 +55,7 @@ const myMiddleware: Middleware<unknown, any, any> =
         .getState()
         .objects.filter(
           (object: ObjectDataType) =>
-            object.id !== dragTarget.id && object.isVisible,
+            object.id !== dragTarget.id && object.visibility,
         )
         .forEach((fixedObj: ObjectDataType) => {
           if (
@@ -81,7 +82,7 @@ const myMiddleware: Middleware<unknown, any, any> =
               store.dispatch(
                 addAnimateCollision({ target: fixedObj, vSpeed: vSpeed }),
               );
-              store.dispatch(updateObject({ ...fixedObj, isVisible: false }));
+              store.dispatch(updateObject({ ...fixedObj, visibility: false }));
             } else {
               // 지정된 영역 안에서 animation (grid slide)
             }
@@ -93,7 +94,8 @@ const myMiddleware: Middleware<unknown, any, any> =
     if (type === RENDER_REF) {
       const ref = store.getState().canvasRef.ref;
       const ctx = ref.current.getContext("2d");
-      const animateCollisionArr = store.getState().animate.collisionArr;
+      const animateCollisionArr: CollisionAnimation[] =
+        store.getState().animate.collisionArr;
 
       if (animateCollisionArr.length > 0) {
         ctx.clearRect(0, 0, ref.current.width, ref.current.height);
@@ -128,8 +130,11 @@ const myMiddleware: Middleware<unknown, any, any> =
                   ...animation,
                   target: {
                     ...animation.target,
-                    x: animation.target.x + animation.vSpeed.x,
-                    y: animation.target.y + animation.vSpeed.y,
+                    geometry: {
+                      ...animation.target.geometry,
+                      x: animation.target.geometry.x + animation.vSpeed.x,
+                      y: animation.target.geometry.y + animation.vSpeed.y,
+                    },
                   },
                   vSpeed: {
                     x: newSpeedX,
@@ -146,10 +151,10 @@ const myMiddleware: Middleware<unknown, any, any> =
             drawEllipse(
               ctx,
               {
-                x: animation.target.x,
-                y: animation.target.y,
-                w: animation.target.svgData.width,
-                h: animation.target.svgData.height,
+                x: animation.target.geometry.x,
+                y: animation.target.geometry.y,
+                w: animation.target.geometry.w,
+                h: animation.target.geometry.h,
               },
               animation.target.svgData.fill
                 ? animation.target.svgData.fill
