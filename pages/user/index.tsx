@@ -7,6 +7,9 @@ import { setUser } from "../../modules/user";
 const User = () => {
   const dispatch = useDispatch();
   const [input, setInput] = useState<PutmeRequest>({});
+  const onPasswordChange: React.ChangeEventHandler<HTMLInputElement> = ({
+    target,
+  }) => setInput({ ...input, password: target.value });
   const onUsernameChange: React.ChangeEventHandler<HTMLInputElement> = ({
     target,
   }) => setInput({ ...input, username: target.value });
@@ -25,27 +28,41 @@ const User = () => {
   };
   const user = useSelector((state: RootState) => state.user);
   useEffect(() => {
-    setInput({ username: user.username, email: user.email });
+    setInput({
+      password: user.password,
+      username: user.username,
+      email: user.email,
+    });
   }, []);
 
   return (
     <form onSubmit={onModify}>
-      <label htmlFor="user_id">
+      <label htmlFor="new_password">
+        새 비밀번호
+        <input
+          type="text"
+          id="new_password"
+          name="new_password"
+          value={input.password}
+          onChange={onEmailChange}
+        />
+      </label>
+      <label htmlFor="new_username">
         새 이름
         <input
           type="text"
-          id="user_id"
-          name="user_id"
+          id="new_username"
+          name="new_username"
           value={input.username}
           onChange={onUsernameChange}
         />
       </label>
-      <label htmlFor="user_id">
+      <label htmlFor="new_email">
         새 이메일
         <input
           type="text"
-          id="user_id"
-          name="user_id"
+          id="new_email"
+          name="new_email"
           value={input.email}
           onChange={onEmailChange}
         />

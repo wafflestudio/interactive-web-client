@@ -8,21 +8,6 @@ import SideBar from "./Sidebar/SideBar";
 import styles from "./HomePage.module.scss";
 
 export default function HomePage() {
-  const dispatch = useDispatch();
-
-  const checkLogin = async () => {
-    try {
-      const { data } = await api._getme();
-      dispatch(setUser({ ...data, isLoggedIn: true }));
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  useEffect(() => {
-    checkLogin();
-  }, []);
-
   return (
     <>
       <PageHead />

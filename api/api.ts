@@ -1,5 +1,5 @@
 import axios from "axios";
-import UserDataType from "../types/types";
+import { UserDataType } from "../types/types";
 
 interface LoginRequest {
   user_id: string;
@@ -12,6 +12,7 @@ interface SignupRequest extends LoginRequest {
 }
 
 export interface PutmeRequest {
+  password?: string;
   email?: string;
   username?: string;
 }
@@ -88,8 +89,7 @@ export const api = {
       },
       {
         headers: {
-          "X-CSRFToken":
-            "N6L771aXIfvhDOk3dN3b2GRUOIky7uQgVqT8WilkA3MyLzf4P4gnfwkdtx9ctvTa",
+          "X-CSRFToken": "",
         },
       },
     );
