@@ -6,7 +6,6 @@ import { collision, contain, scalify } from "../../functions/physics/basics";
 import { GridPosition } from "../../functions/physics/physicsInterface";
 import {
   addAnimateCollision,
-  addAnimateGridSlide,
   removeAnimateCollision,
   updateTargetCollision,
 } from "../animate";
@@ -22,6 +21,7 @@ const myMiddleware: Middleware<unknown, any, any> =
     let result;
 
     // 드래그 끝날 때의 updateObject에서 실행
+
     if (type === UPDATE_OBJECT && payload === store.getState().drag.target) {
       let gridPosition: GridPosition | undefined;
       store.getState().areas.forEach((area: AreaDataType) => {

@@ -1,54 +1,62 @@
-import {ObjectDataType} from '../dummies/dummyInterface'
-import {ModalDataType, ModalType} from '../dummies/modalType'
+import { ObjectDataType } from "../dummies/dummyInterface";
+import { ModalDataType, ModalType } from "../dummies/modalType";
 
-const OPEN_INFO_MODAL = 'modal/OPEN_MODAL' as const
-const CLOSE_ALL_MODAL = 'modal/CLOSE_MODAL' as const
+export const OPEN_SIMPLE_INFO_MODAL = "modal/OPEN_MODAL" as const;
+export const CLOSE_SIMPLE_INFO_MODAL = "modal/CLOSE_SIMPLE_INFO_MODAL" as const;
+export const CLOSE_ALL_MODALS = "modal/CLOSE_ALL_MODALS" as const;
 
 type ModalState = {
-  isOn: boolean
-  modals: ModalDataType[]
-}
+  modals: ModalDataType[];
+};
 
 //start, move end는 각각 mousedown, mousemove, mouseup 시에 호출됩니다
-export const openInfoModal = (target: ObjectDataType) => ({
-  type: OPEN_INFO_MODAL,
-  payload: {target}
-})
+export const openSimpleInfoModal = (target: ObjectDataType) => ({
+  type: OPEN_SIMPLE_INFO_MODAL,
+  payload: { target },
+});
 
-export const closeAllModal = () => ({
-  type: CLOSE_ALL_MODAL
-})
+export const closeSimpleInfoModals = () => ({
+  type: CLOSE_SIMPLE_INFO_MODAL,
+});
+
+export const closeAllModals = () => ({
+  type: CLOSE_ALL_MODALS,
+});
 
 type ModalAction =
-  | ReturnType<typeof openInfoModal>
-  | ReturnType<typeof closeAllModal>
+  | ReturnType<typeof closeAllModals>
+  | ReturnType<typeof openSimpleInfoModal>
+  | ReturnType<typeof closeSimpleInfoModals>;
 
 const initialState: ModalState = {
-  isOn: false,
-  modals: []
-}
+  modals: [],
+};
 
 function modal(
   state: ModalState = initialState,
-  action: ModalAction
+  action: ModalAction,
 ): ModalState {
   switch (action.type) {
-    case OPEN_INFO_MODAL:
+    case OPEN_SIMPLE_INFO_MODAL:
       return {
-        isOn: true,
         modals: [
           ...state.modals,
-          {type: ModalType.OBJECT_INFO, target: action.payload.target}
-        ]
-      }
-    case CLOSE_ALL_MODAL:
+          { type: ModalType.OBJECT_SIMPLE_INFO, target: action.payload.target },
+        ],
+      };
+    case CLOSE_SIMPLE_INFO_MODAL:
       return {
-        isOn: false,
-        modals: []
-      }
+        modals: state.modals.filter(
+          (modal) => modal.type !== ModalType.OBJECT_SIMPLE_INFO,
+        ),
+      };
+    case CLOSE_ALL_MODALS:
+      return {
+        modals: [],
+      };
     default:
-      return state
+      return state;
   }
 }
 
-export default modal
+export default modal;

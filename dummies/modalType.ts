@@ -1,10 +1,10 @@
-import {ObjectDataType} from './dummyInterface'
+import { ObjectDataType } from "./dummyInterface";
 
 export interface ModalDataType {
-  type: ModalType
-  target?: ObjectDataType
+  type: ModalType;
+  target?: ObjectDataType;
 }
 
 export enum ModalType {
-  OBJECT_INFO = 'object_info'
+  OBJECT_SIMPLE_INFO = "object_simple_info",
 }
