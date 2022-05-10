@@ -1,19 +1,19 @@
-import axios from 'axios'
-import UserDataType from '../types/types'
+import axios from "axios";
+import { UserDataType } from "../types/types";
 
 interface LoginRequest {
-  user_id: string
-  password: string
+  user_id: string;
+  password: string;
 }
 
 interface SignupRequest extends LoginRequest {
-  email: string
-  username: string
+  email: string;
+  username: string;
 }
 
 interface PutmeRequest {
-  email: string
-  username: string
+  email: string;
+  username: string;
 }
 
 // interface SignupResponse extends User {
@@ -21,8 +21,8 @@ interface PutmeRequest {
 // }
 
 const instance = axios.create({
-  baseURL: '/api/v1'
-})
+  baseURL: "/api/v1",
+});
 
 // const setHeaderToken = (newToken: string | null) => {
 //   if (newToken) {
@@ -55,41 +55,44 @@ const instance = axios.create({
 // setHeaderToken(loadToken())
 
 export const api = {
-  _signup: async ({user_id, username, email, password}: SignupRequest) => {
-    const response = await instance.post<UserDataType>('/signup/', {
+  _signup: async ({ user_id, username, email, password }: SignupRequest) => {
+    const response = await instance.post<UserDataType>("/signup/", {
       user_id,
       username,
       email,
-      password
-    })
-    return response
+      password,
+    });
+    return response;
   },
 
-  _login: async ({user_id, password}: LoginRequest) => {
-    const response = await instance.post<UserDataType>('/login/', {
+  _login: async ({ user_id, password }: LoginRequest) => {
+    const response = await instance.post<UserDataType>("/login/", {
       user_id,
-      password
-    })
-    return response
+      password,
+    });
+    return response;
   },
 
   _getme: async () => {
-    const response = await instance.get<UserDataType>('/me/')
-    return response
+    const response = await instance.get<UserDataType>("/me/");
+    return response;
   },
 
-  _putme: async ({username, email}: PutmeRequest) => {
-    const response = await instance.put<UserDataType>('/me/', {username, email})
-    return response
+  _putme: async ({ username, email }: PutmeRequest) => {
+    const response = await instance.put<UserDataType>("/me/", {
+      username,
+      email,
+    });
+    return response;
   },
 
   _deleteme: async () => {
-    await instance.delete<UserDataType>('/me/')
-    return
+    await instance.delete<UserDataType>("/me/");
+    return;
   },
 
   _getuser: async (id: number) => {
-    const response = await instance.get<UserDataType>(`/${id}/`)
-    return response
-  }
-}
+    const response = await instance.get<UserDataType>(`/${id}/`);
+    return response;
+  },
+};
