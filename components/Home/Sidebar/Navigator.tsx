@@ -1,11 +1,11 @@
-import Link from 'next/link'
-import {useSelector} from 'react-redux'
-import {categoryList} from '../../../constants/constants'
-import {RootState} from '../../../modules'
-import styles from './SideBar.module.scss'
+import Link from "next/link";
+import { useSelector } from "react-redux";
+import { categoryList } from "../../../constants/constants";
+import { RootState } from "../../../modules";
+import styles from "./SideBar.module.scss";
 
 export default function Navigator() {
-  const {isLoggedIn} = useSelector((state: RootState) => state.user)
+  const { isLoggedIn } = useSelector((state: RootState) => state.user);
 
   return (
     <nav className={styles.navigator}>
@@ -19,15 +19,20 @@ export default function Navigator() {
                   <a>{category.navigator}</a>
                 </Link>
               </li>
-            )
+            );
           })}
         </ul>
         {isLoggedIn ? (
-          <li>
-            <Link href={'/works/me'}>내 작업물</Link>
-          </li>
+          <>
+            <li>
+              <Link href={"/works/me"}>내 작업물</Link>
+            </li>
+            <li>
+              <Link href={"/editor"}>에디터</Link>
+            </li>
+          </>
         ) : null}
       </ul>
     </nav>
-  )
+  );
 }
