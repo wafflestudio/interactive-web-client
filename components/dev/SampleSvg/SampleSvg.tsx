@@ -1,9 +1,9 @@
 import { batch, useDispatch } from "react-redux";
 import { ObjectDataType } from "../../../dummies/dummyInterface";
 import { endDrag, moveDrag, startDrag } from "../../../modules/drag";
+import { openSimpleInfoModal } from "../../../modules/modal";
 import { updateObject } from "../../../modules/staticObjects";
 import styles from "./SampleSvg.module.scss";
-import { openSimpleInfoModal } from "../../../modules/modal";
 
 interface SampleSvgProps {
   key: number;
@@ -27,23 +27,44 @@ const SampleSvg = ({ item }: SampleSvgProps) => {
       className={`${styles.sampleSvg} ${item.visibility ? `` : styles.off}`}
       style={style}
     >
-      <ellipse
-        cx={`${geometry.w / 2}px`}
-        cy={`${geometry.h / 2}px`}
-        rx={`${geometry.w / 2}px`}
-        ry={`${geometry.h / 2}px`}
-        fill={item.svgData.fill}
-        onMouseDown={(e) => {
-          console.log("Click Success");
-          batch(() => {
-            dispatch(updateObject({ ...item, visibility: false }));
-            dispatch(
-              startDrag(item, e.nativeEvent.offsetX, e.nativeEvent.offsetY),
-            );
-            dispatch(openSimpleInfoModal(item));
-          });
-        }}
-      />
+      {item.svgData.svgType === "ellipse" ? (
+        <ellipse
+          cx={`${geometry.w / 2}px`}
+          cy={`${geometry.h / 2}px`}
+          rx={`${geometry.w / 2}px`}
+          ry={`${geometry.h / 2}px`}
+          fill={item.svgData.fill}
+          onMouseDown={(e) => {
+            console.log("Click Success");
+            batch(() => {
+              dispatch(updateObject({ ...item, visibility: false }));
+              dispatch(
+                startDrag(item, e.nativeEvent.offsetX, e.nativeEvent.offsetY),
+              );
+              dispatch(openSimpleInfoModal(item));
+            });
+          }}
+        />
+      ) : null}
+      {item.svgData.svgType === "rect" ? (
+        <rect
+          x={`0px`}
+          y={`0px`}
+          width={`${geometry.w}px`}
+          height={`${geometry.h}px`}
+          fill={item.svgData.fill}
+          onMouseDown={(e) => {
+            console.log("Click Success");
+            batch(() => {
+              dispatch(updateObject({ ...item, visibility: false }));
+              dispatch(
+                startDrag(item, e.nativeEvent.offsetX, e.nativeEvent.offsetY),
+              );
+              dispatch(openSimpleInfoModal(item));
+            });
+          }}
+        />
+      ) : null}
     </svg>
   );
 };
