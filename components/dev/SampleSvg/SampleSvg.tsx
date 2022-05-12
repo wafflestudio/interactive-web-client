@@ -34,6 +34,7 @@ const SampleSvg = ({ item }: SampleSvgProps) => {
           rx={`${geometry.w / 2}px`}
           ry={`${geometry.h / 2}px`}
           fill={item.svgData.fill}
+          stroke={item.svgData.stroke}
           onMouseDown={(e) => {
             console.log("Click Success");
             batch(() => {
@@ -53,6 +54,7 @@ const SampleSvg = ({ item }: SampleSvgProps) => {
           width={`${geometry.w}px`}
           height={`${geometry.h}px`}
           fill={item.svgData.fill}
+          stroke={item.svgData.stroke}
           onMouseDown={(e) => {
             console.log("Click Success");
             batch(() => {

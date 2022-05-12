@@ -73,8 +73,8 @@ type AddModalAction =
   | ReturnType<typeof setShape>
   | ReturnType<typeof setWidth>
   | ReturnType<typeof setHeight>
-  | ReturnType<typeof setPosX>
-  | ReturnType<typeof setPosY>
+  | ReturnType<typeof setXPos>
+  | ReturnType<typeof setYPos>
   | ReturnType<typeof setImage>
   | ReturnType<typeof setTags>
   | ReturnType<typeof setStroke>
