@@ -1,5 +1,7 @@
 import { MouseEventHandler, useState } from "react";
+import { useDispatch } from "react-redux";
 import { AreaDataType } from "../../../dummies/dummyInterface";
+import { setXPos, setYPos } from "../../../modules/addModal";
 import AddModal from "../Modal/AddModal/AddModal";
 import styles from "./SampleDiv.module.scss";
 
@@ -13,6 +15,8 @@ const SampleDiv = ({ item }: SampleDivProps) => {
   const [posY, setPosY] = useState(0);
   const [rightModal, setRightModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
+
+  const dispatch = useDispatch();
 
   const geometry = item.geometry;
   const style = {
@@ -36,6 +40,8 @@ const SampleDiv = ({ item }: SampleDivProps) => {
   const closeRightModal = () => setRightModal(false);
 
   const onAddBead = () => {
+    dispatch(setXPos(posX));
+    dispatch(setYPos(posY));
     setAddModal(true);
     setRightModal(false);
   };
