@@ -1,7 +1,8 @@
 import { MouseEventHandler, useState } from "react";
-import { useDispatch } from "react-redux";
+import { batch, useDispatch, useSelector } from "react-redux";
 import { AreaDataType } from "../../../dummies/dummyInterface";
-import { setXPos, setYPos } from "../../../modules/addModal";
+import { RootState } from "../../../modules";
+import { setId, setXPos, setYPos } from "../../../modules/addModal";
 import AddModal from "../Modal/AddModal/AddModal";
 import styles from "./SampleDiv.module.scss";
 
@@ -15,6 +16,8 @@ const SampleDiv = ({ item }: SampleDivProps) => {
   const [posY, setPosY] = useState(0);
   const [rightModal, setRightModal] = useState(false);
   const [addModal, setAddModal] = useState(false);
+
+  const { id } = useSelector((state: RootState) => state.addModal);
 
   const dispatch = useDispatch();
 
@@ -40,8 +43,11 @@ const SampleDiv = ({ item }: SampleDivProps) => {
   const closeRightModal = () => setRightModal(false);
 
   const onAddBead = () => {
-    dispatch(setXPos(posX));
-    dispatch(setYPos(posY));
+    batch(() => {
+      dispatch(setXPos(posX));
+      dispatch(setYPos(posY));
+      dispatch(setId(id + 1));
+    });
     setAddModal(true);
     setRightModal(false);
   };

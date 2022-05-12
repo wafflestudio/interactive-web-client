@@ -1,5 +1,6 @@
 import { ObjectDataType } from "../dummies/dummyInterface";
 
+export const SET_ID = "addModal/SET_ID" as const;
 export const SET_NAME = "addModal/SET_NAME" as const;
 export const SET_SHAPE = "addModal/SET_SHAPE" as const;
 export const SET_WIDTH = "addModal/SET_WIDTH" as const;
@@ -11,6 +12,11 @@ export const SET_TAGS = "addModal/SET_TAGS" as const;
 export const SET_STROKE = "addModal/SET_STROKE" as const;
 export const SET_FILL = "addModal/SET_FILL" as const;
 export const INITIALIZE = "addModal/INITIALIZE" as const;
+
+export const setId = (id: number) => ({
+  type: SET_ID,
+  payload: id,
+});
 
 export const setName = (name: string) => ({
   type: SET_NAME,
@@ -69,6 +75,7 @@ export const initialize = () => ({
 });
 
 type AddModalAction =
+  | ReturnType<typeof setId>
   | ReturnType<typeof setName>
   | ReturnType<typeof setShape>
   | ReturnType<typeof setWidth>
@@ -82,13 +89,14 @@ type AddModalAction =
   | ReturnType<typeof initialize>;
 
 const initialState: ObjectDataType = {
-  id: 100,
+  id: 99,
   name: "",
   svgData: { svgType: "rect", stroke: "#000000", fill: "#ffffff" },
   geometry: { x: 0, y: 0, w: 50, h: 50 },
   attribute: {} as object,
   tag: [],
   visibility: true,
+  zIndex: 99,
 };
 
 const addModal = (
@@ -96,6 +104,8 @@ const addModal = (
   action: AddModalAction,
 ): ObjectDataType => {
   switch (action.type) {
+    case SET_ID:
+      return { ...state, id: action.payload, zIndex: action.payload };
     case SET_NAME:
       return { ...state, name: action.payload };
     case SET_SHAPE:
