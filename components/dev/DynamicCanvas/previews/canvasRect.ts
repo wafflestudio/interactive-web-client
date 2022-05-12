@@ -7,6 +7,7 @@ export const drawEllipse = (
   const { x, y, w, h } = geometry;
   ctx.fillStyle = fill;
   ctx.strokeStyle = stroke;
+  ctx.lineWidth = 1;
   ctx.beginPath();
   ctx.ellipse(x + w / 2, y + h / 2, w / 2, h / 2, 0, 0, 2 * Math.PI);
   ctx.fill();
@@ -22,8 +23,9 @@ export const drawRect = (
   const { x, y, w, h } = geometry;
   ctx.fillStyle = fill;
   ctx.strokeStyle = stroke;
+  ctx.lineWidth = 1;
   ctx.beginPath();
   ctx.rect(x, y, w, h);
-  ctx.fill();
   ctx.stroke();
+  ctx.fill();
 };

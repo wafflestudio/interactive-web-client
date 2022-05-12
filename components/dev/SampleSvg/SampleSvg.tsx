@@ -20,6 +20,7 @@ const SampleSvg = ({ item }: SampleSvgProps) => {
     height: geometry.h,
     left: geometry.x,
     top: geometry.y,
+    zIndex: item.zIndex,
   };
 
   return (

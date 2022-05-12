@@ -14,7 +14,6 @@ const graphicsMiddleware: Middleware<unknown, RootState> =
     let result;
 
     //Drag
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (action.type === START_DRAG) {
     }
     if (action.type === MOVE_DRAG) {
@@ -48,6 +47,9 @@ const graphicsMiddleware: Middleware<unknown, RootState> =
                 dragTarget.svgData.fill
                   ? dragTarget.svgData.fill
                   : "rgba(0,0,0,0)",
+                dragTarget.svgData.stroke
+                  ? dragTarget.svgData.stroke
+                  : "rgba(0,0,0,0)",
               );
             else if (dragTarget.svgData.svgType === "rect")
               drawRect(
@@ -55,6 +57,9 @@ const graphicsMiddleware: Middleware<unknown, RootState> =
                 dragTarget.geometry,
                 dragTarget.svgData.fill
                   ? dragTarget.svgData.fill
+                  : "rgba(0,0,0,0)",
+                dragTarget.svgData.stroke
+                  ? dragTarget.svgData.stroke
                   : "rgba(0,0,0,0)",
               );
           }
