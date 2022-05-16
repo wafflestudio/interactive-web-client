@@ -1,6 +1,7 @@
 import { Middleware } from "redux";
 import {
   drawEllipse,
+  drawImage,
   drawRect,
 } from "../../components/dev/DynamicCanvas/previews/canvasRect";
 import { RENDER_REF, toggleCanvasRef } from "../canvasRef";
@@ -72,6 +73,11 @@ const graphicsMiddleware: Middleware<unknown, RootState> =
                   ? dragTarget.svgData.stroke
                   : "rgba(0,0,0,0)",
               );
+            else if (dragTarget.svgData.svgType === "image") {
+              const img = document.createElement("img");
+              img.src = dragTarget.svgData.src || "";
+              drawImage(ctx, img, dragTarget.geometry);
+            }
           }
         }
       }

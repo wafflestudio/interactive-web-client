@@ -8,6 +8,7 @@ export const SET_HEIGHT = "addModal/SET_HEIGHT" as const;
 export const SET_POSX = "addModal/SET_POSX" as const;
 export const SET_POSY = "addModal/SET_POSY" as const;
 export const SET_IMAGE = "addModal/SET_IMAGE" as const;
+export const SET_SRC = "addModal/SET_SRC" as const;
 export const SET_TAGS = "addModal/SET_TAGS" as const;
 export const SET_STROKE = "addModal/SET_STROKE" as const;
 export const SET_FILL = "addModal/SET_FILL" as const;
@@ -50,9 +51,14 @@ export const setYPos = (posY: number) => ({
   payload: posY,
 });
 
-export const setImage = (image: File) => ({
+export const setImage = (image: File | undefined) => ({
   type: SET_IMAGE,
   payload: image,
+});
+
+export const setSrc = (src: string | undefined) => ({
+  type: SET_SRC,
+  payload: src,
 });
 
 export const setTags = (tag: string[]) => ({
@@ -83,6 +89,7 @@ type AddModalAction =
   | ReturnType<typeof setXPos>
   | ReturnType<typeof setYPos>
   | ReturnType<typeof setImage>
+  | ReturnType<typeof setSrc>
   | ReturnType<typeof setTags>
   | ReturnType<typeof setStroke>
   | ReturnType<typeof setFill>
@@ -92,7 +99,7 @@ const initialState: ObjectDataType = {
   id: 99,
   name: "",
   svgData: { svgType: "rect", stroke: "#000000", fill: "#ffffff" },
-  geometry: { x: 0, y: 0, w: 50, h: 50 },
+  geometry: { x: 0, y: 0, w: 150, h: 150 },
   attribute: {} as object,
   tag: [],
   visibility: true,
@@ -123,6 +130,8 @@ const addModal = (
       return { ...state, geometry: { ...state.geometry, y: action.payload } };
     case SET_IMAGE:
       return { ...state, svgData: { ...state.svgData, file: action.payload } };
+    case SET_SRC:
+      return { ...state, svgData: { ...state.svgData, src: action.payload } };
     case SET_TAGS:
       return { ...state, tag: action.payload };
     case SET_STROKE:
