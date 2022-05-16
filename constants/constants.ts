@@ -6,3 +6,4 @@ export const categoryList = [
 
 export const RECT = "rect";
 export const ELLIPSE = "ellipse";
+export const IMAGE = "image";

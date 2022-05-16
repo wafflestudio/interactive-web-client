@@ -29,3 +29,14 @@ export const drawRect = (
   ctx.stroke();
   ctx.fill();
 };
+
+export const drawImage = (
+  ctx: CanvasRenderingContext2D,
+  image: HTMLImageElement,
+  geometry: { x: number; y: number; w: number; h: number },
+) => {
+  const { x, y, w, h } = geometry;
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.drawImage(image, x, y, w, h);
+};

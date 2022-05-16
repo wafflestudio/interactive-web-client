@@ -43,9 +43,13 @@
       input.imageInput {
         display: none;
       }
+
+      div img {
+        height: 150px;
+      }
     }
 
-    div.imageContainer {
+    div.shapePreview {
       height: 150px;
       max-width: 300px;
       margin: 20px;
@@ -56,10 +60,6 @@
 
       &.circle {
         border-radius: 50%;
-      }
-
-      img {
-        height: 150px;
       }
     }
 

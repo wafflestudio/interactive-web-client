@@ -1,34 +1,58 @@
-import { ChangeEventHandler } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { ELLIPSE, RECT } from "../../../../constants/constants";
+import { ChangeEventHandler, useState } from "react";
+import { batch, useDispatch, useSelector } from "react-redux";
+import { ELLIPSE, IMAGE, RECT } from "../../../../constants/constants";
 import { RootState } from "../../../../modules";
 import {
   setFill,
   setHeight,
+  setImage,
   setShape,
+  setSrc,
   setStroke,
   setWidth,
 } from "../../../../modules/addModal";
 
 import styles from "./AddModal.module.scss";
 
-const AddShape = ({ imageUrl }: { imageUrl: string }) => {
+const AddShape = () => {
+  const [previewWidth, setPreviewWidth] = useState(150);
+  const [previewHeight, setPreviewHeight] = useState(150);
+
   const { svgData, geometry } = useSelector(
     (state: RootState) => state.addModal,
   );
 
   const dispatch = useDispatch();
 
-  const onShapeChange: ChangeEventHandler<HTMLSelectElement> = ({ target }) =>
-    dispatch(setShape(target.value));
+  const onShapeChange: ChangeEventHandler<HTMLSelectElement> = ({ target }) => {
+    if (target.value !== IMAGE)
+      batch(() => {
+        dispatch(setSrc(undefined));
+        dispatch(setImage(undefined));
+      });
+    setPreviewWidth(150);
+    setPreviewHeight(150);
+    batch(() => {
+      dispatch(setWidth(150));
+      dispatch(setHeight(150));
+      dispatch(setShape(target.value));
+    });
+  };
 
   const onWidthChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     if (typeof parseInt(target.value) === "number")
-      dispatch(setWidth(parseInt(target.value)));
+      setPreviewWidth(parseInt(target.value));
   };
   const onHeightChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
     if (typeof parseInt(target.value) === "number")
-      dispatch(setHeight(parseInt(target.value)));
+      setPreviewHeight(parseInt(target.value));
+  };
+
+  const onSaveGeometry = () => {
+    batch(() => {
+      dispatch(setWidth(previewWidth));
+      dispatch(setHeight(previewHeight));
+    });
   };
 
   const onStrokeChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
@@ -47,6 +71,7 @@ const AddShape = ({ imageUrl }: { imageUrl: string }) => {
         <select id="shape" value={svgData.svgType} onChange={onShapeChange}>
           <option value={RECT}>네모</option>
           <option value={ELLIPSE}>동그라미</option>
+          <option value={IMAGE}>이미지</option>
         </select>
       </label>
       {svgData.svgType === RECT ? (
@@ -56,7 +81,7 @@ const AddShape = ({ imageUrl }: { imageUrl: string }) => {
             <input
               type="number"
               id="width"
-              value={geometry.w}
+              value={previewWidth}
               min={1}
               onChange={onWidthChange}
             />
@@ -66,7 +91,7 @@ const AddShape = ({ imageUrl }: { imageUrl: string }) => {
             <input
               type="number"
               id="height"
-              value={geometry.h}
+              value={previewHeight}
               min={1}
               onChange={onHeightChange}
             />
@@ -80,7 +105,7 @@ const AddShape = ({ imageUrl }: { imageUrl: string }) => {
             <input
               type="number"
               id="cx"
-              value={geometry.w}
+              value={previewWidth}
               min={1}
               onChange={onWidthChange}
             />
@@ -90,43 +115,48 @@ const AddShape = ({ imageUrl }: { imageUrl: string }) => {
             <input
               type="number"
               id="cy"
-              value={geometry.h}
+              value={previewHeight}
               min={1}
               onChange={onHeightChange}
             />
           </label>
         </>
       ) : null}
-      <label htmlFor="stroke">
-        테두리
-        <input
-          type="color"
-          id="stroke"
-          value={svgData.stroke}
-          onChange={onStrokeChange}
-        />
-      </label>
-      <label htmlFor="fill">
-        배경색
-        <input
-          type="color"
-          id="fill"
-          value={svgData.fill}
-          onChange={onFillChange}
-        />
-      </label>
-      <div
-        className={`${styles.imageContainer} ${
-          svgData.svgType === ELLIPSE ? styles.circle : ""
-        }`}
-        style={{
-          border: `2px solid ${svgData.stroke || "black"}`,
-          background: `${svgData.fill || "transparent"}`,
-          width: `${(geometry.w / geometry.h) * 150 || 150}px`,
-        }}
-      >
-        {imageUrl.length !== 0 ? <img src={imageUrl} /> : null}
-      </div>
+      {svgData.svgType !== IMAGE ? (
+        <button onClick={onSaveGeometry}>설정</button>
+      ) : null}
+      {svgData.svgType !== IMAGE ? (
+        <>
+          <label htmlFor="stroke">
+            테두리
+            <input
+              type="color"
+              id="stroke"
+              value={svgData.stroke}
+              onChange={onStrokeChange}
+            />
+          </label>
+          <label htmlFor="fill">
+            배경색
+            <input
+              type="color"
+              id="fill"
+              value={svgData.fill}
+              onChange={onFillChange}
+            />
+          </label>
+          <div
+            className={`${styles.shapePreview} ${
+              svgData.svgType === ELLIPSE ? styles.circle : ""
+            }`}
+            style={{
+              border: `2px solid ${svgData.stroke || "black"}`,
+              background: `${svgData.fill || "transparent"}`,
+              width: `${(geometry.w / geometry.h) * 150 || 150}px`,
+            }}
+          ></div>
+        </>
+      ) : null}
     </>
   );
 };

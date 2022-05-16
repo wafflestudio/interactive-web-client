@@ -4,12 +4,16 @@ import {
   DragEventHandler,
   SetStateAction,
   useRef,
-  useState,
 } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../modules";
-import { initialize, setImage, setName } from "../../../../modules/addModal";
+import {
+  initialize,
+  setImage,
+  setName,
+  setSrc,
+} from "../../../../modules/addModal";
 import { saveObjects } from "../../../../modules/staticObjects";
 import AddImage from "./AddImage";
 import AddShape from "./AddShape";
@@ -21,8 +25,6 @@ interface AddModalProps {
 }
 
 const AddModal = ({ setAddModal }: AddModalProps) => {
-  const [imageUrl, setImageUrl] = useState("");
-
   const dropbox = useRef<HTMLDivElement>(null);
 
   const newBead = useSelector((state: RootState) => state.addModal);
@@ -48,11 +50,11 @@ const AddModal = ({ setAddModal }: AddModalProps) => {
     const files = dt.files;
 
     dispatch(setImage(files[0]));
-    setImageUrl(URL.createObjectURL(files[0]));
+    dispatch(setSrc(URL.createObjectURL(files[0])));
   };
 
   const initializeInput = () => {
-    setImageUrl("");
+    dispatch(setSrc(""));
     dispatch(initialize());
   };
 
@@ -80,8 +82,8 @@ const AddModal = ({ setAddModal }: AddModalProps) => {
             onChange={onNameChange}
           />
         </label>
-        <AddShape imageUrl={imageUrl} />
-        <AddImage setImageUrl={setImageUrl} />
+        <AddShape />
+        <AddImage />
         <AddTag />
         <button className={styles.closeModal} onClick={closeModal}>
           &times;

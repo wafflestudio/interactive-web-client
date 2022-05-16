@@ -23,6 +23,8 @@ const SampleSvg = ({ item }: SampleSvgProps) => {
     zIndex: item.zIndex,
   };
 
+  console.log(geometry.w, geometry.h);
+
   return (
     <svg
       className={`${styles.sampleSvg} ${item.visibility ? `` : styles.off}`}
@@ -56,6 +58,25 @@ const SampleSvg = ({ item }: SampleSvgProps) => {
           height={`${geometry.h}px`}
           fill={item.svgData.fill}
           stroke={item.svgData.stroke}
+          onMouseDown={(e) => {
+            console.log("Click Success");
+            batch(() => {
+              dispatch(updateObject({ ...item, visibility: false }));
+              dispatch(
+                startDrag(item, e.nativeEvent.offsetX, e.nativeEvent.offsetY),
+              );
+              dispatch(openSimpleInfoModal(item));
+            });
+          }}
+        />
+      ) : null}
+      {item.svgData.svgType === "image" ? (
+        <image
+          x={`0px`}
+          y={`0px`}
+          width={`${geometry.w}px`}
+          height={`${geometry.h}px`}
+          href={item.svgData.src}
           onMouseDown={(e) => {
             console.log("Click Success");
             batch(() => {

@@ -1,6 +1,6 @@
 import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
-import {applyMiddleware, createStore} from "redux";
+import { applyMiddleware, createStore } from "redux";
 import rootReducer from "../modules";
 import "../styles/globals.css";
 import graphicsMiddleware from "../modules/middlewares/graphicsMiddleware";
