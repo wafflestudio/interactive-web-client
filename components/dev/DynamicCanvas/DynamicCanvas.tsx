@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { MouseEventHandler, useEffect, useRef, useState } from "react";
+import { batch, useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../modules";
+import { setId, setXPos, setYPos } from "../../../modules/addModal";
 import { renderCanvasRef, saveCanvasRef } from "../../../modules/canvasRef";
+import AddModal from "../Modal/AddModal/AddModal";
 import styles from "./DynamicCanvas.module.scss";
 
 const DynamicCanvas = () => {

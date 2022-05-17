@@ -111,6 +111,7 @@ const AddImage = () => {
               value={previewWidth}
               min={1}
               onChange={onWidthChange}
+              onBlur={onSaveGeometry}
             />
           </label>
           <label htmlFor="height">
@@ -121,6 +122,7 @@ const AddImage = () => {
               value={previewHeight}
               min={1}
               onChange={onHeightChange}
+              onBlur={onSaveGeometry}
             />
           </label>
           <button onClick={onSaveGeometry}>설정</button>
