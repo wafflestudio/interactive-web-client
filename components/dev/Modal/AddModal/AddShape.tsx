@@ -84,6 +84,7 @@ const AddShape = () => {
               value={previewWidth}
               min={1}
               onChange={onWidthChange}
+              onBlur={onSaveGeometry}
             />
           </label>
           <label htmlFor="height">
@@ -94,6 +95,7 @@ const AddShape = () => {
               value={previewHeight}
               min={1}
               onChange={onHeightChange}
+              onBlur={onSaveGeometry}
             />
           </label>
         </>
@@ -108,6 +110,7 @@ const AddShape = () => {
               value={previewWidth}
               min={1}
               onChange={onWidthChange}
+              onBlur={onSaveGeometry}
             />
           </label>
           <label htmlFor="cy">
@@ -118,6 +121,7 @@ const AddShape = () => {
               value={previewHeight}
               min={1}
               onChange={onHeightChange}
+              onBlur={onSaveGeometry}
             />
           </label>
         </>
