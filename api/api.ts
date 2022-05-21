@@ -11,9 +11,10 @@ interface SignupRequest extends LoginRequest {
   username: string;
 }
 
-interface PutmeRequest {
-  email: string;
-  username: string;
+export interface PutmeRequest {
+  password?: string;
+  email?: string;
+  username?: string;
 }
 
 // interface SignupResponse extends User {
@@ -22,6 +23,7 @@ interface PutmeRequest {
 
 const instance = axios.create({
   baseURL: "/api/v1",
+  withCredentials: true,
 });
 
 // const setHeaderToken = (newToken: string | null) => {
@@ -74,20 +76,28 @@ export const api = {
   },
 
   _getme: async () => {
-    const response = await instance.get<UserDataType>("/me/");
+    const response = await instance.get<UserDataType>("/users/me/");
     return response;
   },
 
   _putme: async ({ username, email }: PutmeRequest) => {
-    const response = await instance.put<UserDataType>("/me/", {
-      username,
-      email,
-    });
+    const response = await instance.put<UserDataType>(
+      "/users/me/",
+      {
+        username,
+        email,
+      },
+      {
+        headers: {
+          "X-CSRFToken": "",
+        },
+      },
+    );
     return response;
   },
 
   _deleteme: async () => {
-    await instance.delete<UserDataType>("/me/");
+    await instance.delete<UserDataType>("/users/me/");
     return;
   },
 

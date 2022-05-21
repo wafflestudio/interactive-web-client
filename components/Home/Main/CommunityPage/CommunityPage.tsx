@@ -1,26 +1,37 @@
-import Link from 'next/link'
-import {useRef} from 'react'
-import {CategoryType} from '../../../../types/types'
-import styles from './CommunityPage.module.scss'
+import Link from "next/link";
+import { useRef } from "react";
+import { CategoryType } from "../../../../types/types";
+import styles from "./CommunityPage.module.scss";
 
-export default function CommunityPage({category}: {category: CategoryType}) {
-  const pageListContainer = useRef<HTMLUListElement>(null)
+export default function CommunityPage({
+  category,
+}: {
+  category: CategoryType;
+}) {
+  const pageListContainer = useRef<HTMLUListElement>(null);
 
-  const pageList = [{id: 0}, {id: 1}, {id: 2}, {id: 3}, {id: 4}]
+  const pageList = [
+    { id: 0 },
+    { id: 1 },
+    { id: 2 },
+    { id: 3 },
+    { id: 4 },
+    { id: 5 },
+  ];
 
   const slide = (number: number) => {
-    const {current} = pageListContainer
+    const { current } = pageListContainer;
     if (current) {
-      current.scrollLeft += number
+      current.scrollLeft += number;
     }
-  }
+  };
 
   return (
     <div className={styles.container}>
       <div className={styles.categoryHeader}>
         <div>
           <Link href={`/works/${category.path}`}>
-            <a>{category.name}</a>
+            <a className={styles.categoryLink}>{category.name}</a>
           </Link>
         </div>
         <button className={styles.moreButton}>
@@ -39,7 +50,7 @@ export default function CommunityPage({category}: {category: CategoryType}) {
                 </a>
               </Link>
             </li>
-          )
+          );
         })}
       </ul>
       <button className={styles.slideLeft} onClick={() => slide(-100)}>
@@ -49,5 +60,5 @@ export default function CommunityPage({category}: {category: CategoryType}) {
         &#62;
       </button>
     </div>
-  )
+  );
 }
