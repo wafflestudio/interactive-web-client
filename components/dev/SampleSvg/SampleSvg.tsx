@@ -3,7 +3,6 @@ import { ObjectDataType } from "../../../dummies/dummyInterface";
 import { endDrag, moveDrag, startDrag } from "../../../modules/drag";
 import { updateObject } from "../../../modules/staticObjects";
 import styles from "./SampleSvg.module.scss";
-import { openSimpleInfoModal } from "../../../modules/modal";
 
 interface SampleSvgProps {
   key: number;
@@ -40,7 +39,6 @@ const SampleSvg = ({ item }: SampleSvgProps) => {
             dispatch(
               startDrag(item, e.nativeEvent.offsetX, e.nativeEvent.offsetY),
             );
-            dispatch(openSimpleInfoModal(item));
           });
         }}
       />

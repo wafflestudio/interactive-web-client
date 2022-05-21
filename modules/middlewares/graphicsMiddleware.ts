@@ -4,7 +4,11 @@ import { RENDER_REF, toggleCanvasRef } from "../canvasRef";
 import { END_DRAG, MOVE_DRAG, START_DRAG } from "../drag";
 import { RootState } from "../index";
 import { updateObject } from "../staticObjects";
-import { closeSimpleInfoModals, OPEN_SIMPLE_INFO_MODAL } from "../modal";
+import {
+  closeSimpleInfoModals,
+  OPEN_SIMPLE_INFO_MODAL,
+  openSimpleInfoModal,
+} from "../modal";
 
 const graphicsMiddleware: Middleware<unknown, RootState> =
   (store) => (next) => (action) => {
@@ -17,6 +21,7 @@ const graphicsMiddleware: Middleware<unknown, RootState> =
       store.dispatch(closeSimpleInfoModals());
     }
     if (action.type === END_DRAG) {
+      store.dispatch(openSimpleInfoModal(store.getState().drag.target));
       store.dispatch(updateObject(store.getState().drag.target));
       store.dispatch(toggleCanvasRef(false));
     }
