@@ -1,61 +1,78 @@
-import axios, {AxiosRequestConfig} from 'axios'
-import {useRouter} from 'next/router'
-import {useState} from 'react'
+import axios from "axios";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { api } from "../api/api";
+import { setUser } from "../modules/user";
+import styles from "./loginAndSignup.module.scss";
+
+export const onPing = async () => {
+  try {
+    const response = await axios.get("/ping");
+    console.log(response);
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 export default function Login() {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [user_id, setUserId] = useState("");
+  const [password, setPassword] = useState("");
 
-  const router = useRouter()
+  const dispatch = useDispatch();
 
-  const onUsernameChange: React.ChangeEventHandler<HTMLInputElement> = (e) =>
-    setUsername(e.target.value)
-  const onPasswordChange: React.ChangeEventHandler<HTMLInputElement> = (e) =>
-    setPassword(e.target.value)
+  const router = useRouter();
 
-  const onLogin: React.FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault()
-    router.push('/drag-and-drop')
-  }
+  const onUserIdChange: React.ChangeEventHandler<HTMLInputElement> = ({
+    target,
+  }) => setUserId(target.value);
+  const onPasswordChange: React.ChangeEventHandler<HTMLInputElement> = ({
+    target,
+  }) => setPassword(target.value);
 
-  const onPing = async () => {
-    const config: AxiosRequestConfig = {
-      method: 'GET',
-      baseURL: '/api',
-      url: '/ping'
-    }
+  const onLogin: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+
     try {
-      const response = await axios(config)
-      console.log(response)
+      const { data } = await api._login({ user_id, password });
+      console.log(data);
+
+      dispatch(setUser(data));
+
+      router.push("/");
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-  }
+  };
 
   return (
-    <form onSubmit={onLogin}>
-      <label htmlFor="email">
-        아이디
-        <input
-          type="text"
-          id="email"
-          name="email"
-          value={username}
-          onChange={onUsernameChange}
-        />
-      </label>
-      <label htmlFor="password">
-        비밀번호
-        <input
-          type="password"
-          id="password"
-          name="password"
-          value={password}
-          onChange={onPasswordChange}
-        />
-      </label>
-      <button type="submit">로그인</button>
-      <button onClick={onPing}>핑</button>
-    </form>
-  )
+    <div className={styles.container}>
+      <form className={styles.form} onSubmit={onLogin}>
+        <label htmlFor="user_id">
+          아이디:
+          <input
+            type="text"
+            id="user_id"
+            name="user_id"
+            value={user_id}
+            onChange={onUserIdChange}
+          />
+        </label>
+        <label htmlFor="password">
+          비밀번호:
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={password}
+            onChange={onPasswordChange}
+          />
+        </label>
+        <button type="submit">로그인</button>
+        <button type="button" onClick={onPing}>
+          핑
+        </button>
+      </form>
+    </div>
+  );
 }

@@ -1,0 +1,15 @@
+.container{
+  display: flex;
+  margin-top:120px;
+  justify-content: center;
+}
+.form{
+  display: flex;
+  flex-direction: column;
+  label{
+    margin-bottom: 20px;
+  }
+  button{
+    margin-bottom: 20px;
+  }
+}
