@@ -1,14 +1,22 @@
 import { Middleware } from "redux";
-import { drawEllipse } from "../../components/dev/DynamicCanvas/previews/canvasRect";
+import {
+  drawEllipse,
+  drawRect,
+} from "../../components/dev/DynamicCanvas/previews/canvasRect";
 import { RENDER_REF, toggleCanvasRef } from "../canvasRef";
 import { END_DRAG, MOVE_DRAG, START_DRAG } from "../drag";
 import { RootState } from "../index";
+<<<<<<< HEAD
 import { updateObject } from "../staticObjects";
 import {
   closeSimpleInfoModals,
   OPEN_SIMPLE_INFO_MODAL,
   openSimpleInfoModal,
 } from "../modal";
+=======
+import { closeSimpleInfoModals, OPEN_SIMPLE_INFO_MODAL } from "../modal";
+import { updateObject } from "../staticObjects";
+>>>>>>> 104e839 (feature add bead)
 
 const graphicsMiddleware: Middleware<unknown, RootState> =
   (store) => (next) => (action) => {
@@ -42,13 +50,22 @@ const graphicsMiddleware: Middleware<unknown, RootState> =
           const dragTarget = store.getState().drag.target;
           if (ctx) {
             ctx.clearRect(0, 0, ref.current.width, ref.current.height);
-            drawEllipse(
-              ctx,
-              dragTarget.geometry,
-              dragTarget.svgData.fill
-                ? dragTarget.svgData.fill
-                : "rgba(0,0,0,0)",
-            );
+            if (dragTarget.svgData.svgType === "ellipse")
+              drawEllipse(
+                ctx,
+                dragTarget.geometry,
+                dragTarget.svgData.fill
+                  ? dragTarget.svgData.fill
+                  : "rgba(0,0,0,0)",
+              );
+            else if (dragTarget.svgData.svgType === "rect")
+              drawRect(
+                ctx,
+                dragTarget.geometry,
+                dragTarget.svgData.fill
+                  ? dragTarget.svgData.fill
+                  : "rgba(0,0,0,0)",
+              );
           }
         }
       }

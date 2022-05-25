@@ -6,6 +6,7 @@ export interface SvgDataType {
   stroke?: string;
   d?: string;
   src?: string;
+  file?: File;
 }
 
 export interface DivDataType {
@@ -27,7 +28,7 @@ export interface ObjectDataType {
   name: string;
   svgData: SvgDataType;
   geometry: GeometryType;
-  attribute: object;
+  attribute?: object;
   tag: string[];
   visibility: boolean;
   zIndex?: number;

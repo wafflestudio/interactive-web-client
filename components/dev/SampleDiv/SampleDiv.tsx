@@ -1,6 +1,6 @@
 import { MouseEventHandler, useState } from "react";
 import { AreaDataType } from "../../../dummies/dummyInterface";
-import AddModal from "../Modal/AddModal";
+import AddModal from "../Modal/AddModal/AddModal";
 import styles from "./SampleDiv.module.scss";
 
 interface SampleDivProps {
