@@ -7,17 +7,12 @@ import {
 import { RENDER_REF, toggleCanvasRef } from "../canvasRef";
 import { END_DRAG, MOVE_DRAG, START_DRAG } from "../drag";
 import { RootState } from "../index";
-<<<<<<< HEAD
-import { updateObject } from "../staticObjects";
 import {
   closeSimpleInfoModals,
   OPEN_SIMPLE_INFO_MODAL,
   openSimpleInfoModal,
 } from "../modal";
-=======
-import { closeSimpleInfoModals, OPEN_SIMPLE_INFO_MODAL } from "../modal";
 import { updateObject } from "../staticObjects";
->>>>>>> 104e839 (feature add bead)
 
 const graphicsMiddleware: Middleware<unknown, RootState> =
   (store) => (next) => (action) => {
