@@ -1,11 +1,12 @@
 import { combineReducers } from "redux";
+import addModal from "./addModal";
 import animate from "./animate";
 import areas from "./areas";
 import canvasRef from "./canvasRef";
 import drag from "./drag";
+import modal from "./modal";
 import staticObjects from "./staticObjects";
 import user from "./user";
-import modal from "./modal";
 
 const rootReducer = combineReducers({
   drag,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   animate,
   canvasRef,
   modal,
+  addModal,
 });
 
 export default rootReducer;
