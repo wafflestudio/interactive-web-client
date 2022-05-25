@@ -5,6 +5,7 @@ import canvasRef from "./canvasRef";
 import drag from "./drag";
 import staticObjects from "./staticObjects";
 import user from "./user";
+import modal from "./modal";
 
 const rootReducer = combineReducers({
   drag,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   areas,
   animate,
   canvasRef,
+  modal,
 });
 
 export default rootReducer;
