@@ -22,7 +22,7 @@ const AnimationCanvas = () => {
   // const areas = useSelector((state: RootState) => state.areas);
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
   const animationCanvasRef = useRef<HTMLCanvasElement>(null);
-  const refIsOn = useSelector((state: RootState) => state.canvasRef.isOn);
+  const refIsOn = useSelector((state: RootState) => state.canvasRef.exist);
 
   console.log("canvas re-rendered");
   // useEffect(() => {
@@ -100,7 +100,6 @@ const AnimationCanvas = () => {
   //   }
   // }, [animateCollisionArr]);
   //
-
 
   return (
     <div
