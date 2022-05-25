@@ -1,6 +1,7 @@
 import { Middleware } from "redux";
 import { drawEllipse } from "../../components/dev/DynamicCanvas/previews/canvasRect";
 import { AreaDataType, ObjectDataType } from "../../dummies/dummyInterface";
+import { CollisionAnimation } from "../../functions/animation/animationInterface";
 import { fps, friction } from "../../functions/animation/environment";
 import { collision, contain, scalify } from "../../functions/physics/basics";
 import { GridPosition } from "../../functions/physics/physicsInterface";
@@ -12,7 +13,6 @@ import {
 import { RENDER_REF, toggleCanvasRef } from "../canvasRef";
 import { MOVE_DRAG } from "../drag";
 import staticObjects, { UPDATE_OBJECT, updateObject } from "../staticObjects";
-import { CollisionAnimation } from "../../functions/animation/animationInterface";
 
 const myMiddleware: Middleware<unknown, any, any> =
   (store) => (next) => (action) => {
@@ -159,6 +159,9 @@ const myMiddleware: Middleware<unknown, any, any> =
               animation.target.svgData.fill
                 ? animation.target.svgData.fill
                 : "rgba(0,0,0,0)",
+              animation.target.svgData.stroke
+                ? animation.target.svgData.stroke
+                : "rgba(255,255,255,255)",
             );
           });
         }

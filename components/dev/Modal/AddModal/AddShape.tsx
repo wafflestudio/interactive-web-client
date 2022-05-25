@@ -30,13 +30,17 @@ const AddShape = () => {
         dispatch(setSrc(undefined));
         dispatch(setImage(undefined));
       });
+
     setPreviewWidth(150);
     setPreviewHeight(150);
-    batch(() => {
-      dispatch(setWidth(150));
-      dispatch(setHeight(150));
-      dispatch(setShape(target.value));
-    });
+    if (target.value === RECT || target.value === ELLIPSE) {
+      const validShapeInput = target.value;
+      batch(() => {
+        dispatch(setWidth(150));
+        dispatch(setHeight(150));
+        dispatch(setShape(validShapeInput));
+      });
+    }
   };
 
   const onWidthChange: ChangeEventHandler<HTMLInputElement> = ({ target }) => {
