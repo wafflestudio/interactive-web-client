@@ -1,4 +1,4 @@
-import UserDataType from "../types/types";
+import { UserDataType } from "../types/types";
 
 const SET_USER = "user/SET_USER" as const;
 const REMOVE_USER = "user/REMOVE_USER" as const;

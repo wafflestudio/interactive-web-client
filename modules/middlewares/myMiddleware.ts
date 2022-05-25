@@ -1,12 +1,12 @@
 import { Middleware } from "redux";
 import { drawEllipse } from "../../components/dev/DynamicCanvas/previews/canvasRect";
 import { AreaDataType, ObjectDataType } from "../../dummies/dummyInterface";
+import { CollisionAnimation } from "../../functions/animation/animationInterface";
 import { fps, friction } from "../../functions/animation/environment";
 import { collision, contain, scalify } from "../../functions/physics/basics";
 import { GridPosition } from "../../functions/physics/physicsInterface";
 import {
   addAnimateCollision,
-  addAnimateGridSlide,
   removeAnimateCollision,
   updateTargetCollision,
 } from "../animate";
@@ -21,6 +21,7 @@ const myMiddleware: Middleware<unknown, any, any> =
     let result;
 
     // 드래그 끝날 때의 updateObject에서 실행
+
     if (type === UPDATE_OBJECT && payload === store.getState().drag.target) {
       let gridPosition: GridPosition | undefined;
       store.getState().areas.forEach((area: AreaDataType) => {
@@ -54,7 +55,7 @@ const myMiddleware: Middleware<unknown, any, any> =
         .getState()
         .objects.filter(
           (object: ObjectDataType) =>
-            object.id !== dragTarget.id && object.isVisible,
+            object.id !== dragTarget.id && object.visibility,
         )
         .forEach((fixedObj: ObjectDataType) => {
           if (
@@ -81,7 +82,7 @@ const myMiddleware: Middleware<unknown, any, any> =
               store.dispatch(
                 addAnimateCollision({ target: fixedObj, vSpeed: vSpeed }),
               );
-              store.dispatch(updateObject({ ...fixedObj, isVisible: false }));
+              store.dispatch(updateObject({ ...fixedObj, visibility: false }));
             } else {
               // 지정된 영역 안에서 animation (grid slide)
             }
@@ -93,7 +94,8 @@ const myMiddleware: Middleware<unknown, any, any> =
     if (type === RENDER_REF) {
       const ref = store.getState().canvasRef.ref;
       const ctx = ref.current.getContext("2d");
-      const animateCollisionArr = store.getState().animate.collisionArr;
+      const animateCollisionArr: CollisionAnimation[] =
+        store.getState().animate.collisionArr;
 
       if (animateCollisionArr.length > 0) {
         ctx.clearRect(0, 0, ref.current.width, ref.current.height);
@@ -128,8 +130,11 @@ const myMiddleware: Middleware<unknown, any, any> =
                   ...animation,
                   target: {
                     ...animation.target,
-                    x: animation.target.x + animation.vSpeed.x,
-                    y: animation.target.y + animation.vSpeed.y,
+                    geometry: {
+                      ...animation.target.geometry,
+                      x: animation.target.geometry.x + animation.vSpeed.x,
+                      y: animation.target.geometry.y + animation.vSpeed.y,
+                    },
                   },
                   vSpeed: {
                     x: newSpeedX,
@@ -146,14 +151,17 @@ const myMiddleware: Middleware<unknown, any, any> =
             drawEllipse(
               ctx,
               {
-                x: animation.target.x,
-                y: animation.target.y,
-                w: animation.target.svgData.width,
-                h: animation.target.svgData.height,
+                x: animation.target.geometry.x,
+                y: animation.target.geometry.y,
+                w: animation.target.geometry.w,
+                h: animation.target.geometry.h,
               },
               animation.target.svgData.fill
                 ? animation.target.svgData.fill
                 : "rgba(0,0,0,0)",
+              animation.target.svgData.stroke
+                ? animation.target.svgData.stroke
+                : "rgba(255,255,255,255)",
             );
           });
         }

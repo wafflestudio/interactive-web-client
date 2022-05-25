@@ -23,9 +23,14 @@ export default function Navigator() {
           })}
         </ul>
         {isLoggedIn ? (
-          <li>
-            <Link href={"/works/me"}>내 작업물</Link>
-          </li>
+          <>
+            <li>
+              <Link href={"/works/me"}>내 작업물</Link>
+            </li>
+            <li>
+              <Link href={"/editor"}>에디터</Link>
+            </li>
+          </>
         ) : null}
       </ul>
     </nav>

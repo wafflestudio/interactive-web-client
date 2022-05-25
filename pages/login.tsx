@@ -8,7 +8,7 @@ import styles from "./loginAndSignup.module.scss";
 
 export const onPing = async () => {
   try {
-    const response = await axios.get("/ping");
+    const response = axios.get("/ping");
     console.log(response);
   } catch (e) {
     console.log(e);
@@ -37,6 +37,7 @@ export default function Login() {
       const { data } = await api._login({ user_id, password });
       console.log(data);
 
+      data.isLoggedIn = true;
       dispatch(setUser(data));
 
       router.push("/");

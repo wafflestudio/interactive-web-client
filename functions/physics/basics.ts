@@ -1,27 +1,27 @@
-import { GridPosition, GridScale, Scale } from "./physicsInterface";
-import { AreaDataType, ObjectDataType } from "../../dummies/dummyInterface";
 import { a } from "@react-spring/three";
 import { object } from "prop-types";
+import { AreaDataType, ObjectDataType } from "../../dummies/dummyInterface";
 import { VECTOR_SPEED } from "../animation/animationInterface";
+import { GridPosition, GridScale, Scale } from "./physicsInterface";
 
 export const scalify = {
   object: (obj: ObjectDataType) => ({
-    x: obj.x,
-    y: obj.y,
-    w: obj.svgData.width,
-    h: obj.svgData.height,
+    x: obj.geometry.x,
+    y: obj.geometry.y,
+    w: obj.geometry.w,
+    h: obj.geometry.h,
   }),
   area: (area: AreaDataType) => ({
-    x: area.x,
-    y: area.y,
-    w: area.divData.width,
-    h: area.divData.height,
+    x: area.geometry.x,
+    y: area.geometry.y,
+    w: area.geometry.w,
+    h: area.geometry.h,
   }),
   gridArea: (area: AreaDataType) => ({
-    x: area.x,
-    y: area.y,
-    w: area.divData.width,
-    h: area.divData.height,
+    x: area.geometry.x,
+    y: area.geometry.y,
+    w: area.geometry.w,
+    h: area.geometry.h,
     column: 5,
     row: 10,
   }),

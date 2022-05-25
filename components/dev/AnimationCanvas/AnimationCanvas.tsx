@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useMemo, useRef } from "react";
+import { useSelector } from "react-redux";
 import { fps, friction } from "../../../functions/animation/environment";
 import { RootState } from "../../../modules";
 import {
@@ -12,7 +12,6 @@ import { drawEllipse } from "../DynamicCanvas/previews/canvasRect";
 import styles from "./AnimationCanvas.module.scss";
 
 const AnimationCanvas = () => {
-  const dispatch = useDispatch();
   // const animateCollisionArr = useSelector(
   //   (state: RootState) => state.animate.collisionArr,
   // );

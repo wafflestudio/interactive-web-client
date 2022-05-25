@@ -3,7 +3,7 @@
 import { ObjectDataType } from "../dummies/dummyInterface";
 
 export const UPDATE_OBJECT = "staticObjects/UPDATE_OBJECT" as const;
-export const SAVE_OBJECTS = "staticObjects/GET_OBJECTS" as const;
+export const SAVE_OBJECTS = "staticObjects/SAVE_OBJECTS" as const;
 
 export const saveObjects = (objects: ObjectDataType[]) => ({
   type: SAVE_OBJECTS,
@@ -27,7 +27,7 @@ const staticObjects = (
 ): ObjectDataType[] => {
   switch (action.type) {
     case SAVE_OBJECTS:
-      return action.payload;
+      return state.concat(action.payload);
     case UPDATE_OBJECT:
       return state.map((item) =>
         item.id !== action.payload.id ? item : action.payload,

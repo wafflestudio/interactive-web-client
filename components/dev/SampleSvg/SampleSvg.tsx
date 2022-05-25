@@ -1,6 +1,7 @@
 import { batch, useDispatch } from "react-redux";
 import { ObjectDataType } from "../../../dummies/dummyInterface";
 import { endDrag, moveDrag, startDrag } from "../../../modules/drag";
+import { openSimpleInfoModal } from "../../../modules/modal";
 import { updateObject } from "../../../modules/staticObjects";
 import styles from "./SampleSvg.module.scss";
 
@@ -19,29 +20,75 @@ const SampleSvg = ({ item }: SampleSvgProps) => {
     height: geometry.h,
     left: geometry.x,
     top: geometry.y,
+    zIndex: item.zIndex,
   };
+
+  console.log(geometry.w, geometry.h);
 
   return (
     <svg
       className={`${styles.sampleSvg} ${item.visibility ? `` : styles.off}`}
       style={style}
     >
-      <ellipse
-        cx={`${geometry.w / 2}px`}
-        cy={`${geometry.h / 2}px`}
-        rx={`${geometry.w / 2}px`}
-        ry={`${geometry.h / 2}px`}
-        fill={item.svgData.fill}
-        onMouseDown={(e) => {
-          console.log("Click Success");
-          batch(() => {
-            dispatch(updateObject({ ...item, visibility: false }));
-            dispatch(
-              startDrag(item, e.nativeEvent.offsetX, e.nativeEvent.offsetY),
-            );
-          });
-        }}
-      />
+      {item.svgData.svgType === "ellipse" ? (
+        <ellipse
+          cx={`${geometry.w / 2}px`}
+          cy={`${geometry.h / 2}px`}
+          rx={`${geometry.w / 2}px`}
+          ry={`${geometry.h / 2}px`}
+          fill={item.svgData.fill}
+          stroke={item.svgData.stroke}
+          onMouseDown={(e) => {
+            console.log("Click Success");
+            batch(() => {
+              dispatch(updateObject({ ...item, visibility: false }));
+              dispatch(
+                startDrag(item, e.nativeEvent.offsetX, e.nativeEvent.offsetY),
+              );
+              dispatch(openSimpleInfoModal(item));
+            });
+          }}
+        />
+      ) : null}
+      {item.svgData.svgType === "rect" ? (
+        <rect
+          x={`0px`}
+          y={`0px`}
+          width={`${geometry.w}px`}
+          height={`${geometry.h}px`}
+          fill={item.svgData.fill}
+          stroke={item.svgData.stroke}
+          onMouseDown={(e) => {
+            console.log("Click Success");
+            batch(() => {
+              dispatch(updateObject({ ...item, visibility: false }));
+              dispatch(
+                startDrag(item, e.nativeEvent.offsetX, e.nativeEvent.offsetY),
+              );
+              dispatch(openSimpleInfoModal(item));
+            });
+          }}
+        />
+      ) : null}
+      {item.svgData.svgType === "image" ? (
+        <image
+          x={`0px`}
+          y={`0px`}
+          width={`${geometry.w}px`}
+          height={`${geometry.h}px`}
+          href={item.svgData.src}
+          onMouseDown={(e) => {
+            console.log("Click Success");
+            batch(() => {
+              dispatch(updateObject({ ...item, visibility: false }));
+              dispatch(
+                startDrag(item, e.nativeEvent.offsetX, e.nativeEvent.offsetY),
+              );
+              dispatch(openSimpleInfoModal(item));
+            });
+          }}
+        />
+      ) : null}
     </svg>
   );
 };
