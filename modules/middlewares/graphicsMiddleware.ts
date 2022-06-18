@@ -8,7 +8,8 @@ import { RENDER_REF, toggleCanvasRef } from "../canvasRef";
 import { END_DRAG, MOVE_DRAG, START_DRAG } from "../drag";
 import { RootState } from "../index";
 import {
-  closeSimpleInfoModals,
+  closeSimpleInfoModal,
+  OPEN_DETAIL_INFO_MODAL,
   OPEN_SIMPLE_INFO_MODAL,
   openSimpleInfoModal,
 } from "../modal";
@@ -22,19 +23,31 @@ const graphicsMiddleware: Middleware<unknown, RootState> =
     if (action.type === START_DRAG) {
     }
     if (action.type === MOVE_DRAG) {
-      store.dispatch(closeSimpleInfoModals());
+      store.dispatch(closeSimpleInfoModal());
     }
     if (action.type === END_DRAG) {
       store.dispatch(openSimpleInfoModal(store.getState().drag.target));
+
       store.dispatch(updateObject(store.getState().drag.target));
+      const ref = store.getState().canvasRef.ref;
+      if (ref?.current) {
+        const ctx = ref.current.getContext("2d");
+        if (ctx) {
+          ctx.clearRect(0, 0, ref.current.width, ref.current.height);
+        }
+      }
+
       store.dispatch(toggleCanvasRef(false));
     }
 
     //Animate
 
     //Modal
-    if (action.type === OPEN_SIMPLE_INFO_MODAL) {
-      store.dispatch(closeSimpleInfoModals());
+    if (
+      action.type === OPEN_SIMPLE_INFO_MODAL ||
+      action.type === OPEN_DETAIL_INFO_MODAL
+    ) {
+      store.dispatch(closeSimpleInfoModal());
     }
 
     //Render

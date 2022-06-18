@@ -45,7 +45,6 @@ const SampleSvg = ({ item }: SampleSvgProps) => {
               dispatch(
                 startDrag(item, e.nativeEvent.offsetX, e.nativeEvent.offsetY),
               );
-              dispatch(openSimpleInfoModal(item));
             });
           }}
         />

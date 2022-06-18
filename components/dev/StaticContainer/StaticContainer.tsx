@@ -11,6 +11,7 @@ import AddModal from "../Modal/AddModal/AddModal";
 import SampleArea from "../SampleDiv/SampleDiv";
 import SampleSvg from "../SampleSvg/SampleSvg";
 import styles from "./StaticContainer.module.scss";
+import Modals from "../Modal/Modals";
 
 const StaticContainer = () => {
   const [posX, setPosX] = useState(0);
