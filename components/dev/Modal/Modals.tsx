@@ -16,9 +16,9 @@ const Modals = () => {
         modal.modals.length == 0 ? styles.off : ""
       }`}
     >
-      {modal.modals.map((targetModal) => {
+      {modal.modals.map((targetModal, i) => {
         return (
-          <>
+          <div key={i}>
             {targetModal.type === ModalType.OBJECT_SIMPLE_INFO &&
               targetModal.target && (
                 <SimpleInfoModal targetModal={targetModal} />
@@ -27,7 +27,7 @@ const Modals = () => {
               targetModal.target && (
                 <DetailInfoModal targetModal={targetModal} />
               )}
-          </>
+          </div>
         );
       })}
     </div>

@@ -8,13 +8,13 @@
     width: 100px;
     position: absolute;
     border: 1px solid black;
-    background: rgb(60, 59, 59);
+    background-color: rgb(60, 59, 59);
     z-index: 999999999;
 
     button {
       margin: 0;
       padding: 0;
-      background: transparent;
+      background-color: transparent;
       border: none;
       color: whitesmoke;
     }
