@@ -69,6 +69,7 @@ const DetailInfoModal = ({ targetModal }: DetailInfoModalProps) => {
               onButtonClick={selectImage}
               text={"이미지 관리"}
               isSelected={normalMode === ButtonMode.IMAGE}
+              imageSrc={album.src}
             />
           </div>
           <div className={`${styles.sound} ${styles.leftBottomButton}`}>
@@ -78,7 +79,8 @@ const DetailInfoModal = ({ targetModal }: DetailInfoModalProps) => {
               isSelected={normalMode === ButtonMode.SOUND}
             />
           </div>
-          <div className={styles.half}>
+          <div className={styles.divider} />
+          {/* <div className={styles.half}>
             <KeyboardOptionButton text={"를 누르면 이동합니다"} />
             <SelectionOptionButton
               text={"\u00A0소리를 냅니다"}
@@ -89,32 +91,38 @@ const DetailInfoModal = ({ targetModal }: DetailInfoModalProps) => {
               ]}
             />
             <TypingOptionButton text={"(px)만큼 이동합니다"} />
-          </div>
-          <div className={styles.half}>
-            <ImageCell
-              primary={true}
-              name={"대표 이미지"}
-              setName={() => {}}
-              imageSrc={sampleImg.src}
-              imagePath={"C:UsersWebgamOneDrive문서"}
-              setImage={() => {}}
-              moreActions={[
-                { text: "기능1", function: () => {} },
-                { text: "기능2", function: () => {} },
-              ]}
-            />
-            <ImageCell
-              primary={false}
-              name={imageName}
-              setName={setImageName}
-              imageSrc={sampleImg.src}
-              imagePath={"C:UsersWebgamOneDrive문서"}
-              setImage={() => {}}
-              moreActions={[
-                { text: "기능1", function: () => {} },
-                { text: "기능2", function: () => {} },
-              ]}
-            />
+          </div> */}
+          <div className={styles.imageList}>
+            <ul>
+              <li>
+                <ImageCell
+                  primary={true}
+                  name={"대표 이미지"}
+                  setName={() => {}}
+                  imageSrc={sampleImg.src}
+                  imagePath={"C:UsersWebgamOneDrive문서"}
+                  setImage={() => {}}
+                  moreActions={[
+                    { text: "기능1", function: () => {} },
+                    { text: "기능2", function: () => {} },
+                  ]}
+                />
+              </li>
+              <li>
+                <ImageCell
+                  primary={false}
+                  name={imageName}
+                  setName={setImageName}
+                  imageSrc={sampleImg.src}
+                  imagePath={"C:UsersWebgamOneDrive문서"}
+                  setImage={() => {}}
+                  moreActions={[
+                    { text: "기능1", function: () => {} },
+                    { text: "기능2", function: () => {} },
+                  ]}
+                />
+              </li>
+            </ul>
           </div>
         </div>
       </>

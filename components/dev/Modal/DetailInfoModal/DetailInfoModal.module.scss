@@ -1,3 +1,5 @@
+@use "../../../../styles/colors";
+
 .wrapper {
   height: 100vh;
   width: 100vw;
@@ -19,12 +21,41 @@
 
   display: flex;
 
-  .half {
-    width: 50%;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+  .imageList {
+    position: absolute;
+    top: 30px;
+    left: 361px;
+    width: 760px;
+    height: 624px;
+    overflow-y: auto;
+
+    ul {
+      padding: 10px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+
+      li {
+        width: 295px;
+        height: 210px;
+      }
+    }
+
+    &::-webkit-scrollbar {
+      width: 6px; /*스크롤바의 너비*/
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: colors.$darkgray; /*스크롤바의 색상*/
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      position: absolute;
+      right: 30px;
+      background-color: #d9d9d9; /*스크롤바 트랙 색상*/
+      border-radius: 4px;
+    }
   }
 
   .leftTopButton {
@@ -62,5 +93,13 @@
     position: absolute;
     left: 133px;
     top: 145px;
+  }
+
+  .divider {
+    position: absolute;
+    top: 9px;
+    left: 360px;
+    height: 686px;
+    border-left: 1px solid colors.$darkgray;
   }
 }
