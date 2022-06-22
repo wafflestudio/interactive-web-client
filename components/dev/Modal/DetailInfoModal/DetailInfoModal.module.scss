@@ -12,14 +12,78 @@
 .container {
   height: 703px;
   width: 1152px;
+  border-radius: 31px;
   padding: 20px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
-
   display: flex;
+
+  .navigator {
+    width: 320px;
+
+    .leftTopButton {
+      width: 138px;
+      position: absolute;
+      top: 50px;
+
+      &.skill {
+        left: 33px;
+      }
+
+      &.tag {
+        left: 191px;
+      }
+    }
+
+    .leftBottomButton {
+      width: 138px;
+      position: absolute;
+      top: 333px;
+
+      &.image {
+        left: 35px;
+      }
+
+      &.sound {
+        left: 193px;
+      }
+    }
+
+    .profileImage {
+      width: 98px;
+      height: 98px;
+      border: 1px solid black;
+      position: absolute;
+      left: 133px;
+      top: 145px;
+    }
+
+    .name {
+      margin-top: 261px;
+      text-align: center;
+    }
+
+    .keys {
+      width: 297px;
+      margin-top: 120px;
+      margin-left: 10px;
+
+      ul li {
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  .divider {
+    position: absolute;
+    top: 9px;
+    left: 360px;
+    height: 686px;
+    border-left: 1px solid colors.$darkgray;
+  }
 
   .imageList {
     position: absolute;
@@ -58,48 +122,59 @@
     }
   }
 
-  .leftTopButton {
-    width: 138px;
+  .movingButtons {
+    display: flex;
     position: absolute;
-    top: 50px;
+    top: 65px;
+    left: 400px;
 
-    &.skill {
-      left: 33px;
-    }
-
-    &.tag {
-      left: 191px;
+    div {
+      width: 102px;
+      margin-right: 14px;
     }
   }
 
-  .leftBottomButton {
-    width: 138px;
-    position: absolute;
-    top: 333px;
-
-    &.image {
-      left: 35px;
+  .keyButtons {
+    h1 {
+      font-size: 20px;
+      font-weight: bold;
+      position: absolute;
+      top: 18px;
+      left: 410px;
     }
 
-    &.sound {
-      left: 193px;
+    .top {
+      position: absolute;
+      top: 120px;
+      left: 650px;
+    }
+
+    .bottom {
+      position: absolute;
+      top: 470px;
+      left: 650px;
+    }
+
+    .left {
+      position: absolute;
+      top: 295px;
+      left: 450px;
+    }
+
+    .right {
+      position: absolute;
+      top: 295px;
+      left: 850px;
     }
   }
 
-  .profileImage {
-    width: 98px;
-    height: 98px;
-    border: 1px solid black;
-    position: absolute;
-    left: 133px;
-    top: 145px;
-  }
+  .keyEffects {
+    width: 196px;
+    text-align: center;
+    font-size: 16px;
 
-  .divider {
-    position: absolute;
-    top: 9px;
-    left: 360px;
-    height: 686px;
-    border-left: 1px solid colors.$darkgray;
+    div {
+      margin-bottom: 4px;
+    }
   }
 }
