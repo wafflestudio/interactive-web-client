@@ -46,7 +46,7 @@ const DetailInfoModal = ({ targetModal }: DetailInfoModalProps) => {
   const dispatch = useDispatch();
   const [buttonMode, setButtonMode] = useState(-1);
   const [skillMode, setSkillmode] = useState(-1);
-  const [movingMode, setMovingMode] = useState(-1);
+  const [movingMode, setMovingMode] = useState(0);
   const [mouseMode, setMouseMode] = useState(0);
 
   const selectSkill = () => {
@@ -118,8 +118,9 @@ const DetailInfoModal = ({ targetModal }: DetailInfoModalProps) => {
               />
             </div>
           ) : null}
-          {movingMode === MovingMode.KEYBOARD &&
-          buttonMode === ButtonMode.SKILL ? (
+          {skillMode === SkillMode.MOVING_KEY &&
+          buttonMode === ButtonMode.SKILL &&
+          movingMode === MovingMode.KEYBOARD ? (
             <div className={styles.keyboardButtons}>
               <div className={styles.top}>
                 <KeyInteractionEffects direction={"상단"} />
@@ -134,9 +135,7 @@ const DetailInfoModal = ({ targetModal }: DetailInfoModalProps) => {
                 <KeyInteractionEffects direction={"우측"} />
               </div>
             </div>
-          ) : null}
-          {movingMode === MovingMode.MOUSE &&
-          buttonMode === ButtonMode.SKILL ? (
+          ) : movingMode === MovingMode.MOUSE ? (
             <MouseOptions mouseMode={mouseMode} setMouseMode={setMouseMode} />
           ) : null}
         </div>
