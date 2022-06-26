@@ -4,10 +4,6 @@ import { ModalDataType } from "../../../../dummies/modalType";
 import { closeDetailInfoModal } from "../../../../modules/modal";
 import album from "../../../../public/images/ic_album.svg";
 import NormalNavigatorButton from "../../../templates/NavigatorButton/NormalNavigatorButton/NormalNavigatorButton";
-import SmallNavigatorButton from "../../../templates/NavigatorButton/SmallNavigatorButton/SmallNavigatorButton";
-import KeyboardOptionButton from "../../../templates/OptionButton/KeyboardOptionButton/KeyboardOptionButton";
-import SelectionOptionButton from "../../../templates/OptionButton/SelectionOptionButton/SelectionOptionButton";
-import TypingOptionButton from "../../../templates/OptionButton/TypingOptionButton/TypingOptionButton";
 import ImageList from "./ImageList";
 import KeyInteractionEffects from "./KeyInteractionEffects";
 import MouseOptions from "./MouseOptions";
@@ -48,24 +44,22 @@ export enum MouseMode {
 
 const DetailInfoModal = ({ targetModal }: DetailInfoModalProps) => {
   const dispatch = useDispatch();
-  const [normalMode, setNormalMode] = useState(-1);
+  const [buttonMode, setButtonMode] = useState(-1);
   const [skillMode, setSkillmode] = useState(-1);
   const [movingMode, setMovingMode] = useState(-1);
   const [mouseMode, setMouseMode] = useState(0);
-  const [smallMode, setSmallMode] = useState("");
-  const [imageName, setImageName] = useState("추가 이미지");
 
   const selectSkill = () => {
-    setNormalMode(ButtonMode.SKILL);
+    setButtonMode(ButtonMode.SKILL);
   };
   const selectTag = () => {
-    setNormalMode(ButtonMode.TAG);
+    setButtonMode(ButtonMode.TAG);
   };
   const selectImage = () => {
-    setNormalMode(ButtonMode.IMAGE);
+    setButtonMode(ButtonMode.IMAGE);
   };
   const selectSound = () => {
-    setNormalMode(ButtonMode.SOUND);
+    setButtonMode(ButtonMode.SOUND);
   };
 
   if (targetModal.target)
@@ -81,14 +75,14 @@ const DetailInfoModal = ({ targetModal }: DetailInfoModalProps) => {
               <NormalNavigatorButton
                 onButtonClick={selectSkill}
                 text={"기능"}
-                isSelected={normalMode === ButtonMode.SKILL}
+                isSelected={buttonMode === ButtonMode.SKILL}
               />
             </div>
             <div className={`${styles.tag} ${styles.leftTopButton}`}>
               <NormalNavigatorButton
                 onButtonClick={selectTag}
                 text={"태그/분류"}
-                isSelected={normalMode === ButtonMode.TAG}
+                isSelected={buttonMode === ButtonMode.TAG}
               />
             </div>
             <div className={styles.profileImage}></div>
@@ -96,7 +90,7 @@ const DetailInfoModal = ({ targetModal }: DetailInfoModalProps) => {
               <NormalNavigatorButton
                 onButtonClick={selectImage}
                 text={"이미지 관리"}
-                isSelected={normalMode === ButtonMode.IMAGE}
+                isSelected={buttonMode === ButtonMode.IMAGE}
                 imageSrc={album.src}
               />
             </div>
@@ -104,18 +98,18 @@ const DetailInfoModal = ({ targetModal }: DetailInfoModalProps) => {
               <NormalNavigatorButton
                 onButtonClick={selectSound}
                 text={"소리 관리"}
-                isSelected={normalMode === ButtonMode.SOUND}
+                isSelected={buttonMode === ButtonMode.SOUND}
               />
             </div>
             <div className={styles.name}>player1</div>
-            {normalMode === ButtonMode.SKILL ? (
+            {buttonMode === ButtonMode.SKILL ? (
               <SkillButtons skillMode={skillMode} setSkillmode={setSkillmode} />
             ) : null}
           </div>
           <div className={styles.divider} />
-          {normalMode === ButtonMode.IMAGE ? <ImageList /> : null}
+          {buttonMode === ButtonMode.IMAGE ? <ImageList /> : null}
           {skillMode === SkillMode.MOVING_KEY &&
-          normalMode === ButtonMode.SKILL ? (
+          buttonMode === ButtonMode.SKILL ? (
             <div className={styles.keyButtons}>
               <h1>이동키</h1>
               <MovingButtons
@@ -125,7 +119,7 @@ const DetailInfoModal = ({ targetModal }: DetailInfoModalProps) => {
             </div>
           ) : null}
           {movingMode === MovingMode.KEYBOARD &&
-          normalMode === ButtonMode.SKILL ? (
+          buttonMode === ButtonMode.SKILL ? (
             <div className={styles.keyboardButtons}>
               <div className={styles.top}>
                 <KeyInteractionEffects direction={"상단"} />
@@ -142,7 +136,7 @@ const DetailInfoModal = ({ targetModal }: DetailInfoModalProps) => {
             </div>
           ) : null}
           {movingMode === MovingMode.MOUSE &&
-          normalMode === ButtonMode.SKILL ? (
+          buttonMode === ButtonMode.SKILL ? (
             <MouseOptions mouseMode={mouseMode} setMouseMode={setMouseMode} />
           ) : null}
         </div>
