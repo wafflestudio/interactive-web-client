@@ -10,6 +10,7 @@ import SelectionOptionButton from "../../../templates/OptionButton/SelectionOpti
 import TypingOptionButton from "../../../templates/OptionButton/TypingOptionButton/TypingOptionButton";
 import ImageList from "./ImageList";
 import KeyInteractionEffects from "./KeyInteractionEffects";
+import MouseOptions from "./MouseOptions";
 import MovingButtons from "./MovingButtons";
 import SkillButtons from "./SkillButtons";
 import styles from "./DetailInfoModal.module.scss";
@@ -40,13 +41,20 @@ export enum MovingMode {
   AUTO,
 }
 
+export enum MouseMode {
+  OPTION_1,
+  OPTION_2,
+}
+
 const DetailInfoModal = ({ targetModal }: DetailInfoModalProps) => {
   const dispatch = useDispatch();
   const [normalMode, setNormalMode] = useState(-1);
   const [skillMode, setSkillmode] = useState(-1);
   const [movingMode, setMovingMode] = useState(-1);
+  const [mouseMode, setMouseMode] = useState(0);
   const [smallMode, setSmallMode] = useState("");
   const [imageName, setImageName] = useState("추가 이미지");
+
   const selectSkill = () => {
     setNormalMode(ButtonMode.SKILL);
   };
@@ -105,28 +113,20 @@ const DetailInfoModal = ({ targetModal }: DetailInfoModalProps) => {
             ) : null}
           </div>
           <div className={styles.divider} />
-          {/* <div className={styles.half}>
-            <KeyboardOptionButton text={"를 누르면 이동합니다"} />
-            <SelectionOptionButton
-              text={"\u00A0소리를 냅니다"}
-              options={[
-                { name: "발소리1", id: "12" },
-                { name: "발소리2", id: "324" },
-                { name: "발소리3", id: "224" },
-              ]}
-            />
-            <TypingOptionButton text={"(px)만큼 이동합니다"} />
-          </div> */}
           {normalMode === ButtonMode.IMAGE ? <ImageList /> : null}
-          {skillMode === SkillMode.MOVING_KEY ? (
-            <MovingButtons
-              movingMode={movingMode}
-              setMovingMode={setMovingMode}
-            />
-          ) : null}
-          {movingMode === MovingMode.KEYBOARD ? (
+          {skillMode === SkillMode.MOVING_KEY &&
+          normalMode === ButtonMode.SKILL ? (
             <div className={styles.keyButtons}>
               <h1>이동키</h1>
+              <MovingButtons
+                movingMode={movingMode}
+                setMovingMode={setMovingMode}
+              />
+            </div>
+          ) : null}
+          {movingMode === MovingMode.KEYBOARD &&
+          normalMode === ButtonMode.SKILL ? (
+            <div className={styles.keyboardButtons}>
               <div className={styles.top}>
                 <KeyInteractionEffects direction={"상단"} />
               </div>
@@ -140,6 +140,10 @@ const DetailInfoModal = ({ targetModal }: DetailInfoModalProps) => {
                 <KeyInteractionEffects direction={"우측"} />
               </div>
             </div>
+          ) : null}
+          {movingMode === MovingMode.MOUSE &&
+          normalMode === ButtonMode.SKILL ? (
+            <MouseOptions mouseMode={mouseMode} setMouseMode={setMouseMode} />
           ) : null}
         </div>
       </>

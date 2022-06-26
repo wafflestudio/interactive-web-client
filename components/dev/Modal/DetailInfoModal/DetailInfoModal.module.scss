@@ -87,21 +87,46 @@
 
   .imageList {
     position: absolute;
-    top: 30px;
+    top: 40px;
     left: 361px;
     width: 760px;
     height: 624px;
     overflow-y: auto;
+    overflow-x: hidden;
 
     ul {
-      padding: 10px;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-evenly;
+      display: grid;
+      grid-gap: 10px;
+      grid-template-columns: 340px 340px;
+      justify-content: center;
 
       li {
         width: 295px;
         height: 210px;
+        flex-basis: 50%;
+
+        // &.images {
+        //   img {
+        //     cursor: pointer;
+        //     position: absolute;
+        //     top: 0;
+        //     left: 30px;
+        //   }
+        // }
+
+        &.plus {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          img {
+            cursor: pointer;
+          }
+
+          input {
+            display: none;
+          }
+        }
       }
     }
 
@@ -142,7 +167,9 @@
       top: 18px;
       left: 410px;
     }
+  }
 
+  .keyboardButtons {
     .top {
       position: absolute;
       top: 120px;
@@ -175,6 +202,37 @@
 
     div {
       margin-bottom: 4px;
+    }
+  }
+
+  .mouseOptions {
+    display: flex;
+    margin-top: 100px;
+    margin-left: 70px;
+
+    .op1,
+    .op2 {
+      div.option {
+        margin-left: 40px;
+        font-size: 10px;
+        display: flex;
+        align-items: center;
+
+        .mouseCheck {
+          width: 18px;
+          height: 18px;
+          margin-left: 11px;
+          border-radius: 5px;
+          border: 1px solid colors.$primary;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    }
+
+    .op2 {
+      margin-left: 18px;
     }
   }
 }
