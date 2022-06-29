@@ -45,7 +45,7 @@ export enum MouseMode {
 const DetailInfoModal = ({ targetModal }: DetailInfoModalProps) => {
   const dispatch = useDispatch();
   const [buttonMode, setButtonMode] = useState(-1);
-  const [skillMode, setSkillmode] = useState(-1);
+  const [skillMode, setSkillMode] = useState(-1);
   const [movingMode, setMovingMode] = useState(0);
   const [mouseMode, setMouseMode] = useState(0);
 
@@ -103,7 +103,7 @@ const DetailInfoModal = ({ targetModal }: DetailInfoModalProps) => {
             </div>
             <div className={styles.name}>player1</div>
             {buttonMode === ButtonMode.SKILL ? (
-              <SkillButtons skillMode={skillMode} setSkillmode={setSkillmode} />
+              <SkillButtons skillMode={skillMode} setSkillmode={setSkillMode} />
             ) : null}
           </div>
           <div className={styles.divider} />
