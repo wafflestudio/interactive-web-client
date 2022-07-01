@@ -14,3 +14,20 @@ a {
 * {
   box-sizing: border-box;
 }
+
+button {
+  cursor: pointer;
+}
+
+ul,
+li {
+  list-style: none;
+  padding: 0;
+  padding-inline-start: 0;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+  margin: 0;
+  display: block;
+}

@@ -1,0 +1,100 @@
+.wrapper {
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(29, 29, 29, 0.4);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000000000;
+
+  main.container {
+    height: 500px;
+    width: 800px;
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+
+    button.closeModal {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+
+    button.initialize {
+      position: absolute;
+      bottom: 10px;
+      right: 100px;
+    }
+
+    button.add {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+    }
+
+    label {
+      display: block;
+    }
+
+    div.addImage {
+      input.imageInput {
+        display: none;
+      }
+
+      div img {
+        height: 150px;
+      }
+    }
+
+    div.shapePreview {
+      height: 150px;
+      max-width: 300px;
+      margin: 20px;
+      display: grid;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+
+      &.circle {
+        border-radius: 50%;
+      }
+    }
+
+    div.tagContainer {
+      width: 350px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+
+      .tag {
+        height: 35px;
+        background-color: lightgray;
+        display: inline-block;
+        padding: 5px;
+      }
+
+      .delete {
+        height: 15px;
+        width: 15px;
+        padding: 0;
+        border: none;
+        background-color: transparent;
+        display: inline-flex;
+      }
+
+      .tagInput {
+        width: 100px;
+        height: 35px;
+        display: inline-flex;
+        border: 1px solid lightgray;
+        border-radius: 10px;
+        outline: none;
+        cursor: pointer;
+      }
+    }
+  }
+}

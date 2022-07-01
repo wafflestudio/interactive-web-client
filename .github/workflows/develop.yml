@@ -33,4 +33,4 @@ jobs:
           
       - name: App Build
         run:
-          yarn build
+          npm run build

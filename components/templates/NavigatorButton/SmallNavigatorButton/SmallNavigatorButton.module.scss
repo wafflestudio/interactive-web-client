@@ -1,0 +1,28 @@
+@use '../../../../styles/colors';
+
+.wrapper {
+  height: 28px;
+  width: 100%;
+
+  line-height: 28px;
+  text-align: center;
+  color: colors.$primary;
+  font-size: 12px;
+
+  border-radius: 28px;
+  border: 1px solid colors.$primary;
+  background-color: white;
+
+  cursor: pointer;
+
+  &.selected{
+    border: white;
+    color: white;
+    background-color: colors.$primary;
+  }
+
+  .icon{
+    margin: 0 15px;
+    height: 13px;
+  }
+}

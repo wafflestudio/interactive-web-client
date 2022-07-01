@@ -1,19 +1,18 @@
-import '../styles/globals.css'
-import {Provider} from 'react-redux'
-import {createStore} from 'redux'
+import type { AppProps } from "next/app";
+import { Provider } from "react-redux";
+import { applyMiddleware, createStore } from "redux";
+import rootReducer from "../modules";
+import "../styles/globals.css";
+import graphicsMiddleware from "../modules/middlewares/graphicsMiddleware";
 
-import rootReducer from '../modules'
+const store = createStore(rootReducer, applyMiddleware(graphicsMiddleware));
 
-import type {AppProps} from 'next/app'
-
-const store = createStore(rootReducer)
-
-function MyApp({Component, pageProps}: AppProps) {
+const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <Provider store={store}>
       <Component {...pageProps} />
     </Provider>
-  )
-}
+  );
+};
 
-export default MyApp
+export default MyApp;
