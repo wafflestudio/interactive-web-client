@@ -4,9 +4,10 @@ import DynamicCanvas from "../../components/dev/DynamicCanvas/DynamicCanvas";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { sampleObjectDummy } from "../../dummies/sampleObjectDummy";
-import Modal from "../../components/dev/Modal/Modal";
+import Modal from "../../components/dev/Modal/Modals";
 import { saveObjects } from "../../modules/staticObjects";
 import StaticContainer from "../../components/dev/StaticContainer/StaticContainer";
+import Modals from "../../components/dev/Modal/Modals";
 
 const Index: NextPage = () => {
   const dispatch = useDispatch();
@@ -19,8 +20,8 @@ const Index: NextPage = () => {
   return (
     <>
       <StaticContainer />
+      <Modals />
       <DynamicCanvas />
-      <Modal />
     </>
   );
 };

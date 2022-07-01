@@ -1,0 +1,45 @@
+@use "styles/colors";
+
+.wrapper {
+  position: relative;
+  margin: 5px;
+
+  .icon {
+    height: 100%;
+    width: 20px;
+
+    object-position: center;
+
+    cursor: pointer;
+  }
+
+  .actionWrapper {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    color: colors.$text-light;
+
+    .action {
+      width: 195px;
+      height: 25px;
+      font-size: 12px;
+      text-align: center;
+      line-height: 25px;
+      background-color: colors.$primary;
+
+      cursor: pointer;
+
+      &.first {
+        border-radius: 0 4px 0 0;
+      }
+
+      &.last {
+        border-radius: 0 0 4px 4px;
+      }
+
+      &:hover {
+        background-color: colors.$gray;
+      }
+    }
+  }
+}
