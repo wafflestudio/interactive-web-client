@@ -1,8 +1,8 @@
+import { useRef, useState } from "react";
+import { useOutsideChecker } from "../../../functions/mouse/outsideChecker";
 import { ActionDataType } from "../../../types/types";
 import actionsIcon from "/public/images/ic_actions.svg";
 import styles from "./ActionsDropDown.module.scss";
-import { useRef, useState } from "react";
-import { useOutsideChecker } from "../../../functions/mouse/outsideChecker";
 
 interface ActionsDropDownProps {
   actions: ActionDataType[];
@@ -31,6 +31,7 @@ const ActionsDropDown = ({ actions }: ActionsDropDownProps) => {
                   ? styles.last
                   : ""
               }`}
+              onClick={action.function}
               key={i}
             >
               {action.text}

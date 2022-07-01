@@ -1,42 +1,65 @@
-import { ModalDataType } from "../../../../dummies/modalType";
-import styles from "./DetailInfoModal.module.scss";
-import { useDispatch } from "react-redux";
-import { closeDetailInfoModal } from "../../../../modules/modal";
-import NormalNavigatorButton from "../../../templates/NavigatorButton/NormalNavigatorButton/NormalNavigatorButton";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { ModalDataType } from "../../../../dummies/modalType";
+import { closeDetailInfoModal } from "../../../../modules/modal";
 import album from "../../../../public/images/ic_album.svg";
-import SmallNavigatorButton from "../../../templates/NavigatorButton/SmallNavigatorButton/SmallNavigatorButton";
-import KeyboardOptionButton from "../../../templates/OptionButton/KeyboardOptionButton/KeyboardOptionButton";
-import ImageCell from "../../../templates/ImageCell/ImageCell";
-import sampleImg from "/public/images/ex_ghost.png";
-import SelectionOptionButton from "../../../templates/OptionButton/SelectionOptionButton/SelectionOptionButton";
-import TypingOptionButton from "../../../templates/OptionButton/TypingOptionButton/TypingOptionButton";
+import NormalNavigatorButton from "../../../templates/NavigatorButton/NormalNavigatorButton/NormalNavigatorButton";
+import ImageList from "./ImageList";
+import KeyInteractionEffects from "./KeyInteractionEffects";
+import MouseOptions from "./MouseOptions";
+import MovingButtons from "./MovingButtons";
+import SkillButtons from "./SkillButtons";
+import styles from "./DetailInfoModal.module.scss";
 
 interface DetailInfoModalProps {
   targetModal: ModalDataType;
 }
 
 enum ButtonMode {
-  EXAMPLE_1 = "example1",
-  EXAMPLE_2 = "example2",
+  SKILL,
+  TAG,
+  IMAGE,
+  SOUND,
+}
+
+export enum SkillMode {
+  MOVING_KEY,
+  SPECIAL_KEY,
+  ABILITY,
+  RANGE,
+  SOUND,
+}
+
+export enum MovingMode {
+  KEYBOARD,
+  MOUSE,
+  SCROLL,
+  AUTO,
+}
+
+export enum MouseMode {
+  OPTION_1,
+  OPTION_2,
 }
 
 const DetailInfoModal = ({ targetModal }: DetailInfoModalProps) => {
   const dispatch = useDispatch();
-  const [normalMode, setNormalMode] = useState(ButtonMode.EXAMPLE_1);
-  const [smallMode, setSmallMode] = useState(ButtonMode.EXAMPLE_2);
-  const [imageName, setImageName] = useState("추가 이미지");
-  const normal1Function = () => {
-    setNormalMode(ButtonMode.EXAMPLE_1);
+  const [buttonMode, setButtonMode] = useState(-1);
+  const [skillMode, setSkillMode] = useState(-1);
+  const [movingMode, setMovingMode] = useState(0);
+  const [mouseMode, setMouseMode] = useState(0);
+
+  const selectSkill = () => {
+    setButtonMode(ButtonMode.SKILL);
   };
-  const normal2Function = () => {
-    setNormalMode(ButtonMode.EXAMPLE_2);
+  const selectTag = () => {
+    setButtonMode(ButtonMode.TAG);
   };
-  const small1Function = () => {
-    setSmallMode(ButtonMode.EXAMPLE_1);
+  const selectImage = () => {
+    setButtonMode(ButtonMode.IMAGE);
   };
-  const small2Function = () => {
-    setSmallMode(ButtonMode.EXAMPLE_2);
+  const selectSound = () => {
+    setButtonMode(ButtonMode.SOUND);
   };
 
   if (targetModal.target)
@@ -47,65 +70,74 @@ const DetailInfoModal = ({ targetModal }: DetailInfoModalProps) => {
           onClick={() => dispatch(closeDetailInfoModal())}
         />
         <div className={styles.container} onClick={(e) => e.stopPropagation()}>
-          <div className={styles.half}>
-            <NormalNavigatorButton
-              onButtonClick={normal1Function}
-              text={"예시 큰 버튼 1"}
-              isSelected={normalMode === ButtonMode.EXAMPLE_1}
-            />
-            <NormalNavigatorButton
-              onButtonClick={normal2Function}
-              text={"예시 큰 버튼 2"}
-              isSelected={normalMode === ButtonMode.EXAMPLE_2}
-              imageSrc={album.src}
-            />
-            <SmallNavigatorButton
-              onButtonClick={small1Function}
-              isSelected={smallMode === ButtonMode.EXAMPLE_1}
-              text={"예시 작은 버튼"}
-            />
-            <SmallNavigatorButton
-              onButtonClick={small2Function}
-              isSelected={smallMode === ButtonMode.EXAMPLE_2}
-              text={"예시 작은 버튼"}
-            />
-            <KeyboardOptionButton text={"를 누르면 이동합니다"} />
-            <SelectionOptionButton
-              text={"\u00A0소리를 냅니다"}
-              options={[
-                { name: "발소리1", id: "12" },
-                { name: "발소리2", id: "324" },
-                { name: "발소리3", id: "224" },
-              ]}
-            />
-            <TypingOptionButton text={"(px)만큼 이동합니다"} />
+          <div className={styles.navigator}>
+            <div className={`${styles.skill} ${styles.leftTopButton}`}>
+              <NormalNavigatorButton
+                onButtonClick={selectSkill}
+                text={"기능"}
+                isSelected={buttonMode === ButtonMode.SKILL}
+              />
+            </div>
+            <div className={`${styles.tag} ${styles.leftTopButton}`}>
+              <NormalNavigatorButton
+                onButtonClick={selectTag}
+                text={"태그/분류"}
+                isSelected={buttonMode === ButtonMode.TAG}
+              />
+            </div>
+            <div className={styles.profileImage}></div>
+            <div className={`${styles.image} ${styles.leftBottomButton}`}>
+              <NormalNavigatorButton
+                onButtonClick={selectImage}
+                text={"이미지 관리"}
+                isSelected={buttonMode === ButtonMode.IMAGE}
+                imageSrc={album.src}
+              />
+            </div>
+            <div className={`${styles.sound} ${styles.leftBottomButton}`}>
+              <NormalNavigatorButton
+                onButtonClick={selectSound}
+                text={"소리 관리"}
+                isSelected={buttonMode === ButtonMode.SOUND}
+              />
+            </div>
+            <div className={styles.name}>player1</div>
+            {buttonMode === ButtonMode.SKILL ? (
+              <SkillButtons skillMode={skillMode} setSkillmode={setSkillMode} />
+            ) : null}
           </div>
-          <div className={styles.half}>
-            <ImageCell
-              primary={true}
-              name={"대표 이미지"}
-              setName={() => {}}
-              imageSrc={sampleImg.src}
-              imagePath={"C:UsersWebgamOneDrive문서"}
-              setImage={() => {}}
-              moreActions={[
-                { text: "기능1", function: () => {} },
-                { text: "기능2", function: () => {} },
-              ]}
-            />
-            <ImageCell
-              primary={false}
-              name={imageName}
-              setName={setImageName}
-              imageSrc={sampleImg.src}
-              imagePath={"C:UsersWebgamOneDrive문서"}
-              setImage={() => {}}
-              moreActions={[
-                { text: "기능1", function: () => {} },
-                { text: "기능2", function: () => {} },
-              ]}
-            />
-          </div>
+          <div className={styles.divider} />
+          {buttonMode === ButtonMode.IMAGE ? <ImageList /> : null}
+          {skillMode === SkillMode.MOVING_KEY &&
+          buttonMode === ButtonMode.SKILL ? (
+            <div className={styles.keyButtons}>
+              <h1>이동키</h1>
+              <MovingButtons
+                movingMode={movingMode}
+                setMovingMode={setMovingMode}
+              />
+            </div>
+          ) : null}
+          {skillMode === SkillMode.MOVING_KEY &&
+          buttonMode === ButtonMode.SKILL &&
+          movingMode === MovingMode.KEYBOARD ? (
+            <div className={styles.keyboardButtons}>
+              <div className={styles.top}>
+                <KeyInteractionEffects direction={"상단"} />
+              </div>
+              <div className={styles.bottom}>
+                <KeyInteractionEffects direction={"하단"} />
+              </div>
+              <div className={styles.left}>
+                <KeyInteractionEffects direction={"좌측"} />
+              </div>
+              <div className={styles.right}>
+                <KeyInteractionEffects direction={"우측"} />
+              </div>
+            </div>
+          ) : movingMode === MovingMode.MOUSE ? (
+            <MouseOptions mouseMode={mouseMode} setMouseMode={setMouseMode} />
+          ) : null}
         </div>
       </>
     );
