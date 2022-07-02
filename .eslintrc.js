@@ -13,6 +13,7 @@ module.exports = {
     },
     tsconfigRootDir: __dirname,
     project: ["./tsconfig.json"],
+    createDefaultProgram: true,
   },
   plugins: ["react", "@typescript-eslint"],
   extends: [

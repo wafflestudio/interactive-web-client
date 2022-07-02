@@ -6,13 +6,14 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   async rewrites() {
+    console.log("rewrites called");
     return [
       {
         source: "/ping/",
         destination: "http://iwe-server.shop/ping/",
       },
       {
-        source: "/api/v1/:path*/",
+        source: "/api/:path*",
         destination: "http://iwe-server.shop/api/v1/:path*/",
       },
     ];
