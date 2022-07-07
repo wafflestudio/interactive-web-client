@@ -1,13 +1,14 @@
 import type { NextPage } from "next";
 
-import DynamicCanvas from "../../components/dev/DynamicCanvas/DynamicCanvas";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { sampleObjectDummy } from "../../dummies/sampleObjectDummy";
+import { useDispatch, useSelector } from "react-redux";
+import { initiateWebSocket } from "../../api/websocket";
+import DynamicCanvas from "../../components/dev/DynamicCanvas/DynamicCanvas";
 import Modal from "../../components/dev/Modal/Modals";
-import { saveObjects } from "../../modules/staticObjects";
-import StaticContainer from "../../components/dev/StaticContainer/StaticContainer";
 import Modals from "../../components/dev/Modal/Modals";
+import StaticContainer from "../../components/dev/StaticContainer/StaticContainer";
+import { sampleObjectDummy } from "../../dummies/sampleObjectDummy";
+import { saveObjects } from "../../modules/staticObjects";
 
 const Index: NextPage = () => {
   const dispatch = useDispatch();
@@ -15,6 +16,11 @@ const Index: NextPage = () => {
   //API 호출을 통한 데이터 로드를 대신하는 부분
   useEffect(() => {
     dispatch(saveObjects(sampleObjectDummy));
+  }, []);
+
+  //웹소켓 연결 시도
+  useEffect(() => {
+    initiateWebSocket();
   }, []);
 
   return (
