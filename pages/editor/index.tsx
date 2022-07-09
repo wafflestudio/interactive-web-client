@@ -18,11 +18,6 @@ const Index: NextPage = () => {
     dispatch(saveObjects(sampleObjectDummy));
   }, []);
 
-  //웹소켓 연결 시도
-  useEffect(() => {
-    initiateWebSocket();
-  }, []);
-
   return (
     <>
       <StaticContainer />

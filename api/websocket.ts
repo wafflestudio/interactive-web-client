@@ -1,14 +1,16 @@
 import { setWs } from "../modules/ws";
 import { store } from "../pages/_app";
 
-const wsURL = ""; // [ws://] 또는 [wss://]로 시작해야 합니다
-
+const wsURL = "ws://iwe-server/api/v1/ws/project/1/"; // [ws://] 또는 [wss://]로 시작해야 합니다
+//const wsURL =
+//"wss://demo.piesocket.com/v3/channel_1?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&notify_self";
 export const initiateWebSocket = () => {
-  const socket = store.getState().ws.socket;
+  const socket = store.getState().ws.current;
   if (!socket) {
     const newSocket = new WebSocket(wsURL);
     newSocket.onopen = () => {
       console.log("connected to " + wsURL);
+      store.dispatch(setWs(newSocket));
     };
     newSocket.onclose = (error) => {
       console.log("disconnect from " + wsURL);
@@ -18,7 +20,6 @@ export const initiateWebSocket = () => {
       console.log("connection error " + wsURL);
       console.log(error);
     };
-    store.dispatch(setWs(newSocket));
   } else {
     console.log("websocket already exist");
   }
