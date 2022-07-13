@@ -13,8 +13,8 @@ const WebSocketTester = () => {
   });
 
   useEffect(() => {
-    if (message) {
-      console.log(`received message is : ${message}`);
+    if (message !== null) {
+      console.log(`received message is : ${message.content}`);
     }
   }, [message]);
 

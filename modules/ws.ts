@@ -20,9 +20,12 @@ type wsAction =
   | ReturnType<typeof setMessage>
   | ReturnType<typeof closeWs>;
 
-const initialState: { current: any; recentMessage: null | string } = {
+const initialState: {
+  current: any;
+  recentMessage: { messageNo: number; content: null | string };
+} = {
   current: null,
-  recentMessage: null,
+  recentMessage: { messageNo: 0, content: null },
 };
 
 const ws = (state = initialState, action: wsAction) => {
@@ -30,9 +33,15 @@ const ws = (state = initialState, action: wsAction) => {
     case SET_WS:
       return { ...state, current: action.payload };
     case SET_MESSAGE:
-      return { ...state, recentMessage: action.payload };
+      return {
+        ...state,
+        recentMessage: {
+          messageNo: state.recentMessage.messageNo + 1,
+          content: action.payload,
+        },
+      };
     case CLOSE_WS:
-      return { current: null, recentMessage: null };
+      return initialState;
     default:
       return state;
   }
