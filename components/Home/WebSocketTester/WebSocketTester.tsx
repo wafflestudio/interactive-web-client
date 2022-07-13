@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { initiateWebSocket } from "../../../api/websocket";
 import { RootState } from "../../../modules";
@@ -7,6 +8,16 @@ const WebSocketTester = () => {
   const socket = useSelector((state: RootState) => {
     return state.ws.current;
   });
+  const message = useSelector((state: RootState) => {
+    return state.ws.recentMessage;
+  });
+
+  useEffect(() => {
+    if (message) {
+      console.log(`received message is : ${message}`);
+    }
+  }, [message]);
+
   return (
     <div className={styles.wstest}>
       <button
