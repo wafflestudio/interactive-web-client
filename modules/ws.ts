@@ -2,7 +2,7 @@ export const SET_WS = "ws/SET_WS" as const;
 export const SET_MESSAGE = "ws/SET_MESSAGE" as const;
 export const CLOSE_WS = "ws/CLOSE_WS" as const;
 
-export const setWs = (webSocketObject: any) => ({
+export const setWs = (webSocketObject: WebSocket) => ({
   type: SET_WS,
   payload: webSocketObject,
 });
@@ -21,7 +21,7 @@ type wsAction =
   | ReturnType<typeof closeWs>;
 
 const initialState: {
-  current: any;
+  current: WebSocket | null;
   recentMessage: { messageNo: number; content: null | string };
 } = {
   current: null,
