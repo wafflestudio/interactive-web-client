@@ -7,6 +7,7 @@ import drag from "./drag";
 import modal from "./modal";
 import staticObjects from "./staticObjects";
 import user from "./user";
+import ws from "./ws";
 
 const rootReducer = combineReducers({
   drag,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   canvasRef,
   modal,
   addModal,
+  ws,
 });
 
 export default rootReducer;

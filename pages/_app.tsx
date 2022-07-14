@@ -5,7 +5,10 @@ import rootReducer from "../modules";
 import "../styles/globals.css";
 import graphicsMiddleware from "../modules/middlewares/graphicsMiddleware";
 
-const store = createStore(rootReducer, applyMiddleware(graphicsMiddleware));
+export const store = createStore(
+  rootReducer,
+  applyMiddleware(graphicsMiddleware),
+);
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (

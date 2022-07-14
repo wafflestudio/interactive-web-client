@@ -1,13 +1,14 @@
 import type { NextPage } from "next";
 
-import DynamicCanvas from "../../components/dev/DynamicCanvas/DynamicCanvas";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { sampleObjectDummy } from "../../dummies/sampleObjectDummy";
+import { useDispatch, useSelector } from "react-redux";
+import { initiateWebSocket } from "../../api/websocket";
+import DynamicCanvas from "../../components/dev/DynamicCanvas/DynamicCanvas";
 import Modal from "../../components/dev/Modal/Modals";
-import { saveObjects } from "../../modules/staticObjects";
-import StaticContainer from "../../components/dev/StaticContainer/StaticContainer";
 import Modals from "../../components/dev/Modal/Modals";
+import StaticContainer from "../../components/dev/StaticContainer/StaticContainer";
+import { sampleObjectDummy } from "../../dummies/sampleObjectDummy";
+import { saveObjects } from "../../modules/staticObjects";
 
 const Index: NextPage = () => {
   const dispatch = useDispatch();
