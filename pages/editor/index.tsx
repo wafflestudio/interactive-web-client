@@ -10,7 +10,6 @@ import StaticContainer from "../../components/dev/StaticContainer/StaticContaine
 import { sampleObjectDummy } from "../../dummies/sampleObjectDummy";
 import { RootState } from "../../modules";
 import { saveObjects } from "../../modules/staticObjects";
-import { setProjectId } from "../../modules/ws";
 
 const Index: NextPage = () => {
   const dispatch = useDispatch();
@@ -20,7 +19,6 @@ const Index: NextPage = () => {
   //API 호출을 통한 데이터 로드를 대신하는 부분
   useEffect(() => {
     dispatch(saveObjects(sampleObjectDummy));
-    dispatch(setProjectId(123));
     initiateWebSocket();
 
     return () => socket?.close();
