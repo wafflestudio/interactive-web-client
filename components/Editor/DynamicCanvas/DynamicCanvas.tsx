@@ -2,7 +2,7 @@ import { Stage } from "@inlet/react-pixi";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { PixiDataType } from "../../../dummies/dummyInterface";
-import PixiGraphic from "../../../functions/pixi/PixiGraphic";
+import PixiGraphic from "../../../functions/pixi/pixiGraphicFunction";
 import { RootState } from "../../../modules";
 import styles from "./DynamicCanvas.module.scss";
 

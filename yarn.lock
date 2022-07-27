@@ -243,6 +243,11 @@
   resolved "https://registry.yarnpkg.com/@pixi/interaction/-/interaction-6.4.2.tgz#5745498057c174fb5c7538619644c7b104a58cf5"
   integrity sha512-CJ4BAZUM+9ykRE9NIOyTiv7oR+PoiDqn+GcI8boE9mRyJ0WZosznCYdcAwEk5k/F5+Az0z8hK3PjzTuNvrPAcw==
 
+"@pixi/interaction@^6.5.1":
+  version "6.5.1"
+  resolved "https://registry.yarnpkg.com/@pixi/interaction/-/interaction-6.5.1.tgz#ba28d61144aa88b88dbb36238cabdf59b03fa201"
+  integrity sha512-JVQ4SAr1ykE7nJZpoROnexscRI8QYx5T8fyXwVlXxAFdpX5mtBqOlCpYOVCs8wtu6dP0R7EDlfpf5ARh1JZwvQ==
+
 "@pixi/loaders@6.4.2":
   version "6.4.2"
   resolved "https://registry.yarnpkg.com/@pixi/loaders/-/loaders-6.4.2.tgz#74558719d9febfc34de863a2df791502cefdc600"

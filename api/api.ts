@@ -23,6 +23,10 @@ const instance = axios.create({
   withCredentials: true,
 });
 
+instance.defaults.withCredentials = true;
+instance.defaults.xsrfCookieName = "csrftoken";
+instance.defaults.xsrfHeaderName = "X-CSRFToken";
+
 // const setHeaderToken = (newToken: string | null) => {
 //   if (newToken) {
 //     instance.defaults.headers.common['Authorization'] = newToken

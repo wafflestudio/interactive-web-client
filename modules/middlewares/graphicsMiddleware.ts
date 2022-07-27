@@ -4,6 +4,11 @@ import {
   drawImage,
   drawRect,
 } from "../../components/dev/DynamicCanvas/previews/canvasRect";
+import {
+  endDragRender,
+  startDragRender,
+  updateDragRender,
+} from "../../hooks/useRender";
 import { RENDER_REF, toggleCanvasRef } from "../canvasRef";
 import { END_DRAG, MOVE_DRAG, START_DRAG } from "../drag";
 import { RootState } from "../index";
@@ -18,14 +23,18 @@ import { SAVE_OBJECTS, updateObject } from "../staticObjects";
 const graphicsMiddleware: Middleware<unknown, RootState> =
   (store) => (next) => (action) => {
     let result;
-
     const { current: socket } = store.getState().ws;
 
     //Drag
     if (action.type === START_DRAG) {
+      startDragRender(action.payload.target, (x, y) => {
+        console.log(x);
+      });
     }
     if (action.type === MOVE_DRAG) {
       store.dispatch(closeSimpleInfoModal());
+      updateDragRender(action.payload.x, action.payload.y);
+      console.log(action.payload.x);
       const dragTarget = store.getState().drag.target;
       const message = JSON.stringify({
         method: "PATCH",
@@ -36,8 +45,11 @@ const graphicsMiddleware: Middleware<unknown, RootState> =
       socket?.send(message);
     }
     if (action.type === END_DRAG) {
+      endDragRender(
+        store.getState().drag.target.geometry.x,
+        store.getState().drag.target.geometry.y,
+      );
       store.dispatch(openSimpleInfoModal(store.getState().drag.target));
-
       store.dispatch(updateObject(store.getState().drag.target));
       const ref = store.getState().canvasRef.ref;
       if (ref?.current) {
