@@ -2,7 +2,7 @@ import { MouseEventHandler, useEffect, useState } from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
 import { sampleAreaDummy } from "../../../dummies/sampleAreaDummy";
 import { sampleObjectDummy } from "../../../dummies/sampleObjectDummy";
-import { useDrag } from "../../../hooks/interactionHooks";
+import { interactDrag } from "../../../hooks/interactionHooks";
 import { RootState } from "../../../modules";
 import { setId, setXPos, setYPos } from "../../../modules/addModal";
 import { saveAreas } from "../../../modules/areas";
@@ -28,7 +28,6 @@ const StaticContainer = () => {
     return state.areas;
   });
   const isDrag = useSelector((state: RootState) => state.drag.isOn);
-  const drag = useDrag();
   //API 호출을 통한 데이터 로드를 대신하는 부분
   useEffect(() => {
     batch(() => {
@@ -62,10 +61,10 @@ const StaticContainer = () => {
     <div
       className={styles.container}
       onMouseMove={(e) => {
-        drag.update(e);
+        interactDrag().update(e);
       }}
       onMouseUp={(e) => {
-        drag.end(e);
+        interactDrag().end(e);
       }}
       onContextMenu={onRightClick}
       onClick={closeRightModal}

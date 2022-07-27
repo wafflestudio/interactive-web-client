@@ -6,7 +6,7 @@ import {
 } from "../functions/pixi/renderer";
 import { InteractionDataType, MouseEventType } from "../types/types";
 
-export const useDrag: () => {
+export const interactDrag: () => {
   start: (
     e: MouseEventType,
     data: InteractionDataType,
