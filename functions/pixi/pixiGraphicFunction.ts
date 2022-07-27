@@ -20,8 +20,8 @@ export const drawEllipse = (geometry: GeometryType) => {
   graphics.beginFill(0xaa4f08, 1);
   graphics.drawEllipse(x, y, w / 2, h / 2);
   graphics.endFill();
-  graphics.pivot.x = 0.5;
-  graphics.pivot.y = 0.5;
+  graphics.pivot.x -= w / 2;
+  graphics.pivot.y -= h / 2;
 
   return graphics;
 };

@@ -63,11 +63,11 @@ const StaticContainer = () => {
     <div
       className={styles.container}
       onMouseMove={(e) => {
-        if (isDrag) {
-          const x = e.nativeEvent.screenX;
-          const y = e.nativeEvent.screenY;
-          dispatch(moveDrag(x, y, e.movementX, e.movementY));
-        }
+        //       if (isDrag) {
+        //       const x = e.nativeEvent.screenX;
+        //     const y = e.nativeEvent.screenY;
+        //   dispatch(moveDrag(x, y, e.movementX, e.movementY));
+        // }
       }}
       onMouseUp={() => {
         if (isDrag) {

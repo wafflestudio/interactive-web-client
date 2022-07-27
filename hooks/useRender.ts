@@ -51,6 +51,11 @@ const useRender = () => {
   };
 };
 
+export const startDragConsole = (name: string, x: number, y: number) => {
+  console.log(`drag ${name}: x:${x}, y:${y}`);
+};
+
+//used in middleware
 export const startDragRender = (
   data: ObjectDataType,
   callback: (x: number, y: number) => void,
@@ -69,14 +74,26 @@ export const startDragRender = (
   });
 };
 
+export const drawSample = (x: number, y: number) => {
+  const { ref } = store.getState().canvasRef;
+  if (!ref) {
+    return null;
+  }
+  const graphic = drawEllipse({ x: x, y: y, w: 50, h: 50 });
+  graphic.x = 60;
+  graphic.x = 50;
+
+  ref.stage.addChild(graphic);
+};
+
 export const updateDragRender = (x: number, y: number) => {
   const { ref } = store.getState().canvasRef;
   if (!ref) {
     return null;
   }
   dragQueue.forEach((item) => {
-    item.graphic.x = x - item.data.geometry.x;
-    item.graphic.y = y - item.data.geometry.y;
+    item.graphic.x = x - item.data.geometry.x - item.graphic.width / 2;
+    item.graphic.y = y - item.data.geometry.y - item.graphic.height;
   });
 };
 
