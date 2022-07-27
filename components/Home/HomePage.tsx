@@ -1,12 +1,10 @@
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { api } from "../../api/api";
-import { initiateWebSocket } from "../../api/websocket";
-import { setUser } from "../../modules/user";
-import HomeMain from "./Main/HomeMain";
+import BannerRigthIcon from "../../assets/svgs/BannerRigthIcon";
+import Card from "./Card/CardItem";
+import CardList from "./Card/CardList";
+import HomeBanner from "./HomeBanner";
+import HomeHeader from "./HomeHeader";
+import HomeLogo from "./HomeLogo";
 import PageHead from "./PageHead";
-import SideBar from "./Sidebar/SideBar";
-import WebSocketTester from "./WebSocketTester/WebSocketTester";
 import styles from "./HomePage.module.scss";
 
 export default function HomePage() {
@@ -15,11 +13,12 @@ export default function HomePage() {
       <PageHead />
       <div className={styles.wrapper}>
         <div className={styles.container}>
-          <SideBar />
-          <HomeMain />
+          <HomeHeader />
+          <HomeLogo />
+          <HomeBanner />
+          <CardList />
         </div>
       </div>
-      <WebSocketTester />
     </>
   );
 }
