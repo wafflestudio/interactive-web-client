@@ -1,3 +1,4 @@
+import React from "react";
 import { ObjectDataType } from "../dummies/dummyInterface";
 
 export interface UserDataType {
@@ -29,3 +30,6 @@ export interface ActionDataType {
   text: string;
   function: () => void;
 }
+
+export type InteractionDataType = ObjectDataType;
+export type MouseEventType = React.MouseEvent;

@@ -1,11 +1,9 @@
 import { useEffect } from "react";
 import { batch, useDispatch } from "react-redux";
 import { ObjectDataType } from "../../../dummies/dummyInterface";
-import {
-  drawSample,
-  startDragConsole,
-  startDragRender,
-} from "../../../functions/pixi/renderer";
+import { dragUpdateFx } from "../../../functions/pixi/pixiEffects";
+import { drawSample, startDragConsole } from "../../../functions/pixi/renderer";
+import { useDrag } from "../../../hooks/interactionHooks";
 import { endDrag, moveDrag, startDrag } from "../../../modules/drag";
 import { openSimpleInfoModal } from "../../../modules/modal";
 import { updateObject } from "../../../modules/staticObjects";
@@ -28,9 +26,7 @@ const SampleSvg = ({ item }: SampleSvgProps) => {
     top: geometry.y,
     zIndex: item.zIndex,
   };
-  useEffect(() => {
-    drawSample(geometry.x, geometry.y);
-  });
+  const drag = useDrag();
 
   return (
     <svg
@@ -46,17 +42,7 @@ const SampleSvg = ({ item }: SampleSvgProps) => {
           fill={item.svgData.fill}
           stroke={item.svgData.stroke}
           onMouseDown={(e) => {
-            startDragConsole(
-              "svg",
-              e.nativeEvent.offsetX,
-              e.nativeEvent.offsetY,
-            );
-            /* batch(() => {
-              dispatch(updateObject({ ...item, visibility: false }));
-              dispatch(
-                startDrag(item, e.nativeEvent.offsetX, e.nativeEvent.offsetY),
-              );
-            });*/
+            drag.start(e, item, { updateEffect: dragUpdateFx().follow });
           }}
         />
       ) : null}

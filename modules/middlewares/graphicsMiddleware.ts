@@ -8,7 +8,7 @@ import {
   endDragRender,
   startDragRender,
   updateDragRender,
-} from "../../hooks/useRender";
+} from "../../functions/pixi/renderer";
 import { RENDER_REF, toggleCanvasRef } from "../canvasRef";
 import { END_DRAG, MOVE_DRAG, START_DRAG } from "../drag";
 import { RootState } from "../index";
