@@ -10,11 +10,12 @@ const nextConfig = {
     return [
       {
         source: "/ping/",
-        destination: "http://iwe-server.shop/ping/",
+        destination: "https://iwe-server.shop/ping/",
       },
       {
         source: "/api/:path*",
-        destination: "http://iwe-server.shop/api/v1/:path*/",
+
+        destination: "https://iwe-server.shop/api/v1/:path*/",
       },
     ];
   },

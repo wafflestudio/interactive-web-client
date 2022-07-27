@@ -51,3 +51,14 @@ export interface AreaDataType {
   visibility: boolean;
   zIndex?: number;
 }
+
+export interface PixiDataType {
+  id: number;
+  geometry: GeometryType;
+  svgData: SvgDataType;
+  animation?: (
+    tick: number,
+    geometry: GeometryType,
+    svgData: SvgDataType,
+  ) => { s: SvgDataType; g: GeometryType };
+}

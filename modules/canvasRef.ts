@@ -1,3 +1,4 @@
+import { Application } from "@pixi/app";
 import { bool } from "prop-types";
 import { RefObject } from "react";
 
@@ -5,7 +6,7 @@ const TOGGLE_REF = "canvasRef/TOGGLE_REF" as const;
 const SAVE_REF = "canvasRef/SAVE_REF" as const;
 export const RENDER_REF = "canvasRef/RENDER_REF" as const;
 
-export const saveCanvasRef = (ref: RefObject<HTMLCanvasElement>) => ({
+export const saveCanvasRef = (ref: Application) => ({
   type: SAVE_REF,
   payload: ref,
 });
@@ -23,11 +24,11 @@ type canvasRefActionType =
   | ReturnType<typeof saveCanvasRef>
   | ReturnType<typeof renderCanvasRef>;
 interface canvasRefStateType {
-  exist: boolean;
-  ref?: RefObject<HTMLCanvasElement>;
+  ref: Application | null;
+  exist?: boolean;
 }
 
-const initialState: canvasRefStateType = { exist: false };
+const initialState: canvasRefStateType = { ref: null };
 
 const canvasRef = (
   state: canvasRefStateType = initialState,
@@ -37,7 +38,7 @@ const canvasRef = (
     case SAVE_REF:
       return { ...state, ref: action.payload };
     case TOGGLE_REF:
-      return { ...state, exist: action.payload};
+      return { ...state, exist: action.payload };
     case RENDER_REF:
       return state;
     default:

@@ -69,8 +69,8 @@ const drag = (
           ...state.target,
           geometry: {
             ...state.target.geometry,
-            x: action.payload.x - state.modify.x,
-            y: action.payload.y - state.modify.y,
+            x: action.payload.x,
+            y: action.payload.y,
           },
         },
       };

@@ -1,6 +1,7 @@
 .wrapper {
   height: 100vh;
   width: 100vw;
+  position:relative;
 
   .container {
     width: 1900px;
@@ -8,4 +9,10 @@
     border: 1px solid black;
     display: flex;
   }
+}
+
+.wstest{
+  position:absolute;
+  top:500px;
+  left:100px;
 }
