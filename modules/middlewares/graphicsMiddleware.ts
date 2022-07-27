@@ -13,17 +13,27 @@ import {
   OPEN_SIMPLE_INFO_MODAL,
   openSimpleInfoModal,
 } from "../modal";
-import { updateObject } from "../staticObjects";
+import { SAVE_OBJECTS, updateObject } from "../staticObjects";
 
 const graphicsMiddleware: Middleware<unknown, RootState> =
   (store) => (next) => (action) => {
     let result;
+
+    const { current: socket } = store.getState().ws;
 
     //Drag
     if (action.type === START_DRAG) {
     }
     if (action.type === MOVE_DRAG) {
       store.dispatch(closeSimpleInfoModal());
+      const dragTarget = store.getState().drag.target;
+      const message = JSON.stringify({
+        method: "PATCH",
+        URI: `objects/${dragTarget.id}`,
+        data: dragTarget.geometry,
+      });
+      console.log(message);
+      socket?.send(message);
     }
     if (action.type === END_DRAG) {
       store.dispatch(openSimpleInfoModal(store.getState().drag.target));
@@ -40,9 +50,18 @@ const graphicsMiddleware: Middleware<unknown, RootState> =
       store.dispatch(toggleCanvasRef(false));
     }
 
-    //Animate
+    if (action.type === SAVE_OBJECTS) {
+      action.payload.map((e) => {
+        const message = JSON.stringify({
+          method: "POST",
+          URI: `objects`,
+          data: e,
+        });
+        console.log(message);
+        socket?.send(message);
+      });
+    }
 
-    //Modal
     if (
       action.type === OPEN_SIMPLE_INFO_MODAL ||
       action.type === OPEN_DETAIL_INFO_MODAL
@@ -57,6 +76,7 @@ const graphicsMiddleware: Middleware<unknown, RootState> =
         if (ref?.current) {
           const ctx = ref.current.getContext("2d");
           const dragTarget = store.getState().drag.target;
+
           if (ctx) {
             ctx.clearRect(0, 0, ref.current.width, ref.current.height);
             if (dragTarget.svgData.svgType === "ellipse")
