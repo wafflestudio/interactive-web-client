@@ -24,9 +24,6 @@ const StaticContainer = () => {
   const staticObjects = useSelector((state: RootState) => {
     return state.staticObjects;
   });
-  const areas = useSelector((state: RootState) => {
-    return state.areas;
-  });
   const isDrag = useSelector((state: RootState) => state.drag.isOn);
   //API 호출을 통한 데이터 로드를 대신하는 부분
   useEffect(() => {
@@ -61,10 +58,10 @@ const StaticContainer = () => {
     <div
       className={styles.container}
       onMouseMove={(e) => {
-        interactDrag().update(e);
+        isDrag && interactDrag().update(e);
       }}
       onMouseUp={(e) => {
-        interactDrag().end(e);
+        isDrag && interactDrag().end(e);
       }}
       onContextMenu={onRightClick}
       onClick={closeRightModal}

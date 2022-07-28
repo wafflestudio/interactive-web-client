@@ -4,6 +4,8 @@ import {
   clearDragQueue,
   EffectType,
 } from "../functions/pixi/renderer";
+import { endDrag, moveDrag, startDrag } from "../modules/drag";
+import { store } from "../pages/_app";
 import { InteractionDataType, MouseEventType } from "../types/types";
 
 export const interactDrag: () => {
@@ -25,12 +27,15 @@ export const interactDrag: () => {
     effects: EffectType,
   ) => {
     addDragQueue(e, data, effects);
+    store.dispatch(startDrag(e, data));
   };
   const update: (e: MouseEventType) => void = (e: MouseEventType) => {
     updateDragQueue(e);
+    store.dispatch(moveDrag(e));
   };
   const end: (e: MouseEventType) => void = (e: MouseEventType) => {
     clearDragQueue(e);
+    store.dispatch(endDrag(e));
   };
 
   return { start, update, end };

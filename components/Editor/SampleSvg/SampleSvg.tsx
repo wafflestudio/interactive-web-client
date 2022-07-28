@@ -3,7 +3,7 @@ import { batch, useDispatch } from "react-redux";
 import { ObjectDataType } from "../../../dummies/dummyInterface";
 import { dragUpdateFx } from "../../../functions/pixi/pixiEffects";
 import { interactDrag } from "../../../hooks/interactionHooks";
-import { startDrag } from "../../../modules/drag";
+import { START_DRAG, startDrag } from "../../../modules/drag";
 import { openSimpleInfoModal } from "../../../modules/modal";
 import { updateObject } from "../../../modules/staticObjects";
 import styles from "./SampleSvg.module.scss";
@@ -58,9 +58,7 @@ const SampleSvg = ({ item }: SampleSvgProps) => {
             console.log("Click Success");
             batch(() => {
               dispatch(updateObject({ ...item, visibility: false }));
-              dispatch(
-                startDrag(item, e.nativeEvent.offsetX, e.nativeEvent.offsetY),
-              );
+              dispatch(startDrag(e, item));
               dispatch(openSimpleInfoModal(item));
             });
           }}

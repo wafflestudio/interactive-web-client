@@ -2,40 +2,38 @@
 // position에서 drag로 이름을 바꿨습니다
 
 import { ObjectDataType } from "../dummies/dummyInterface";
+import { InteractionDataType, MouseEventType } from "../types/types";
 
 export const START_DRAG = "drag/START_DRAG" as const;
 export const MOVE_DRAG = `drag/MOVE_DRAG` as const;
 export const END_DRAG = "drag/END_DRAG" as const;
 
-const emptyTarget = {} as ObjectDataType;
+const emptyData = {} as InteractionDataType;
+const emptyEvent = {} as MouseEventType;
 
 interface DragState {
   isOn: boolean;
-  target: ObjectDataType;
-  modify: { x: number; y: number };
+  data: InteractionDataType;
+  event: MouseEventType;
 }
 
-//start, move end는 각각 mousedown, mousemove, mouseup 시에 호출됩니다
 export const startDrag = (
-  target: ObjectDataType,
-  modifyX: number,
-  modifyY: number,
+  event: MouseEventType,
+  data: InteractionDataType,
 ) => ({
   type: START_DRAG,
-  payload: { target, modifyX, modifyY },
+  payload: { data, event },
 });
 
-export const moveDrag = (
-  x: number,
-  y: number,
-  speedX: number,
-  speedY: number,
-) => ({
+export const moveDrag = (event: MouseEventType) => ({
   type: MOVE_DRAG,
-  payload: { x, y, speedX, speedY },
+  payload: { event },
 });
 
-export const endDrag = () => ({ type: END_DRAG });
+export const endDrag = (event: MouseEventType) => ({
+  type: END_DRAG,
+  payload: { event },
+});
 
 type DragAction =
   | ReturnType<typeof startDrag>
@@ -44,8 +42,8 @@ type DragAction =
 
 const initialState: DragState = {
   isOn: false,
-  target: emptyTarget,
-  modify: { x: 0, y: 0 },
+  data: emptyData,
+  event: emptyEvent,
 };
 
 const drag = (
@@ -56,29 +54,19 @@ const drag = (
     case START_DRAG:
       return {
         isOn: true,
-        target: action.payload.target,
-        modify: {
-          x: action.payload.modifyX,
-          y: action.payload.modifyY,
-        },
+        data: action.payload.data,
+        event: action.payload.event,
       };
     case MOVE_DRAG:
       return {
         ...state,
-        target: {
-          ...state.target,
-          geometry: {
-            ...state.target.geometry,
-            x: action.payload.x,
-            y: action.payload.y,
-          },
-        },
+        event: action.payload.event,
       };
     case END_DRAG:
       return {
         isOn: false,
-        target: emptyTarget,
-        modify: { x: 0, y: 0 },
+        data: emptyData,
+        event: emptyEvent,
       };
     default:
       return state;
