@@ -7,6 +7,7 @@ import HomeLogo from "./HomeLogo";
 import PageHead from "./PageHead";
 import styles from "./HomePage.module.scss";
 
+// 홈 화면 전체
 export default function HomePage() {
   return (
     <>
