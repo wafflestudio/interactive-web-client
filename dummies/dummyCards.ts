@@ -1,11 +1,16 @@
 // 홈 화면 카드들 더미데이터
 
+export enum CardFeature {
+  HITS,
+  LIKES,
+}
 export interface dummyCardType {
   id: number;
   title: string;
   tags: string[];
   background: string;
   src: string;
+  feature?: CardFeature;
 }
 
 export const dummyCards = [
@@ -15,6 +20,7 @@ export const dummyCards = [
     tags: ["방탈출", "난이도상", "힌트없음"],
     background: "#5160AC",
     src: "https://images.unsplash.com/photo-1631641551473-fbe46919289d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDR8Ym84alFLVGFFMFl8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60",
+    feature: CardFeature.HITS,
   },
   {
     id: 1,
@@ -22,6 +28,7 @@ export const dummyCards = [
     tags: ["상식퀴즈", "첫작품"],
     background: "#37204E",
     src: "https://images.unsplash.com/photo-1657905041924-ffa7ab898773?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDl8Ym84alFLVGFFMFl8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60",
+    feature: CardFeature.LIKES,
   },
   {
     id: 2,
