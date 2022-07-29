@@ -94,6 +94,27 @@
       .cardItem {
         cursor: pointer;
         transition: transform 0.3s ease-out;
+        position: relative;
+
+        .cardMark {
+          position: absolute;
+          z-index: 1;
+          left: 9px;
+          top: -10px;
+          text-align: center;
+
+          .text {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+
+            span {
+              left: 2px;
+              color: white;
+              display: block;
+            }
+          }
+        }
 
         &:hover {
           transform: translate(0, -15px);
