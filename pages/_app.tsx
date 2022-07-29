@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import { applyMiddleware, createStore } from "redux";
 import rootReducer from "../modules";
 import "../styles/globals.css";
+import graphicsMiddleware from "../modules/middlewares/graphicsMiddleware";
 import logMiddleware from "../modules/middlewares/logMiddleware";
 import staticsMiddleware from "../modules/middlewares/staticsMiddleware";
 
