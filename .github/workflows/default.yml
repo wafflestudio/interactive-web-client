@@ -47,4 +47,4 @@ jobs:
         run: aws s3 sync --region ${{ secrets.AWS_REGION }} ./${{ secrets.BUILD_DIRECTORY }} ${{ secrets.AWS_S3_BUCKET_NAME }} --acl public-read --delete
 
       - name: CloudFront Invalidate Cache
-        run: aws s3 cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }} -paths '/*'
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }} --paths '/*'
