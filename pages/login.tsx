@@ -73,6 +73,9 @@ export default function Login() {
         <button type="button" onClick={onPing}>
           핑
         </button>
+        <button type="button" onClick={onPing}>
+          배포됨?
+        </button>
       </form>
     </div>
   );
