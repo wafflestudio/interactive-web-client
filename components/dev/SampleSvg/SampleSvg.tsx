@@ -1,5 +1,11 @@
+import { useEffect } from "react";
 import { batch, useDispatch } from "react-redux";
 import { ObjectDataType } from "../../../dummies/dummyInterface";
+import {
+  drawSample,
+  startDragConsole,
+  startDragRender,
+} from "../../../functions/pixi/renderer";
 import { endDrag, moveDrag, startDrag } from "../../../modules/drag";
 import { openSimpleInfoModal } from "../../../modules/modal";
 import { updateObject } from "../../../modules/staticObjects";
@@ -22,8 +28,9 @@ const SampleSvg = ({ item }: SampleSvgProps) => {
     top: geometry.y,
     zIndex: item.zIndex,
   };
-
-  console.log(geometry.w, geometry.h);
+  useEffect(() => {
+    drawSample(geometry.x, geometry.y);
+  });
 
   return (
     <svg
@@ -39,14 +46,17 @@ const SampleSvg = ({ item }: SampleSvgProps) => {
           fill={item.svgData.fill}
           stroke={item.svgData.stroke}
           onMouseDown={(e) => {
-            console.log("Click Success");
-            batch(() => {
+            startDragConsole(
+              "svg",
+              e.nativeEvent.offsetX,
+              e.nativeEvent.offsetY,
+            );
+            /* batch(() => {
               dispatch(updateObject({ ...item, visibility: false }));
               dispatch(
                 startDrag(item, e.nativeEvent.offsetX, e.nativeEvent.offsetY),
               );
-              dispatch(openSimpleInfoModal(item));
-            });
+            });*/
           }}
         />
       ) : null}

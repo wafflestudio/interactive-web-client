@@ -5,15 +5,20 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   async rewrites() {
+    console.log("rewrites called");
     return [
       {
         source: "/ping/",
-        destination: "http://iwe-server.shop/ping/",
+        destination: "https://iwe-server.shop/ping/",
       },
       {
-        source: "/api/v1/:path*/",
-        destination: "http://iwe-server.shop/api/v1/:path*/",
+        source: "/api/:path*",
+
+        destination: "https://iwe-server.shop/api/v1/:path*/",
       },
     ];
   },

@@ -17,14 +17,15 @@ export interface PutmeRequest {
   username?: string;
 }
 
-// interface SignupResponse extends User {
-//   accessToken: string
-// }
-
 const instance = axios.create({
-  baseURL: "/api/v1",
+  baseURL:
+    process.env.NODE_ENV === "development" ? "/api" : "http://iwe-server.shop/",
   withCredentials: true,
 });
+
+instance.defaults.withCredentials = true;
+instance.defaults.xsrfCookieName = "csrftoken";
+instance.defaults.xsrfHeaderName = "X-CSRFToken";
 
 // const setHeaderToken = (newToken: string | null) => {
 //   if (newToken) {
@@ -68,7 +69,7 @@ export const api = {
   },
 
   _login: async ({ user_id, password }: LoginRequest) => {
-    const response = await instance.post<UserDataType>("/login/", {
+    const response = await instance.post<UserDataType>("login", {
       user_id,
       password,
     });
@@ -76,13 +77,13 @@ export const api = {
   },
 
   _getme: async () => {
-    const response = await instance.get<UserDataType>("/users/me/");
+    const response = await instance.get<UserDataType>("users/me");
     return response;
   },
 
   _putme: async ({ username, email }: PutmeRequest) => {
     const response = await instance.put<UserDataType>(
-      "/users/me/",
+      "users/me",
       {
         username,
         email,
@@ -97,7 +98,7 @@ export const api = {
   },
 
   _deleteme: async () => {
-    await instance.delete<UserDataType>("/users/me/");
+    await instance.delete<UserDataType>("users/me");
     return;
   },
 

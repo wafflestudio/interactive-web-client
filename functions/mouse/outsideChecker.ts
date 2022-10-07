@@ -1,24 +1,18 @@
 import { Dispatch, MutableRefObject, SetStateAction, useEffect } from "react";
-import { ModalDataType } from "../../dummies/modalType";
 
 export const useOutsideChecker = (
   ref: MutableRefObject<null | HTMLDivElement>,
-  setModal: (target?: ModalDataType) => void,
-  target?: ModalDataType,
+  setModal: Dispatch<SetStateAction<boolean>>,
 ) => {
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as HTMLElement)) {
-        if (target) {
-          setModal(target);
-        } else {
-          setModal();
-        }
+        setModal(false);
       }
     };
-    document.addEventListener("click", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [ref]);
 };

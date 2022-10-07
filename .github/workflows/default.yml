@@ -31,13 +31,8 @@ jobs:
           
       - name: App Build
         run:
-          npm run build
-          
-      - name: Make Tar File
-        run:
-          tar -cpvzf ./$GITHUB_SHA.tgz *
-        shell: bash
-        
+          yarn export
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -49,10 +44,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: |
-          aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.tgz s3://iwe-code-deploy/build/$GITHUB_SHA.tgz
-          
-      - name: App Deploy
-        run:
-          aws deploy create-deployment --application-name interactive-client --deployment-config-name CodeDeployDefault.OneAtATime --deployment-group-name interactive-client-ec2 --s3-location bucket=iwe-code-deploy,bundleType=tgz,key=build/$GITHUB_SHA.tgz
-            
+        run: aws s3 sync --region ${{ secrets.AWS_REGION }} ./${{ secrets.BUILD_DIRECTORY }} ${{ secrets.AWS_S3_BUCKET_NAME }} --acl public-read --delete
+
+      - name: CloudFront Invalidate Cache
+        run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }} --paths '/*'

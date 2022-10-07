@@ -1,13 +1,13 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Develop Branch Test
+name: CI
 
 # Controls when the workflow will run
 on:
   workflow_dispatch:
-        
+
   # Triggers the workflow on push or pull request events but only for the main branch
-  pull_request_target:
+  push:
     branches:
       - develop
 
@@ -22,15 +22,24 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Repo checkout
-        uses: actions/checkout@v3
-        with:
-          ref: develop
+        uses: actions/checkout@v2
 
       # Runs a set of commands using the runners shell
       - name: Install Dependencies
-        run: 
-          yarn install
-          
+        run: yarn install
+
       - name: App Build
-        run:
-          npm run build
+        run: yarn export
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Upload to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: aws s3 sync --region ${{ secrets.AWS_REGION }} ./${{ secrets.BUILD_DIRECTORY }} ${{ secrets.AWS_S3_BUCKET_NAME_DEV }} --acl public-read --delete

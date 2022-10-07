@@ -8,6 +8,7 @@ import { saveAreas } from "../../../modules/areas";
 import { endDrag, moveDrag } from "../../../modules/drag";
 import { saveObjects } from "../../../modules/staticObjects";
 import AddModal from "../Modal/AddModal/AddModal";
+import Modals from "../Modal/Modals";
 import SampleArea from "../SampleDiv/SampleDiv";
 import SampleSvg from "../SampleSvg/SampleSvg";
 import styles from "./StaticContainer.module.scss";
@@ -62,11 +63,11 @@ const StaticContainer = () => {
     <div
       className={styles.container}
       onMouseMove={(e) => {
-        if (isDrag) {
-          const x = e.nativeEvent.offsetX;
-          const y = e.nativeEvent.offsetY;
-          dispatch(moveDrag(x, y, e.movementX, e.movementY));
-        }
+        //       if (isDrag) {
+        //       const x = e.nativeEvent.screenX;
+        //     const y = e.nativeEvent.screenY;
+        //   dispatch(moveDrag(x, y, e.movementX, e.movementY));
+        // }
       }}
       onMouseUp={() => {
         if (isDrag) {

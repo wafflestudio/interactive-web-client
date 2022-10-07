@@ -1,26 +1,42 @@
 import type { NextPage } from "next";
 
-import DynamicCanvas from "../../components/dev/DynamicCanvas/DynamicCanvas";
-import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { initiateWebSocket } from "../../api/websocket";
+import DynamicCanvas from "../../components/dev/DynamicCanvas/DynamicCanvas";
+import Modals from "../../components/dev/Modal/Modals";
+import PixiCanvas from "../../components/Editor/PixiCanvas/PixiCanvas";
+import StaticContainer from "../../components/Editor/StaticContainer/StaticContainer";
 import { sampleObjectDummy } from "../../dummies/sampleObjectDummy";
-import Modal from "../../components/dev/Modal/Modal";
+import { RootState } from "../../modules";
 import { saveObjects } from "../../modules/staticObjects";
-import StaticContainer from "../../components/dev/StaticContainer/StaticContainer";
 
 const Index: NextPage = () => {
   const dispatch = useDispatch();
-
+  const socket = useSelector((state: RootState) => state.ws.current);
+  const message = useSelector((state: RootState) => {
+    return state.ws.recentMessage;
+  });
   //API 호출을 통한 데이터 로드를 대신하는 부분
+
   useEffect(() => {
+    initiateWebSocket();
     dispatch(saveObjects(sampleObjectDummy));
+    return () => socket?.close();
   }, []);
+
+  useEffect(() => {
+    //    conssole.log(message);
+  }, [message]);
+
+  if (!socket) return null;
 
   return (
     <>
       <StaticContainer />
-      <DynamicCanvas />
-      <Modal />
+      <Modals />
+      <PixiCanvas />
     </>
   );
 };
