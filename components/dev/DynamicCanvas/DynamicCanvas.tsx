@@ -24,7 +24,7 @@ const DynamicCanvas = () => {
     if (canvasRef.current !== null) {
       canvasRef.current.width = canvasRef.current.clientWidth;
       canvasRef.current.height = canvasRef.current.clientHeight;
-      dispatch(saveCanvasRef(canvasRef));
+      // dispatch(saveCanvasRef(canvasRef));
     }
   }, [canvasRef]);
 
