@@ -17,49 +17,23 @@ export interface PutmeRequest {
   username?: string;
 }
 
-const instance = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "development" ? "/api" : "http://iwe-server.shop/",
-  withCredentials: true,
+export const instance = axios.create({
+  baseURL: "https://webgam-server.shop/",
 });
 
-instance.defaults.withCredentials = true;
-instance.defaults.xsrfCookieName = "csrftoken";
-instance.defaults.xsrfHeaderName = "X-CSRFToken";
-
-// const setHeaderToken = (newToken: string | null) => {
-//   if (newToken) {
-//     instance.defaults.headers.common['Authorization'] = newToken
-//   } else {
-//     delete instance.defaults.headers.common['Authorization']
-//   }
-// }
-
-// const ACCESS_TOKEN_KEY = 'accessToken'
-// const loadToken = (): string | null => localStorage.getItem(ACCESS_TOKEN_KEY)
-// const storeToken = (newToken: string | null) => {
-//   if (newToken) {
-//     localStorage.setItem(ACCESS_TOKEN_KEY, newToken)
-//   } else {
-//     localStorage.removeItem(ACCESS_TOKEN_KEY)
-//   }
-// }
-
-// export type AccessToken = string
-
-// // used later in AuthPage
-// export const _setAccessToken = (token: AccessToken | null) => {
-//   setHeaderToken(token)
-//   storeToken(token)
-// }
-// // used later in AuthPage
-// export const _getAccessToken = () => loadToken()
-
-// setHeaderToken(loadToken())
+export const authInstance = axios.create({
+  baseURL: "https://webgam-server.shop/",
+});
+authInstance.defaults.headers.common["Authorization"] = "Bearer";
 
 export const api = {
+  _ping: async () => {
+    const response = await instance.get("/ping");
+    return response;
+  },
+
   _signup: async ({ user_id, username, email, password }: SignupRequest) => {
-    const response = await instance.post<UserDataType>("/signup/", {
+    const response = await instance.post<UserDataType>("api/v1/signup/", {
       user_id,
       username,
       email,
@@ -69,41 +43,34 @@ export const api = {
   },
 
   _login: async ({ user_id, password }: LoginRequest) => {
-    const response = await instance.post<UserDataType>("login", {
+    const response = await instance.post<UserDataType>("api/v1/login/", {
       user_id,
       password,
     });
     return response;
   },
 
+  _refresh: async (refresh: string) => {
+    const response = await instance.post("api/v1/refresh/", { refresh });
+    return response;
+  },
+
+  //user CRUD
   _getme: async () => {
-    const response = await instance.get<UserDataType>("users/me");
+    const response = await authInstance.get<UserDataType>("api/v1/users/me/");
     return response;
   },
 
   _putme: async ({ username, email }: PutmeRequest) => {
-    const response = await instance.put<UserDataType>(
-      "users/me",
-      {
-        username,
-        email,
-      },
-      {
-        headers: {
-          "X-CSRFToken": "",
-        },
-      },
-    );
+    const response = await instance.put<UserDataType>("api/v1/users/me/", {
+      username,
+      email,
+    });
     return response;
   },
 
   _deleteme: async () => {
-    await instance.delete<UserDataType>("users/me");
+    await instance.delete<UserDataType>("api/v1/users/me");
     return;
-  },
-
-  _getuser: async (id: number) => {
-    const response = await instance.get<UserDataType>(`/${id}/`);
-    return response;
   },
 };
