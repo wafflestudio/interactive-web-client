@@ -6,7 +6,7 @@ import { toggleObjectVisibility, updateObject } from "../staticObjects";
 const staticsMiddleware: Middleware<unknown, any, any> =
   (store) => (next) => (action) => {
     const { type, payload } = action;
-    const data = payload.data as InteractionDataType;
+    const data = payload?.data as InteractionDataType;
     switch (type) {
       case START_DRAG:
         console.log("invisible");

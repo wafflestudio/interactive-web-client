@@ -1,23 +1,29 @@
 import type { AppProps } from "next/app";
-import { Provider } from "react-redux";
-import { applyMiddleware, createStore } from "redux";
-import rootReducer from "../modules";
+import { useDispatch } from "react-redux";
+import { api } from "../api/api";
+import { wrapper } from "../modules";
 import "../styles/globals.scss";
-import graphicsMiddleware from "../modules/middlewares/graphicsMiddleware";
-import logMiddleware from "../modules/middlewares/logMiddleware";
-import staticsMiddleware from "../modules/middlewares/staticsMiddleware";
-
-export const store = createStore(
-  rootReducer,
-  applyMiddleware(logMiddleware, staticsMiddleware),
-);
+import { signIn, signOut } from "../modules/auth";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
-  return (
-    <Provider store={store}>
-      <Component {...pageProps} />
-    </Provider>
-  );
+  const dispatch = useDispatch();
+
+  const checkAuth = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) {
+      try {
+        await api._getme();
+        dispatch(signIn());
+      } catch (e) {
+        console.log(e);
+        dispatch(signOut());
+      }
+    }
+    dispatch(signOut());
+  };
+  checkAuth();
+
+  return <Component {...pageProps} />;
 };
 
-export default MyApp;
+export default wrapper.withRedux(MyApp);
