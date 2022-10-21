@@ -1,9 +1,5 @@
 import axios, { AxiosError } from "axios";
-import {
-  AUTHORIZATION_KEY,
-  manageTokens,
-  REFRESH_TOKEN_KEY,
-} from "../functions/auth";
+import { manageTokens, REFRESH_TOKEN_KEY } from "../functions/auth";
 import { UserDataType } from "../types/types";
 
 interface LoginRequest {
@@ -38,7 +34,7 @@ export interface PutmeRequest {
 export const instance = axios.create();
 export const authInstance = axios.create();
 
-authInstance.defaults.headers.common[AUTHORIZATION_KEY] = "Bearer";
+authInstance.defaults.headers.common["Authorization"] = "Bearer";
 
 export const api = {
   _signup: async ({ user_id, username, email, password }: SignupRequest) => {
@@ -106,9 +102,7 @@ authInstance.interceptors.response.use(
         try {
           const { data } = await api._refresh(refreshToken);
           manageTokens(data);
-          originalRequest.headers![
-            AUTHORIZATION_KEY
-          ] = `Bearer ${data.access_token}`;
+          originalRequest.headers!.Authorization = `Bearer ${data.access_token}`;
           return authInstance(originalRequest);
         } catch (e) {
           return Promise.reject(error);
