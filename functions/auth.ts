@@ -1,10 +1,8 @@
-import { authInstance, LoginResponse } from "../api/api";
+import { authInstance, LoginResponse, RefreshResponse } from "../api/api";
 
-export const manageTokens = (data: LoginResponse) => {
-  const { accessToken, refreshToken } = data;
-  localStorage.setItem("refreshToken", refreshToken);
-  localStorage.setItem("accessToken", accessToken);
+export const manageTokens = (data: RefreshResponse) => {
+  localStorage.setItem("accessToken", data.access);
   authInstance.defaults.headers.common[
     "Authorization"
-  ] = `Bearer ${accessToken}`;
+  ] = `Bearer ${data.access}`;
 };

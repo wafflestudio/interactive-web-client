@@ -7,9 +7,17 @@ interface LoginRequest {
   password: string;
 }
 
+export interface RefreshResponse {
+  access: string;
+}
+
 export interface LoginResponse {
-  accessToken: string;
-  refreshToken: string;
+  user: UserDataType;
+  message: string;
+  token: {
+    accessToken: string;
+    refreshToken: string;
+  };
 }
 
 interface SignupRequest extends LoginRequest {
@@ -48,7 +56,7 @@ export const api = {
   },
 
   _refresh: async (refresh: string) => {
-    const response = await instance.post<LoginResponse>("/api/refresh/", {
+    const response = await instance.post<RefreshResponse>("/api/refresh/", {
       refresh,
     });
     return response;
@@ -85,7 +93,7 @@ authInstance.interceptors.response.use(
         try {
           const { data } = await api._refresh(refreshToken);
           manageTokens(data);
-          originalRequest.headers!.Authorization = `Bearer ${data.accessToken}`;
+          originalRequest.headers!.Authorization = `Bearer ${data.access}`;
           return authInstance(originalRequest);
         } catch (e) {
           return Promise.reject(error);
