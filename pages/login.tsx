@@ -11,7 +11,6 @@ export default function Login() {
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
-
   const router = useRouter();
 
   const onUserIdChange: React.ChangeEventHandler<HTMLInputElement> = ({

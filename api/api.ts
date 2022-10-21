@@ -73,7 +73,7 @@ export const api = {
   },
 
   _putme: async ({ username, email }: PutmeRequest) => {
-    const response = await instance.put<UserDataType>("/api/users/me/", {
+    const response = await authInstance.put<UserDataType>("/api/users/me/", {
       username,
       email,
     });
