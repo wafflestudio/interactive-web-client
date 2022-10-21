@@ -23,18 +23,14 @@ export interface PutmeRequest {
   username?: string;
 }
 
-export const instance = axios.create({
-  baseURL: "https://webgam-server.shop/",
-});
+export const instance = axios.create({});
+export const authInstance = axios.create({});
 
-export const authInstance = axios.create({
-  baseURL: "https://webgam-server.shop/",
-});
 authInstance.defaults.headers.common["Authorization"] = "Bearer";
 
 export const api = {
   _signup: async ({ user_id, username, email, password }: SignupRequest) => {
-    const response = await instance.post<LoginResponse>("api/v1/signup/", {
+    const response = await instance.post<LoginResponse>("/api/signup/", {
       user_id,
       username,
       email,
@@ -44,7 +40,7 @@ export const api = {
   },
 
   _login: async ({ user_id, password }: LoginRequest) => {
-    const response = await instance.post<LoginResponse>("api/v1/login/", {
+    const response = await instance.post<LoginResponse>("/api/login/", {
       user_id,
       password,
     });
@@ -52,7 +48,7 @@ export const api = {
   },
 
   _refresh: async (refresh: string) => {
-    const response = await instance.post<LoginResponse>("api/v1/refresh/", {
+    const response = await instance.post<LoginResponse>("/api/refresh/", {
       refresh,
     });
     return response;
@@ -60,12 +56,12 @@ export const api = {
 
   //user CRUD
   _getme: async () => {
-    const response = await authInstance.get<UserDataType>("api/v1/users/me/");
+    const response = await authInstance.get<UserDataType>("/api/users/me/");
     return response;
   },
 
   _putme: async ({ username, email }: PutmeRequest) => {
-    const response = await instance.put<UserDataType>("api/v1/users/me/", {
+    const response = await instance.put<UserDataType>("/api/users/me/", {
       username,
       email,
     });
@@ -73,7 +69,7 @@ export const api = {
   },
 
   _deleteme: async () => {
-    await instance.delete<UserDataType>("api/v1/users/me");
+    await instance.delete<UserDataType>("/api/users/me");
     return;
   },
 };
