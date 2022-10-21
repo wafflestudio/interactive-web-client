@@ -5,6 +5,8 @@ import { api, authInstance } from "../api/api";
 import { manageTokens } from "../functions/auth";
 import { signIn } from "../modules/auth";
 import styles from "./loginAndSignup.module.scss";
+import axios, { AxiosError } from "axios";
+import { loginError } from "../api/error";
 
 export default function Login() {
   const [user_id, setUserId] = useState("");
@@ -30,7 +32,7 @@ export default function Login() {
       dispatch(signIn);
       await router.push("/");
     } catch (e) {
-      console.log(e);
+      if (axios.isAxiosError(e)) loginError(e);
     }
   };
 

@@ -4,6 +4,8 @@ import { api } from "../api/api";
 import styles from "./loginAndSignup.module.scss";
 import { useDispatch } from "react-redux";
 import { signIn } from "../modules/auth";
+import axios from "axios";
+import { signUpError } from "../api/error";
 
 export default function Login() {
   const [user_id, setUserId] = useState("");
@@ -38,7 +40,7 @@ export default function Login() {
       dispatch(signIn);
       console.log(data);
     } catch (e) {
-      console.log(e);
+      if (axios.isAxiosError(e)) signUpError(e);
     }
   };
 

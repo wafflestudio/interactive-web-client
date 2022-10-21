@@ -6,6 +6,8 @@ import { setUser } from "../../modules/user";
 import { manageTokens } from "../../functions/auth";
 import { signIn } from "../../modules/auth";
 import { useRouter } from "next/router";
+import axios from "axios";
+import { deleteMeError, getUserError, putMeError } from "../../api/error";
 
 const User = () => {
   const [input, setInput] = useState<PutmeRequest>({});
@@ -41,9 +43,8 @@ const User = () => {
       const { data } = await api._putme(input);
       dispatch(setUser({ ...data, isLoggedIn: true }));
       setInput({});
-      console.log(data);
     } catch (e) {
-      console.log(e);
+      if (axios.isAxiosError(e)) putMeError(e);
     }
   };
 
@@ -55,7 +56,7 @@ const User = () => {
       dispatch(signIn);
       await router.push("/");
     } catch (e) {
-      console.log(e);
+      if (axios.isAxiosError(e)) deleteMeError(e);
     }
   };
 
@@ -69,7 +70,7 @@ const User = () => {
         setId("");
       }
     } catch (e) {
-      console.log(e);
+      if (axios.isAxiosError(e)) getUserError(e);
     }
   };
 
