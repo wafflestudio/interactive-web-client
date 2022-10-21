@@ -33,11 +33,6 @@ export const authInstance = axios.create({
 authInstance.defaults.headers.common["Authorization"] = "Bearer";
 
 export const api = {
-  _ping: async () => {
-    const response = await instance.get("/ping");
-    return response;
-  },
-
   _signup: async ({ user_id, username, email, password }: SignupRequest) => {
     const response = await instance.post<LoginResponse>("api/v1/signup/", {
       user_id,

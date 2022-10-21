@@ -6,15 +6,6 @@ import { manageTokens } from "../functions/auth";
 import { signIn } from "../modules/auth";
 import styles from "./loginAndSignup.module.scss";
 
-export const onPing = async () => {
-  try {
-    const response = await api._ping();
-    console.log(response);
-  } catch (e) {
-    console.log(e);
-  }
-};
-
 export default function Login() {
   const [user_id, setUserId] = useState("");
   const [password, setPassword] = useState("");
@@ -70,12 +61,6 @@ export default function Login() {
           />
         </label>
         <button type="submit">로그인</button>
-        <button type="button" onClick={onPing}>
-          핑
-        </button>
-        <button type="button" onClick={onPing}>
-          배포됨?
-        </button>
       </form>
     </div>
   );

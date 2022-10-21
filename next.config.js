@@ -12,13 +12,8 @@ const nextConfig = {
     console.log("rewrites called");
     return [
       {
-        source: "/ping/",
-        destination: "https://iwe-server.shop/ping/",
-      },
-      {
         source: "/api/:path*",
-
-        destination: "https://iwe-server.shop/api/v1/:path*/",
+        destination: "https://webgam-server.shop/api/v1/:path*/",
       },
     ];
   },
