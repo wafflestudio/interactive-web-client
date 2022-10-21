@@ -31,8 +31,8 @@ export interface PutmeRequest {
   username?: string;
 }
 
-export const instance = axios.create({});
-export const authInstance = axios.create({});
+export const instance = axios.create();
+export const authInstance = axios.create();
 
 authInstance.defaults.headers.common["Authorization"] = "Bearer";
 
@@ -86,14 +86,14 @@ authInstance.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     const { config } = error;
-    if (error.response?.status === 401 && error.message === "token_not_valid") {
+    if (error.response?.status === 401 || error.response?.status == 403) {
       const originalRequest = config;
       const refreshToken = localStorage.getItem("refreshToken");
       if (refreshToken) {
         try {
           const { data } = await api._refresh(refreshToken);
           manageTokens(data);
-          originalRequest.headers!.Authorization = `Bearer ${data.access}`;
+          originalRequest.headers!.Authorization = `Bearer ${data.access_token}`;
           return authInstance(originalRequest);
         } catch (e) {
           return Promise.reject(error);
