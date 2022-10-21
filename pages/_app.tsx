@@ -4,6 +4,7 @@ import { api } from "../api/api";
 import { wrapper } from "../modules";
 import "../styles/globals.scss";
 import { signIn, signOut } from "../modules/auth";
+import { useEffect } from "react";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const dispatch = useDispatch();
@@ -21,7 +22,10 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
     }
     dispatch(signOut());
   };
-  checkAuth();
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
 
   return <Component {...pageProps} />;
 };
