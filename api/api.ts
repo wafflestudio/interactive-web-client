@@ -94,7 +94,7 @@ authInstance.interceptors.response.use(
         try {
           const { data } = await api._refresh(refreshToken);
           manageTokens(data);
-          originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
+          originalRequest.headers!.Authorization = `Bearer ${data.accessToken}`;
           return authInstance(originalRequest);
         } catch (e) {
           return Promise.reject(error);
