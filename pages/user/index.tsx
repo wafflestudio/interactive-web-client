@@ -40,6 +40,7 @@ const User = () => {
     try {
       const { data } = await api._putme(input);
       dispatch(setUser({ ...data, isLoggedIn: true }));
+      setInput({});
       console.log(data);
     } catch (e) {
       console.log(e);
@@ -65,6 +66,7 @@ const User = () => {
         const { data } = await api._getuser(id);
         console.log(data);
         dispatch(setUser({ ...data, isLoggedIn: true }));
+        setId("");
       }
     } catch (e) {
       console.log(e);
