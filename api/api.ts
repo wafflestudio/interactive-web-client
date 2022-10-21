@@ -1,9 +1,15 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { manageTokens } from "../functions/auth";
 import { UserDataType } from "../types/types";
 
 interface LoginRequest {
   user_id: string;
   password: string;
+}
+
+export interface LoginResponse {
+  accessToken: string;
+  refreshToken: string;
 }
 
 interface SignupRequest extends LoginRequest {
@@ -33,7 +39,7 @@ export const api = {
   },
 
   _signup: async ({ user_id, username, email, password }: SignupRequest) => {
-    const response = await instance.post<UserDataType>("api/v1/signup/", {
+    const response = await instance.post<LoginResponse>("api/v1/signup/", {
       user_id,
       username,
       email,
@@ -43,7 +49,7 @@ export const api = {
   },
 
   _login: async ({ user_id, password }: LoginRequest) => {
-    const response = await instance.post<UserDataType>("api/v1/login/", {
+    const response = await instance.post<LoginResponse>("api/v1/login/", {
       user_id,
       password,
     });
@@ -51,7 +57,9 @@ export const api = {
   },
 
   _refresh: async (refresh: string) => {
-    const response = await instance.post("api/v1/refresh/", { refresh });
+    const response = await instance.post<LoginResponse>("api/v1/refresh/", {
+      refresh,
+    });
     return response;
   },
 
@@ -74,3 +82,25 @@ export const api = {
     return;
   },
 };
+
+authInstance.interceptors.response.use(
+  (response) => response,
+  async (error: AxiosError) => {
+    const { config } = error;
+    if (error.response?.status === 401 && error.message === "token_not_valid") {
+      const originalRequest = config;
+      const refreshToken = localStorage.getItem("refreshToken");
+      if (refreshToken) {
+        try {
+          const { data } = await api._refresh(refreshToken);
+          manageTokens(data);
+          originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
+          return authInstance(originalRequest);
+        } catch (e) {
+          return Promise.reject(error);
+        }
+      }
+    }
+    return Promise.reject(error);
+  },
+);

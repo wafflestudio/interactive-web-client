@@ -1,8 +1,9 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { api, instance } from "../api/api";
-import { setUser } from "../modules/user";
+import { api, authInstance } from "../api/api";
+import { manageTokens } from "../functions/auth";
+import { signIn } from "../modules/auth";
 import styles from "./loginAndSignup.module.scss";
 
 export const onPing = async () => {
@@ -29,15 +30,15 @@ export default function Login() {
     target,
   }) => setPassword(target.value);
 
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   const onLogin: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
     try {
       const { data } = await api._login({ user_id, password });
       console.log(data);
-
-      data.isLoggedIn = true;
-      dispatch(setUser(data));
+      manageTokens(data);
+      dispatch(signIn);
 
       router.push("/");
     } catch (e) {
