@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { api, PutmeRequest } from "../../api/api";
 import { RootState } from "../../modules";
 import { setUser } from "../../modules/user";
-import { manageTokens } from "../../functions/auth";
-import { signIn } from "../../modules/auth";
+import { removeTokens } from "../../functions/auth";
+import { signOut } from "../../modules/auth";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { deleteMeError, getUserError, putMeError } from "../../api/error";
@@ -52,8 +52,8 @@ const User = () => {
     e.preventDefault();
     try {
       await api._deleteme();
-      manageTokens({ access_token: "" });
-      dispatch(signIn);
+      removeTokens();
+      dispatch(signOut);
       await router.push("/");
     } catch (e) {
       if (axios.isAxiosError(e)) deleteMeError(e);
@@ -65,8 +65,6 @@ const User = () => {
     try {
       if (!isNaN(parseInt(id))) {
         const { data } = await api._getuser(id);
-        console.log(data);
-        dispatch(setUser({ ...data, isLoggedIn: true }));
         setId("");
       }
     } catch (e) {
