@@ -1,5 +1,9 @@
 import axios, { AxiosError } from "axios";
-import { manageTokens } from "../functions/auth";
+import {
+  AUTHORIZATION_KEY,
+  manageTokens,
+  REFRESH_TOKEN_KEY,
+} from "../functions/auth";
 import { UserDataType } from "../types/types";
 
 interface LoginRequest {
@@ -34,7 +38,7 @@ export interface PutmeRequest {
 export const instance = axios.create();
 export const authInstance = axios.create();
 
-authInstance.defaults.headers.common["Authorization"] = "Bearer";
+authInstance.defaults.headers.common[AUTHORIZATION_KEY] = "Bearer";
 
 export const api = {
   _signup: async ({ user_id, username, email, password }: SignupRequest) => {
@@ -77,8 +81,13 @@ export const api = {
   },
 
   _deleteme: async () => {
-    await instance.delete<UserDataType>("/api/users/me");
+    await authInstance.delete<null>("/api/users/me/");
     return;
+  },
+
+  _getuser: async (id: string) => {
+    const response = await authInstance.get<UserDataType>(`/api/users/${id}`);
+    return response;
   },
 };
 
@@ -86,14 +95,20 @@ authInstance.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     const { config } = error;
-    if (error.response?.status === 401 || error.response?.status == 403) {
+    if (
+      error.response?.status === 401 ||
+      (error.response?.status == 403 &&
+        error.response?.data.code == "token_not_valid")
+    ) {
       const originalRequest = config;
-      const refreshToken = localStorage.getItem("refreshToken");
+      const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
       if (refreshToken) {
         try {
           const { data } = await api._refresh(refreshToken);
           manageTokens(data);
-          originalRequest.headers!.Authorization = `Bearer ${data.access_token}`;
+          originalRequest.headers![
+            AUTHORIZATION_KEY
+          ] = `Bearer ${data.access_token}`;
           return authInstance(originalRequest);
         } catch (e) {
           return Promise.reject(error);

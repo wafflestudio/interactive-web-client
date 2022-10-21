@@ -2,10 +2,11 @@ import React from "react";
 import { ObjectDataType } from "../dummies/dummyInterface";
 
 export interface UserDataType {
-  user_id: string;
-  username: string;
+  user_id: string | null;
+  username: string | null;
   email: string | null;
-  date_joined: string;
+  date_joined: string | null;
+  isLoggedIn: boolean;
 }
 
 export interface CategoryType {

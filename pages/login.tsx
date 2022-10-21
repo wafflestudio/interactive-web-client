@@ -29,7 +29,7 @@ export default function Login() {
       console.log(data);
       manageTokens(data.token);
       dispatch(signIn);
-      router.push("/");
+      await router.push("/");
     } catch (e) {
       console.log(e);
     }
