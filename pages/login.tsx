@@ -24,13 +24,11 @@ export default function Login() {
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   const onLogin: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-
     try {
       const { data } = await api._login({ user_id, password });
       console.log(data);
-      manageTokens(data);
+      manageTokens(data.token);
       dispatch(signIn);
-
       router.push("/");
     } catch (e) {
       console.log(e);

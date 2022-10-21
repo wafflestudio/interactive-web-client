@@ -7,18 +7,18 @@ interface LoginRequest {
   password: string;
 }
 
-export interface RefreshResponse {
-  access: string;
+export interface TokensType {
+  access_token: string;
+  refresh_token?: string;
 }
 
 export interface LoginResponse {
   user: UserDataType;
   message: string;
-  token: {
-    accessToken: string;
-    refreshToken: string;
-  };
+  token: TokensType;
 }
+
+interface RefreshResponse extends TokensType {}
 
 interface SignupRequest extends LoginRequest {
   email: string;
