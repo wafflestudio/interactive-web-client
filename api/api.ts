@@ -55,9 +55,9 @@ export const api = {
     return response;
   },
 
-  _refresh: async (refresh: string) => {
+  _refresh: async (refresh_token: string) => {
     const response = await instance.post<RefreshResponse>("/api/refresh/", {
-      refresh,
+      refresh_token,
     });
     return response;
   },
