@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { manageTokens, REFRESH_TOKEN_KEY } from "../functions/auth";
-import { UserDataType } from "../types/types";
+import { ProjectDataType, UserDataType } from "../types/types";
 
 interface LoginRequest {
   user_id: string;
@@ -18,7 +18,7 @@ export interface LoginResponse {
   token: TokensType;
 }
 
-interface RefreshResponse extends TokensType {}
+type RefreshResponse = TokensType;
 
 interface SignupRequest extends LoginRequest {
   email: string;
@@ -83,6 +83,26 @@ export const api = {
 
   _getuser: async (id: string) => {
     const response = await authInstance.get<UserDataType>(`/api/users/${id}`);
+    return response;
+  },
+
+  _getmyproject: async () => {
+    const response = await authInstance.get<ProjectDataType[]>(
+      "api/project/me/",
+    );
+    return response;
+  },
+  _postproject: async (title: string) => {
+    const response = await authInstance.post<ProjectDataType[]>(
+      "api/project/",
+      { title },
+    );
+    return response;
+  },
+  _getProject: async (id: number) => {
+    const response = await authInstance.get<ProjectDataType>(
+      `api/project/${id}`,
+    );
     return response;
   },
 };
