@@ -1,13 +1,23 @@
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import MoreIcon from "../../assets/svgs/MoreIcon";
 import styles from "./HomePage.module.scss";
 
 // 홈 헤더
-const HomeHeader = () => {
+
+const HomeHeader = ({
+  setIsSidebar,
+}: {
+  setIsSidebar: (bool: boolean) => void;
+}) => {
   return (
     <header className={styles.homeHeader}>
-      <button className={styles.moreButton}>
+      <button
+        className={styles.moreButton}
+        onClick={() => {
+          setIsSidebar(true);
+        }}
+      >
         <MoreIcon />
       </button>
       <div className={styles.user}>

@@ -9,6 +9,14 @@ export interface UserDataType {
   isLoggedIn: boolean;
 }
 
+export interface ProjectDataType {
+  id: number;
+  writer: UserDataType;
+  title: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface CategoryType {
   id: number;
   navigator: string;
