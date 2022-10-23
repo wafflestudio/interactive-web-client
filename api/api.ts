@@ -34,8 +34,6 @@ export interface PutmeRequest {
 export const instance = axios.create();
 export const authInstance = axios.create();
 
-authInstance.defaults.headers.common["Authorization"] = "Bearer";
-
 export const api = {
   _signup: async ({ user_id, username, email, password }: SignupRequest) => {
     const response = await instance.post<LoginResponse>("/api/signup/", {
