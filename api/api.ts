@@ -34,7 +34,7 @@ export interface PutmeRequest {
 export const instance = axios.create();
 export const authInstance = axios.create();
 
-authInstance.defaults.headers.common["Authorization"] = "Bearer";
+authInstance.defaults.headers.common["Authorization"] = "Bearer ";
 
 export const api = {
   _signup: async ({ user_id, username, email, password }: SignupRequest) => {
@@ -55,9 +55,9 @@ export const api = {
     return response;
   },
 
-  _refresh: async (refresh: string) => {
+  _refresh: async (refresh_token: string) => {
     const response = await instance.post<RefreshResponse>("/api/refresh/", {
-      refresh,
+      refresh_token,
     });
     return response;
   },

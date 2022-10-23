@@ -2,11 +2,12 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { api, authInstance } from "../api/api";
-import { manageTokens } from "../functions/auth";
+import { manageTokens, removeTokens } from "../functions/auth";
 import { signIn } from "../modules/auth";
 import styles from "./loginAndSignup.module.scss";
 import axios, { AxiosError } from "axios";
 import { loginError } from "../api/error";
+import { removeUser } from "../modules/user";
 
 export default function Login() {
   const [user_id, setUserId] = useState("");
@@ -36,6 +37,12 @@ export default function Login() {
     }
   };
 
+  const onLogout: React.MouseEventHandler<HTMLButtonElement> = async (e) => {
+    e.preventDefault();
+    dispatch(removeUser());
+    removeTokens();
+  };
+
   return (
     <div className={styles.container}>
       <form className={styles.form} onSubmit={onLogin}>
@@ -60,6 +67,7 @@ export default function Login() {
           />
         </label>
         <button type="submit">로그인</button>
+        <button onClick={onLogout}>로그아웃</button>
       </form>
     </div>
   );
