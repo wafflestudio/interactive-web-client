@@ -1,13 +1,13 @@
+import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { api, authInstance } from "../api/api";
+import { loginError } from "../api/error";
 import { manageTokens, removeTokens } from "../functions/auth";
 import { signIn } from "../modules/auth";
-import styles from "./loginAndSignup.module.scss";
-import axios, { AxiosError } from "axios";
-import { loginError } from "../api/error";
 import { removeUser } from "../modules/user";
+import styles from "./loginAndSignup.module.scss";
 
 export default function Login() {
   const [user_id, setUserId] = useState("");
@@ -36,7 +36,6 @@ export default function Login() {
       if (axios.isAxiosError(e)) loginError(e);
     }
   };
-
   const onLogout: React.MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault();
     dispatch(removeUser());
