@@ -21,24 +21,29 @@ const HomeSidebar = ({ setIsSidebar }: HomeSidebarProps) => {
       console.log(e);
     }
   };
-  const onAddProject: React.FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
-    try {
-      const { data } = await api._postproject(titleInput);
-      console.log(data);
-      onLoadProjects();
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  const onClickProject = async (id: number) => {
-    try {
-      const { data } = await api._getProject(id);
-      console.log(data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  const onAddProject =
+    (title: string): React.FormEventHandler<HTMLFormElement> =>
+    async (e) => {
+      e.preventDefault();
+      try {
+        const { data } = await api._postproject(title);
+        console.log(data);
+        onLoadProjects();
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+  const onClickProject =
+    (id: number): React.MouseEventHandler<HTMLLIElement> =>
+    async (e) => {
+      try {
+        const { data } = await api._getProject(id);
+        console.log(data);
+      } catch (e) {
+        console.log(e);
+      }
+    };
 
   useEffect(() => {
     onLoadProjects();
@@ -60,9 +65,7 @@ const HomeSidebar = ({ setIsSidebar }: HomeSidebarProps) => {
           <li
             className={styles.projectItem}
             key={project.id}
-            onClick={() => {
-              onClickProject(project.id);
-            }}
+            onClick={onClickProject(project.id)}
           >
             {project.title}
           </li>
@@ -76,7 +79,7 @@ const HomeSidebar = ({ setIsSidebar }: HomeSidebarProps) => {
       >
         + 새 프로젝트 만들기
         {isTitleModalOpen && (
-          <form className={styles.addForm} onSubmit={onAddProject}>
+          <form className={styles.addForm} onSubmit={onAddProject(titleInput)}>
             <input
               value={titleInput}
               onChange={(e) => {
@@ -90,5 +93,4 @@ const HomeSidebar = ({ setIsSidebar }: HomeSidebarProps) => {
     </aside>
   );
 };
-
 export default HomeSidebar;
