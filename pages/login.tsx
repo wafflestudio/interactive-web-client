@@ -30,7 +30,7 @@ export default function Login() {
       const { data } = await api._login({ user_id, password });
       console.log(data);
       manageTokens(data.token);
-      dispatch(signIn);
+      dispatch(signIn());
       await router.push("/");
     } catch (e) {
       if (axios.isAxiosError(e)) loginError(e);
