@@ -1,5 +1,7 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { api } from "../../api/api";
+import { loginError, postProjectError } from "../../api/error";
 import { ProjectDataType } from "../../types/types";
 import styles from "./HomePage.module.scss";
 
@@ -30,7 +32,7 @@ const HomeSidebar = ({ setIsSidebar }: HomeSidebarProps) => {
         console.log(data);
         onLoadProjects();
       } catch (e) {
-        console.log(e);
+        if (axios.isAxiosError(e)) postProjectError(e);
       }
     };
 

@@ -42,3 +42,9 @@ export const getUserError = (error: AxiosError) => {
     window.alert(error.response?.data.detail);
   }
 };
+
+export const postProjectError = (error: AxiosError) => {
+  if (error.response?.status === 400) {
+    window.alert("제목을 입력하세요");
+  }
+};
