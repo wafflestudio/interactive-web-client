@@ -1,14 +1,18 @@
 import { useState } from "react";
 import { api } from "../api/api";
 
-import { onPing } from "./login";
 import styles from "./loginAndSignup.module.scss";
+import { useDispatch } from "react-redux";
+import { signIn } from "../modules/auth";
+import axios from "axios";
+import { signUpError } from "../api/error";
 
 export default function Login() {
   const [user_id, setUserId] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
 
   const onUserIdChange: React.ChangeEventHandler<HTMLInputElement> = ({
     target,
@@ -27,10 +31,16 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const response = api._signup({ user_id, username, email, password });
-      console.log(response);
+      const { data } = await api._signup({
+        user_id,
+        username,
+        email,
+        password,
+      });
+      dispatch(signIn);
+      console.log(data);
     } catch (e) {
-      console.log(e);
+      if (axios.isAxiosError(e)) signUpError(e);
     }
   };
 
@@ -78,9 +88,6 @@ export default function Login() {
           />
         </label>
         <button type="submit">회원가입</button>
-        <button type="button" onClick={onPing}>
-          핑
-        </button>
       </form>
     </div>
   );

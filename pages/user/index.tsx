@@ -3,26 +3,30 @@ import { useDispatch, useSelector } from "react-redux";
 import { api, PutmeRequest } from "../../api/api";
 import { RootState } from "../../modules";
 import { setUser } from "../../modules/user";
+import { removeTokens } from "../../functions/auth";
+import { signOut } from "../../modules/auth";
+import { useRouter } from "next/router";
+import axios from "axios";
+import { deleteMeError, getUserError, putMeError } from "../../api/error";
 
 const User = () => {
-  const dispatch = useDispatch();
   const [input, setInput] = useState<PutmeRequest>({});
+  const [id, setId] = useState<string>("");
   const onUsernameChange: React.ChangeEventHandler<HTMLInputElement> = ({
     target,
   }) => setInput({ ...input, username: target.value });
   const onEmailChange: React.ChangeEventHandler<HTMLInputElement> = ({
     target,
   }) => setInput({ ...input, email: target.value });
-
-  const onModify: React.FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
-    try {
-      const { data } = await api._putme(input);
-      dispatch(setUser({ ...data, isLoggedIn: true }));
-    } catch (e) {
-      console.log(e);
-    }
+  const onUserIdChange: React.ChangeEventHandler<HTMLInputElement> = ({
+    target,
+  }) => {
+    setId(target.value);
   };
+
+  const dispatch = useDispatch();
+  const router = useRouter();
+
   const user = useSelector((state: RootState) => state.user);
   useEffect(() => {
     if (user.username && user.email) {
@@ -33,30 +37,86 @@ const User = () => {
     }
   }, []);
 
+  const onModify: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    try {
+      const { data } = await api._putme(input);
+      dispatch(setUser({ ...data, isLoggedIn: true }));
+      setInput({});
+    } catch (e) {
+      if (axios.isAxiosError(e)) putMeError(e);
+    }
+  };
+
+  const onResign: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    try {
+      await api._deleteme();
+      removeTokens();
+      dispatch(signOut);
+      await router.push("/");
+    } catch (e) {
+      if (axios.isAxiosError(e)) deleteMeError(e);
+    }
+  };
+
+  const onGetUser: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    try {
+      if (!isNaN(parseInt(id))) {
+        const { data } = await api._getuser(id);
+        setId("");
+      }
+    } catch (e) {
+      if (axios.isAxiosError(e)) getUserError(e);
+    }
+  };
+
   return (
-    <form onSubmit={onModify}>
-      <label htmlFor="new_username">
-        새 이름
-        <input
-          type="text"
-          id="new_username"
-          name="new_username"
-          value={input.username}
-          onChange={onUsernameChange}
-        />
-      </label>
-      <label htmlFor="new_email">
-        새 이메일
-        <input
-          type="text"
-          id="new_email"
-          name="new_email"
-          value={input.email}
-          onChange={onEmailChange}
-        />
-      </label>
-      <button type="submit">수정</button>
-    </form>
+    <div>
+      <form onSubmit={onModify}>
+        <label htmlFor="new_username">
+          새 이름
+          <input
+            type="text"
+            id="new_username"
+            name="new_username"
+            value={input.username}
+            onChange={onUsernameChange}
+          />
+        </label>
+        <label htmlFor="new_email">
+          새 이메일
+          <input
+            type="text"
+            id="new_email"
+            name="new_email"
+            value={input.email}
+            onChange={onEmailChange}
+          />
+        </label>
+        <button type="submit">수정</button>
+      </form>
+      <form onSubmit={onResign}>
+        <label htmlFor="confirm_resign">
+          탈퇴하시겠습니까?
+          <button type={"submit"}>탈퇴</button>
+        </label>
+      </form>
+      <form onSubmit={onGetUser}>
+        <label htmlFor="user_id">
+          유저 ID
+          <input
+            type="text"
+            id="user_id"
+            name="user_id"
+            value={id}
+            onChange={onUserIdChange}
+          />
+        </label>
+        <button type="submit">다른 유저 조회</button>
+      </form>
+    </div>
   );
 };
 

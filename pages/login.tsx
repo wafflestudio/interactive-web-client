@@ -5,22 +5,14 @@ import { api, authInstance } from "../api/api";
 import { manageTokens } from "../functions/auth";
 import { signIn } from "../modules/auth";
 import styles from "./loginAndSignup.module.scss";
-
-export const onPing = async () => {
-  try {
-    const response = await api._ping();
-    console.log(response);
-  } catch (e) {
-    console.log(e);
-  }
-};
+import axios, { AxiosError } from "axios";
+import { loginError } from "../api/error";
 
 export default function Login() {
   const [user_id, setUserId] = useState("");
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
-
   const router = useRouter();
 
   const onUserIdChange: React.ChangeEventHandler<HTMLInputElement> = ({
@@ -33,16 +25,14 @@ export default function Login() {
   // eslint-disable-next-line @typescript-eslint/no-misused-promises
   const onLogin: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-
     try {
       const { data } = await api._login({ user_id, password });
       console.log(data);
-      manageTokens(data);
+      manageTokens(data.token);
       dispatch(signIn);
-
-      router.push("/");
+      await router.push("/");
     } catch (e) {
-      console.log(e);
+      if (axios.isAxiosError(e)) loginError(e);
     }
   };
 
@@ -70,12 +60,6 @@ export default function Login() {
           />
         </label>
         <button type="submit">로그인</button>
-        <button type="button" onClick={onPing}>
-          핑
-        </button>
-        <button type="button" onClick={onPing}>
-          배포됨?
-        </button>
       </form>
     </div>
   );
