@@ -2,6 +2,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import MoreIcon from "../../assets/svgs/MoreIcon";
 import styles from "./HomePage.module.scss";
+import { router } from "next/client";
 
 // 홈 헤더
 
@@ -32,7 +33,12 @@ const HomeHeader = ({
             <Link href={"/signup"}>회원가입</Link>
           </button>
         </div>
-        <div className={styles.profile} />
+        <div
+          className={styles.profile}
+          onClick={async () => {
+            await router.push("/user");
+          }}
+        />
       </div>
     </header>
   );
