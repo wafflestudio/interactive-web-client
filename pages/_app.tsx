@@ -11,7 +11,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   const dispatch = useDispatch();
 
   const checkAuth = async () => {
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
 
     if (accessToken) {
       authInstance.defaults.headers.common[

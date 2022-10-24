@@ -1,8 +1,8 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import MoreIcon from "../../assets/svgs/MoreIcon";
 import styles from "./HomePage.module.scss";
-import { router } from "next/client";
 
 // 홈 헤더
 
@@ -11,6 +11,8 @@ const HomeHeader = ({
 }: {
   setIsSidebar: (bool: boolean) => void;
 }) => {
+  const router = useRouter();
+
   return (
     <header className={styles.homeHeader}>
       <button
