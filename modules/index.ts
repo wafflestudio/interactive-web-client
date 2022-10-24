@@ -1,6 +1,5 @@
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
-import { applyMiddleware, combineReducers, createStore } from "redux";
 import addModal from "./addModal";
 import animate from "./animate";
 import { api } from "./api";
@@ -17,28 +16,31 @@ import staticObjects from "./staticObjects";
 import user from "./user";
 import ws from "./ws";
 
-const rootReducer = combineReducers({
-  drag,
-  staticObjects,
-  user,
-  areas,
-  animate,
-  canvasRef,
-  modal,
-  addModal,
-  ws,
-  pixiGraphics,
-  drag2,
-  auth,
-});
-
-export default rootReducer;
-export type RootState = ReturnType<typeof rootReducer>;
 export const store = () =>
   configureStore({
-    reducer: { ...rootReducer, [api.reducerPath]: api.reducer },
+    reducer: {
+      drag,
+      drag2,
+      addModal,
+      animate,
+      areas,
+      auth,
+      canvasRef,
+      modal,
+      pixiGraphics,
+      staticObjects,
+      user,
+      ws,
+      [api.reducerPath]: api.reducer,
+    },
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(api.middleware),
+      getDefaultMiddleware().concat(
+        api.middleware,
+        logMiddleware,
+        staticsMiddleware,
+      ),
   });
+
 export type AppStore = ReturnType<typeof store>;
+export type RootState = ReturnType<AppStore["getState"]>;
 export const wrapper = createWrapper<AppStore>(store, { debug: true });

@@ -1,35 +1,9 @@
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   GeometryType,
   PixiDataType,
   SvgDataType,
 } from "../dummies/dummyInterface";
-
-export const ADD_PIXI = "pixiGraphics/ADD_PIXI" as const;
-export const UPDATE_PIXI = "pixiGraphics/UPDATE_PIXI" as const;
-export const DELETE_PIXI = "pixiGraphics/DELETE_PIXI" as const;
-
-export const addPixi = (pixi: PixiDataType) => ({
-  type: ADD_PIXI,
-  payload: pixi,
-});
-
-export const updatePixi = (
-  id: number,
-  data: { g: GeometryType; s: SvgDataType },
-) => ({
-  type: UPDATE_PIXI,
-  payload: { id, data },
-});
-
-export const deletePixi = (id: number) => ({
-  type: DELETE_PIXI,
-  payload: id,
-});
-
-type PixiGraphicsAction =
-  | ReturnType<typeof addPixi>
-  | ReturnType<typeof updatePixi>
-  | ReturnType<typeof deletePixi>;
 
 const initialState: PixiDataType[] = [
   {
@@ -44,15 +18,22 @@ const initialState: PixiDataType[] = [
   },
 ];
 
-const pixiGraphics = (
-  state: PixiDataType[] = initialState,
-  action: PixiGraphicsAction,
-): PixiDataType[] => {
-  switch (action.type) {
-    case ADD_PIXI:
-      return [...state, action.payload];
-    case UPDATE_PIXI:
-      return state.map((item) => {
+const pixiGraphicsSlice = createSlice({
+  name: "pixiGraphics",
+  initialState,
+  reducers: {
+    addPixi: (state, action: PayloadAction<PixiDataType>) => [
+      ...state,
+      action.payload,
+    ],
+    updatePixi: (
+      state,
+      action: PayloadAction<{
+        id: number;
+        data: { g: GeometryType; s: SvgDataType };
+      }>,
+    ) =>
+      state.map((item) => {
         const payload: {
           id: number;
           data: { g: GeometryType; s: SvgDataType };
@@ -61,10 +42,9 @@ const pixiGraphics = (
           return { ...item, geometry: payload.data.g, svgData: payload.data.s };
         }
         return item;
-      });
-    default:
-      return state;
-  }
-};
+      }),
+  },
+});
 
-export default pixiGraphics;
+export const { addPixi, updatePixi } = pixiGraphicsSlice.actions;
+export default pixiGraphicsSlice.reducer;

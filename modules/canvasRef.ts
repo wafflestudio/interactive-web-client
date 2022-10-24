@@ -1,28 +1,8 @@
 import { Application } from "@pixi/app";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { bool } from "prop-types";
 import { RefObject } from "react";
 
-const TOGGLE_REF = "canvasRef/TOGGLE_REF" as const;
-const SAVE_REF = "canvasRef/SAVE_REF" as const;
-export const RENDER_REF = "canvasRef/RENDER_REF" as const;
-
-export const saveCanvasRef = (ref: Application) => ({
-  type: SAVE_REF,
-  payload: ref,
-});
-export const toggleCanvasRef = (bool: boolean) => ({
-  type: TOGGLE_REF,
-  payload: bool,
-});
-
-export const renderCanvasRef = () => ({
-  type: RENDER_REF,
-});
-
-type canvasRefActionType =
-  | ReturnType<typeof toggleCanvasRef>
-  | ReturnType<typeof saveCanvasRef>
-  | ReturnType<typeof renderCanvasRef>;
 interface canvasRefStateType {
   ref: Application | null;
   exist?: boolean;
@@ -30,20 +10,22 @@ interface canvasRefStateType {
 
 const initialState: canvasRefStateType = { ref: null };
 
-const canvasRef = (
-  state: canvasRefStateType = initialState,
-  action: canvasRefActionType,
-) => {
-  switch (action.type) {
-    case SAVE_REF:
+const canvasRefSlice = createSlice({
+  name: "canvasRef",
+  initialState,
+  reducers: {
+    saveCanvasRef: (state, action: PayloadAction<Application>) => {
       return { ...state, ref: action.payload };
-    case TOGGLE_REF:
-      return { ...state, exist: action.payload };
-    case RENDER_REF:
+    },
+    toggleCanvasRef: (state, action: PayloadAction<boolean>) => {
+      state.exist = action.payload;
+    },
+    renderCanvasRef: (state) => {
       return state;
-    default:
-      return state;
-  }
-};
+    },
+  },
+});
 
-export default canvasRef;
+export const { saveCanvasRef, toggleCanvasRef, renderCanvasRef } =
+  canvasRefSlice.actions;
+export default canvasRefSlice.reducer;
