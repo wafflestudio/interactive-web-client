@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { api } from "../../api/api";
 import { loginError, postProjectError } from "../../api/error";
+import { useGetMeQuery } from "../../modules/api";
 import { ProjectDataType } from "../../types/types";
 import styles from "./HomePage.module.scss";
 
@@ -13,6 +14,13 @@ const HomeSidebar = ({ setIsSidebar }: HomeSidebarProps) => {
   const [projects, setProjects] = useState<ProjectDataType[]>([]);
   const [isTitleModalOpen, setIsTitleModalOpen] = useState<boolean>(false);
   const [titleInput, setTitleInput] = useState<string>("새 프로젝트");
+
+  const {
+    data: me,
+    isLoading,
+    isSuccess,
+    isFetching,
+  } = useGetMeQuery(undefined);
 
   const onLoadProjects = async () => {
     try {
@@ -92,6 +100,11 @@ const HomeSidebar = ({ setIsSidebar }: HomeSidebarProps) => {
           </form>
         )}
       </button>
+      <div>
+        {isLoading && "로딩 중"}
+        {isSuccess && `${me.user_id} 안녕하세요`}
+        {isFetching && me && `${me.user_id} fetching`}
+      </div>
     </aside>
   );
 };
