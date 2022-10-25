@@ -1,11 +1,11 @@
 import type { AppProps } from "next/app";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { api, authInstance } from "../api/api";
+import { ACCESS_TOKEN_KEY } from "../functions/auth";
 import { wrapper } from "../modules";
 import "../styles/globals.scss";
 import { signIn, signOut } from "../modules/auth";
-import { useEffect } from "react";
-import { ACCESS_TOKEN_KEY } from "../functions/auth";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const dispatch = useDispatch();

@@ -60,5 +60,5 @@ export interface PixiDataType {
     tick: number,
     geometry: GeometryType,
     svgData: SvgDataType,
-  ) => { s: SvgDataType; g: GeometryType };
+  ) => { svgData: SvgDataType; geometry: GeometryType };
 }

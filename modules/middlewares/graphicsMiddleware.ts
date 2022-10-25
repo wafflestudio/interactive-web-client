@@ -1,3 +1,4 @@
+import { createListenerMiddleware } from "@reduxjs/toolkit";
 import { Middleware } from "redux";
 import {
   drawEllipse,
@@ -10,7 +11,7 @@ import {
   updateDragRender,
 } from "../../functions/pixi/renderer";
 import { RENDER_REF, toggleCanvasRef } from "../canvasRef";
-import { END_DRAG, MOVE_DRAG, START_DRAG } from "../drag";
+import { END_DRAG, MOVE_DRAG, startDrag, START_DRAG } from "../drag";
 import { RootState } from "../index";
 import {
   closeSimpleInfoModal,

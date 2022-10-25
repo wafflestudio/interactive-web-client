@@ -34,10 +34,7 @@ const pixiGraphicsSlice = createSlice({
       }>,
     ) =>
       state.map((item) => {
-        const payload: {
-          id: number;
-          data: { g: GeometryType; s: SvgDataType };
-        } = action.payload;
+        const payload = action.payload;
         if (item.id === payload.id) {
           return { ...item, geometry: payload.data.g, svgData: payload.data.s };
         }
