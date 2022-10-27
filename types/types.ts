@@ -9,6 +9,11 @@ export interface UserDataType {
   isLoggedIn: boolean;
 }
 
+export interface UserPutType {
+  username: string;
+  email: string;
+}
+
 export interface ProjectDataType {
   id: number;
   writer: UserDataType;

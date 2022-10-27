@@ -1,26 +1,26 @@
+import { store } from "../modules";
 import { closeWs, setMessage, setWs } from "../modules/ws";
-import { store } from "../pages/_app";
 
 const wsURL = "wss://iwe-server.shop/ws/project/1/"; // [ws://] 또는 [wss://]로 시작해야 합니다
 const wsURLTest =
   "wss://demo.piesocket.com/v3/channel_1?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&notify_self";
 
 export const initiateWebSocket = () => {
-  const socket = store.getState().ws.current;
+  const socket = store().getState().ws.current;
   if (!socket) {
     const newSocket = new WebSocket(wsURLTest);
     newSocket.onopen = () => {
       console.log("connected to " + wsURL);
-      store.dispatch(setWs(newSocket));
+      store().dispatch(setWs(newSocket));
     };
     newSocket.onclose = (error) => {
       console.log("disconnect from " + wsURL);
       console.log(error);
-      store.dispatch(closeWs());
+      store().dispatch(closeWs());
     };
     newSocket.onmessage = (event: MessageEvent) => {
       const data = event.data as string;
-      store.dispatch(setMessage(data));
+      store().dispatch(setMessage(data));
     };
     newSocket.onerror = (error) => {
       console.log("connection error " + wsURL);

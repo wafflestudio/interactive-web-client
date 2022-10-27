@@ -1,62 +1,38 @@
 // div(container) 안에 있는 svg 모음입니다
 
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ObjectDataType } from "../dummies/dummyInterface";
-
-export const UPDATE_OBJECT = "staticObjects/UPDATE_OBJECT" as const;
-export const SAVE_OBJECTS = "staticObjects/SAVE_OBJECTS" as const;
-export const TOGGLE_OBJECT_VISIBILITY =
-  "staticObjects.TOGGLE_OBJECT_VISIBILITY";
-
-export const saveObjects = (objects: ObjectDataType[]) => ({
-  type: SAVE_OBJECTS,
-  payload: { objects },
-});
-
-export const updateObject = (targetObject: ObjectDataType) => ({
-  type: UPDATE_OBJECT,
-  payload: { targetObject },
-});
-
-export const toggleObjectVisibility = (
-  targetObject: ObjectDataType,
-  isVisible: boolean,
-) => ({
-  type: TOGGLE_OBJECT_VISIBILITY,
-  payload: { targetObject, isVisible },
-});
-
-type ObjectsAction =
-  | ReturnType<typeof saveObjects>
-  | ReturnType<typeof updateObject>
-  | ReturnType<typeof toggleObjectVisibility>;
 
 const initialState: ObjectDataType[] = [];
 
-const staticObjects = (
-  state: ObjectDataType[] = initialState,
-  action: ObjectsAction,
-): ObjectDataType[] => {
-  switch (action.type) {
-    case SAVE_OBJECTS:
-      return state.concat(action.payload.objects);
-    case UPDATE_OBJECT:
-      return state.map((item) =>
-        item.id !== action.payload.targetObject.id
-          ? item
-          : action.payload.targetObject,
-      );
-    case TOGGLE_OBJECT_VISIBILITY:
-      return state.map((item) =>
+const staticObjectsSlice = createSlice({
+  name: "staticObjects",
+  initialState,
+  reducers: {
+    saveObjects: (state, action: PayloadAction<ObjectDataType[]>) =>
+      state.concat(action.payload),
+    updateObject: (state, action: PayloadAction<ObjectDataType>) =>
+      state.map((item) =>
+        item.id !== action.payload.id ? item : action.payload,
+      ),
+    toggleObjectVisibility: (
+      state,
+      action: PayloadAction<{
+        targetObject: ObjectDataType;
+        isVisible: boolean;
+      }>,
+    ) =>
+      state.map((item) =>
         item.id !== action.payload.targetObject.id
           ? item
           : {
               ...action.payload.targetObject,
               visibility: action.payload.isVisible,
             },
-      );
-    default:
-      return state;
-  }
-};
+      ),
+  },
+});
 
-export default staticObjects;
+export const { saveObjects, updateObject, toggleObjectVisibility } =
+  staticObjectsSlice.actions;
+export default staticObjectsSlice.reducer;

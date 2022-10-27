@@ -1,38 +1,24 @@
 // div(container) 안에 있는 svg 모음입니다
 
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AreaDataType } from "../dummies/dummyInterface";
-
-const UPDATE_AREA = "areas/UPDATE_Area" as const;
-const SAVE_AREAS = "areas/GET_areaS" as const;
-
-export const saveAreas = (areas: AreaDataType[]) => ({
-  type: SAVE_AREAS,
-  payload: areas,
-});
-
-export const updateArea = (targetArea: AreaDataType) => ({
-  type: UPDATE_AREA,
-  payload: targetArea,
-});
-
-type AreasAction = ReturnType<typeof saveAreas> | ReturnType<typeof updateArea>;
 
 const initialState: AreaDataType[] = [];
 
-const areas = (
-  state: AreaDataType[] = initialState,
-  action: AreasAction,
-): AreaDataType[] => {
-  switch (action.type) {
-    case SAVE_AREAS:
+const areasSlice = createSlice({
+  name: "areas",
+  initialState,
+  reducers: {
+    saveAreas: (_, action: PayloadAction<AreaDataType[]>) => {
       return action.payload;
-    case UPDATE_AREA:
+    },
+    updateArea: (state, action: PayloadAction<AreaDataType>) => {
       return state.map((item) =>
         item.id !== action.payload.id ? item : action.payload,
       );
-    default:
-      return state;
-  }
-};
+    },
+  },
+});
 
-export default areas;
+export const { saveAreas, updateArea } = areasSlice.actions;
+export default areasSlice.reducer;

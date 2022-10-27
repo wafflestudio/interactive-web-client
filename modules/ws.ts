@@ -1,24 +1,4 @@
-export const SET_WS = "ws/SET_WS" as const;
-export const SET_MESSAGE = "ws/SET_MESSAGE" as const;
-export const CLOSE_WS = "ws/CLOSE_WS" as const;
-
-export const setWs = (webSocketObject: WebSocket) => ({
-  type: SET_WS,
-  payload: webSocketObject,
-});
-export const setMessage = (message: string) => ({
-  type: SET_MESSAGE,
-  payload: message,
-});
-
-export const closeWs = () => ({
-  type: CLOSE_WS,
-});
-
-type wsAction =
-  | ReturnType<typeof setWs>
-  | ReturnType<typeof setMessage>
-  | ReturnType<typeof closeWs>;
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState: {
   current: WebSocket | null;
@@ -28,23 +8,20 @@ const initialState: {
   recentMessage: { messageNo: 0, content: null },
 };
 
-const ws = (state = initialState, action: wsAction) => {
-  switch (action.type) {
-    case SET_WS:
-      return { ...state, current: action.payload };
-    case SET_MESSAGE:
-      return {
-        ...state,
-        recentMessage: {
-          messageNo: state.recentMessage.messageNo + 1,
-          content: action.payload,
-        },
-      };
-    case CLOSE_WS:
-      return initialState;
-    default:
-      return state;
-  }
-};
+const wsSlice = createSlice({
+  name: "ws",
+  initialState,
+  reducers: {
+    setWs: (state, action: PayloadAction<WebSocket>) => {
+      state.current = action.payload;
+    },
+    setMessage: (state, action: PayloadAction<string>) => {
+      state.recentMessage.messageNo++;
+      state.recentMessage.content = action.payload;
+    },
+    closeWs: () => initialState,
+  },
+});
 
-export default ws;
+export const { setWs, setMessage, closeWs } = wsSlice.actions;
+export default wsSlice.reducer;
