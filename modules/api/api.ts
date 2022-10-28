@@ -6,10 +6,10 @@ import {
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/query/react";
 import { HYDRATE } from "next-redux-wrapper";
-import { TokensType } from "../api/api";
-import { manageTokens } from "../functions/auth";
-import { UserDataType, UserPutType } from "../types/types";
-import { signOut } from "./auth";
+import { TokensType } from "../../api/api";
+import { manageTokens } from "../../functions/auth";
+import { UserDataType, UserPutType } from "../../types/types";
+import { signOut } from "../auth";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "/api",
@@ -47,30 +47,9 @@ export const api = createApi({
   reducerPath: "api",
   baseQuery: baseQueryWithReauth,
   tagTypes: ["Users/me", "Users/other"],
-  endpoints: (build) => ({
-    getMe: build.query<UserDataType, void>({
-      query: () => ({ url: "/users/me/" }),
-      providesTags: [{ type: "Users/me" }],
-    }),
-    putMe: build.mutation<UserDataType, UserPutType>({
-      query: () => ({ url: "/users/me/" }),
-      invalidatesTags: [{ type: "Users/me" }],
-    }),
-    deleteMe: build.mutation<UserDataType, UserPutType>({
-      query: () => ({ url: "/users/me/" }),
-      invalidatesTags: [{ type: "Users/me" }],
-    }),
-    getUser: build.query<UserDataType, number>({
-      query: (id) => ({ url: `/users/me/${id}` }),
-      providesTags: (result) => [{ type: "Users/other", id: result?.user_id }],
-    }),
-  }),
+  endpoints: () => ({}),
 });
 
 export const {
-  useGetMeQuery,
-  usePutMeMutation,
-  useDeleteMeMutation,
-  useGetUserQuery,
   util: { getRunningOperationPromises },
 } = api;

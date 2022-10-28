@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { api } from "../../api/api";
 import { loginError, postProjectError } from "../../api/error";
-import { useGetMeQuery } from "../../modules/api";
+import { useGetMeQuery } from "../../modules/api/usersApi";
 import { ProjectDataType, UserDataType } from "../../types/types";
 import {
   FetchableComponent,

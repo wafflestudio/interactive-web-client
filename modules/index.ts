@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { createWrapper } from "next-redux-wrapper";
 import addModal from "./addModal";
 import animate from "./animate";
-import { api } from "./api";
+import { api } from "./api/api";
 import areas from "./areas";
 import auth from "./auth";
 import canvasRef from "./canvasRef";
