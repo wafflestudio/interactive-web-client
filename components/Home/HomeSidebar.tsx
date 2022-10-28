@@ -3,7 +3,11 @@ import { useEffect, useState } from "react";
 import { api } from "../../api/api";
 import { loginError, postProjectError } from "../../api/error";
 import { useGetMeQuery } from "../../modules/api";
-import { ProjectDataType } from "../../types/types";
+import { ProjectDataType, UserDataType } from "../../types/types";
+import {
+  FetchableComponent,
+  fetchableComponents,
+} from "../common/FetchableComponent";
 import styles from "./HomePage.module.scss";
 
 interface HomeSidebarProps {
@@ -37,7 +41,6 @@ const HomeSidebar = ({ setIsSidebar }: HomeSidebarProps) => {
       e.preventDefault();
       try {
         const { data } = await api._postproject(title);
-        console.log(data);
         onLoadProjects();
       } catch (e) {
         if (axios.isAxiosError(e)) postProjectError(e);
@@ -100,6 +103,21 @@ const HomeSidebar = ({ setIsSidebar }: HomeSidebarProps) => {
           </form>
         )}
       </button>
+      {/*문법 1*/}
+      <FetchableComponent data={me} isFetching={isFetching}>
+        <div>{me?.user_id}</div>
+        <div>실패</div>
+        <div>로딩</div>
+        <div>페칭</div>
+      </FetchableComponent>
+
+      {/*문법 1*/}
+      {fetchableComponents<UserDataType | undefined>(
+        me,
+        isFetching,
+      )(<div>{me?.user_id}</div>)(<div>실패</div>)(<div>로딩</div>)(
+        <div>펫칭</div>,
+      )}
       <div>
         {isLoading && "로딩 중"}
         {isSuccess && `${me.user_id} 안녕하세요`}

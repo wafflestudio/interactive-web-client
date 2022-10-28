@@ -15,6 +15,8 @@ listenerMiddleware.startListening({
   },
 });
 
+export default listenerMiddleware;
+
 // const staticsMiddleware: Middleware<unknown, any, any> =
 //   (store) => (next) => (action) => {
 //     const { type, payload } = action;

@@ -9,7 +9,7 @@ import canvasRef from "./canvasRef";
 import drag from "./drag";
 import drag2 from "./drag2";
 import logMiddleware from "./middlewares/logMiddleware";
-import staticsMiddleware from "./middlewares/staticsMiddleware";
+//import staticsMiddleware from "./middlewares/staticsMiddleware";
 import modal from "./modal";
 import pixiGraphics from "./pixiGraphics";
 import staticObjects from "./staticObjects";
@@ -37,7 +37,7 @@ export const store = () =>
       getDefaultMiddleware().concat(
         api.middleware,
         logMiddleware,
-        staticsMiddleware,
+        //staticsMiddleware,
       ),
   });
 
