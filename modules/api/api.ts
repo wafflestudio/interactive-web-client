@@ -5,10 +5,8 @@ import {
   fetchBaseQuery,
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/query/react";
-import { HYDRATE } from "next-redux-wrapper";
 import { TokensType } from "../../api/api";
 import { manageTokens } from "../../functions/auth";
-import { UserDataType, UserPutType } from "../../types/types";
 import { signOut } from "../auth";
 
 const baseQuery = fetchBaseQuery({

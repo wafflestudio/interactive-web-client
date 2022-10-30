@@ -27,7 +27,7 @@ export const store = () =>
       auth,
       canvasRef,
       modal,
-      pixiGraphics,
+      //   pixiGraphics,
       staticObjects,
       user,
       ws,

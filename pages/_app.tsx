@@ -6,19 +6,21 @@ import { ACCESS_TOKEN_KEY } from "../functions/auth";
 import { wrapper } from "../modules";
 import "../styles/globals.scss";
 import { signIn, signOut } from "../modules/auth";
+import { setUser } from "../modules/user";
+import { initiateWebSocket } from "../api/websocket";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const dispatch = useDispatch();
 
   const checkAuth = async () => {
     const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
-
     if (accessToken) {
       authInstance.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${accessToken}`;
       try {
-        await api._getme();
+        const { data } = await api._getme();
+        dispatch(setUser(data));
         dispatch(signIn());
       } catch (e) {
         console.log(e);
