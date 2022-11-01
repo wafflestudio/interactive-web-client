@@ -105,7 +105,7 @@ const HomeSidebar = ({ setIsSidebar }: HomeSidebarProps) => {
       </button>
       {/*문법 1*/}
       <FetchableComponent data={me} isFetching={isFetching}>
-        <div>{me?.user_id}</div>
+        <div>{me!.user_id}</div>
         <div>실패</div>
         <div>로딩</div>
         <div>페칭</div>

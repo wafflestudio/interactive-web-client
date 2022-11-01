@@ -7,7 +7,6 @@ import { wrapper } from "../modules";
 import "../styles/globals.scss";
 import { signIn, signOut } from "../modules/auth";
 import { setUser } from "../modules/user";
-import { initiateWebSocket } from "../api/websocket";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const dispatch = useDispatch();

@@ -1,5 +1,6 @@
 import React from "react";
 import { dummyCardType } from "../../../dummies/dummyCards";
+import { ProjectDataType } from "../../../types/types";
 import styles from "../HomePage.module.scss";
 import CardImage from "./CardImage";
 import CardInfo from "./CardInfo";
