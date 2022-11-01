@@ -2,54 +2,56 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { api } from "../../api/api";
 import { loginError, postProjectError } from "../../api/error";
-import { useGetMeQuery } from "../../modules/api/usersApi";
-import { ProjectDataType, UserDataType } from "../../types/types";
 import {
-  FetchableComponent,
-  fetchableComponents,
-} from "../common/FetchableComponent";
+  useGetMyProjectQuery,
+  usePostMyProjectMutation,
+} from "../../modules/api/projectApi";
+import { ProjectDataType } from "../../types/types";
+import { FetchableComponent } from "../common/FetchableComponent";
 import styles from "./HomePage.module.scss";
 
 interface HomeSidebarProps {
   setIsSidebar: (bool: boolean) => void;
 }
+interface ProjectsListProps {
+  projects: ProjectDataType[] | undefined;
+  onClickProject: (id: number) => React.MouseEventHandler<HTMLLIElement>;
+}
+
+const ProjectsLists = ({ projects, onClickProject }: ProjectsListProps) => (
+  <ul className={styles.projectList}>
+    {projects?.map((project) => (
+      <li
+        className={styles.projectItem}
+        key={project.id}
+        onClick={onClickProject(project.id)}
+      >
+        {project.title}
+      </li>
+    ))}
+  </ul>
+);
 
 const HomeSidebar = ({ setIsSidebar }: HomeSidebarProps) => {
-  const [projects, setProjects] = useState<ProjectDataType[]>([]);
   const [isTitleModalOpen, setIsTitleModalOpen] = useState<boolean>(false);
   const [titleInput, setTitleInput] = useState<string>("새 프로젝트");
+  const [postProject, { error: postProjectError }] = usePostMyProjectMutation();
+  const { data: projects, isFetching } = useGetMyProjectQuery();
 
-  const {
-    data: me,
-    isLoading,
-    isSuccess,
-    isFetching,
-  } = useGetMeQuery(undefined);
-
-  const onLoadProjects = async () => {
-    try {
-      const { data } = await api._getmyproject();
-      console.log(data);
-      setProjects(data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
   const onAddProject =
     (title: string): React.FormEventHandler<HTMLFormElement> =>
     async (e) => {
       e.preventDefault();
       try {
-        const { data } = await api._postproject(title);
-        onLoadProjects();
+        await postProject({ title: title });
       } catch (e) {
-        if (axios.isAxiosError(e)) postProjectError(e);
+        console.log(e);
       }
     };
 
   const onClickProject =
     (id: number): React.MouseEventHandler<HTMLLIElement> =>
-    async (e) => {
+    async () => {
       try {
         const { data } = await api._getProject(id);
         console.log(data);
@@ -59,7 +61,8 @@ const HomeSidebar = ({ setIsSidebar }: HomeSidebarProps) => {
     };
 
   useEffect(() => {
-    onLoadProjects();
+    //onLoadProjects();
+    console.log(projects);
   }, []);
 
   return (
@@ -73,17 +76,16 @@ const HomeSidebar = ({ setIsSidebar }: HomeSidebarProps) => {
         {"<<"}
       </button>
       <div className={styles.label}>내 프로젝트</div>
-      <ul className={styles.projectList}>
-        {projects.map((project) => (
-          <li
-            className={styles.projectItem}
-            key={project.id}
-            onClick={onClickProject(project.id)}
-          >
-            {project.title}
-          </li>
-        ))}
-      </ul>
+
+      <FetchableComponent
+        data={projects}
+        isFetching={isFetching}
+        successComponent={
+          <ProjectsLists projects={projects} onClickProject={onClickProject} />
+        }
+        failComponent={<div>no projects</div>}
+      />
+
       <button
         className={styles.addButton}
         onClick={() => {
@@ -103,26 +105,6 @@ const HomeSidebar = ({ setIsSidebar }: HomeSidebarProps) => {
           </form>
         )}
       </button>
-      {/*문법 1*/}
-      <FetchableComponent data={me} isFetching={isFetching}>
-        <div>{me!.user_id}</div>
-        <div>실패</div>
-        <div>로딩</div>
-        <div>페칭</div>
-      </FetchableComponent>
-
-      {/*문법 1*/}
-      {fetchableComponents<UserDataType | undefined>(
-        me,
-        isFetching,
-      )(<div>{me?.user_id}</div>)(<div>실패</div>)(<div>로딩</div>)(
-        <div>펫칭</div>,
-      )}
-      <div>
-        {isLoading && "로딩 중"}
-        {isSuccess && `${me.user_id} 안녕하세요`}
-        {isFetching && me && `${me.user_id} fetching`}
-      </div>
     </aside>
   );
 };
