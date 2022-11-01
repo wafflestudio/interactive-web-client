@@ -1,22 +1,22 @@
 import { UserDataType, UserPutType } from "../../types/types";
 import { api } from "./api";
 
-const usersApi = api.injectEndpoints({
+export const usersApi = api.injectEndpoints({
   endpoints: (build) => ({
     getMe: build.query<UserDataType, void>({
       query: () => ({ url: "/users/me/" }),
       providesTags: [{ type: "Users/me" }],
     }),
     putMe: build.mutation<UserDataType, UserPutType>({
-      query: () => ({ url: "/users/me/" }),
+      query: (body) => ({ method: "PUT", url: "/users/me/", body }),
       invalidatesTags: [{ type: "Users/me" }],
     }),
-    deleteMe: build.mutation<UserDataType, UserPutType>({
-      query: () => ({ url: "/users/me/" }),
+    deleteMe: build.mutation<UserDataType, void>({
+      query: () => ({ method: "DELETE", url: "/users/me/" }),
       invalidatesTags: [{ type: "Users/me" }],
     }),
     getUser: build.query<UserDataType, number>({
-      query: (id) => ({ url: `/users/me/${id}` }),
+      query: (body) => ({ url: `/users/me/${body}` }),
       providesTags: (result) => [{ type: "Users/other", id: result?.user_id }],
     }),
   }),

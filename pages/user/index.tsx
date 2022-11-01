@@ -1,74 +1,64 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { api, PutmeRequest } from "../../api/api";
+import { PutmeRequest } from "../../api/api";
+import { rtkQueryErrorLog } from "../../functions/rtkQueryErrorLog";
 import { RootState } from "../../modules";
+import {
+  useDeleteMeMutation,
+  usePutMeMutation,
+  usersApi,
+} from "../../modules/api/usersApi";
 import { setUser } from "../../modules/user";
-import { removeTokens } from "../../functions/auth";
-import { signOut } from "../../modules/auth";
-import { useRouter } from "next/router";
-import axios from "axios";
-import { deleteMeError, getUserError, putMeError } from "../../api/error";
 
 const User = () => {
   const [input, setInput] = useState<PutmeRequest>({});
   const [id, setId] = useState<string>("");
-  const onUsernameChange: React.ChangeEventHandler<HTMLInputElement> = ({
+  const onUserInfoChange: React.ChangeEventHandler<HTMLInputElement> = ({
     target,
-  }) => setInput({ ...input, username: target.value });
-  const onEmailChange: React.ChangeEventHandler<HTMLInputElement> = ({
-    target,
-  }) => setInput({ ...input, email: target.value });
+  }) => setInput({ ...input, [target.name]: target.value });
   const onUserIdChange: React.ChangeEventHandler<HTMLInputElement> = ({
     target,
   }) => {
     setId(target.value);
   };
-
   const dispatch = useDispatch();
-  const router = useRouter();
+  const [putMe, { data: putMeData, error: putMeError }] = usePutMeMutation();
+  const [deleteMe, { error: deleteMeError }] = useDeleteMeMutation();
 
   const user = useSelector((state: RootState) => state.user);
-  useEffect(() => {
-    if (user.username && user.email) {
-      setInput({
-        username: user.username,
-        email: user.email,
-      });
-    }
-  }, []);
 
   const onModify: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await api._putme(input);
-      dispatch(setUser({ ...data, isLoggedIn: true }));
-      setInput({});
+      await putMe({
+        email: input.email || user.email,
+        username: input.username || user.username,
+      });
+      if (putMeData) dispatch(setUser({ ...putMeData, isLoggedIn: true }));
+      if (putMeError) rtkQueryErrorLog(putMeError);
     } catch (e) {
-      if (axios.isAxiosError(e)) putMeError(e);
+      console.log(e);
     }
   };
 
   const onResign: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     try {
-      await api._deleteme();
-      removeTokens();
-      dispatch(signOut);
-      await router.push("/");
+      await deleteMe();
+      if (deleteMeError) rtkQueryErrorLog(deleteMeError);
     } catch (e) {
-      if (axios.isAxiosError(e)) deleteMeError(e);
+      console.log(e);
     }
   };
 
-  const onGetUser: React.FormEventHandler<HTMLFormElement> = async (e) => {
+  const onGetUser: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     try {
       if (!isNaN(parseInt(id))) {
-        const { data } = await api._getuser(id);
-        setId("");
+        dispatch(usersApi.endpoints.getUser.initiate(parseInt(id)));
       }
     } catch (e) {
-      if (axios.isAxiosError(e)) getUserError(e);
+      console.log(e);
     }
   };
 
@@ -80,9 +70,9 @@ const User = () => {
           <input
             type="text"
             id="new_username"
-            name="new_username"
-            value={input.username}
-            onChange={onUsernameChange}
+            name="username"
+            value={input.username || user.username}
+            onChange={onUserInfoChange}
           />
         </label>
         <label htmlFor="new_email">
@@ -90,9 +80,9 @@ const User = () => {
           <input
             type="text"
             id="new_email"
-            name="new_email"
-            value={input.email}
-            onChange={onEmailChange}
+            name="email"
+            value={input.email || user.email}
+            onChange={onUserInfoChange}
           />
         </label>
         <button type="submit">수정</button>

@@ -27,6 +27,7 @@ module.exports = {
     "prettier", //disable all ESLint rules that collides with prettier
   ],
   rules: {
+    "@typescript-eslint/no-misused-promises": "off",
     "import/order": [
       "warn",
       {
