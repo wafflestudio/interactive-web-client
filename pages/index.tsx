@@ -1,14 +1,30 @@
-import type { NextPage } from "next";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { api } from "../api/api";
-import HomePage from "../components/Home/HomePage";
-import { setUser } from "../modules/user";
+import { useEffect, useState } from "react";
 
-const Home: NextPage = () => {
+import HomeBanner from "../components/Home/Banner/HomeBanner";
+import CardList from "../components/Home/Card/CardList";
+import Header from "../components/Home/Header/Header";
+import HomeHead from "../components/Home/HomeHead";
+import Logo from "../components/Home/Logo/Logo";
+import Sidebar from "../components/Home/Sidebar/Sidebar";
+
+import styles from "./Home.module.scss";
+
+// 홈 화면 전체
+const Home = () => {
+  const [isSideBar, setIsSideBar] = useState<boolean>(false);
+
   return (
     <>
-      <HomePage />
+      <HomeHead />
+      <div className={styles.wrapper}>
+        <div className={styles.container}>
+          <Header setIsSidebar={setIsSideBar} />
+          {isSideBar && <Sidebar setIsSidebar={setIsSideBar} />}
+          <Logo />
+          <HomeBanner />
+          <CardList />
+        </div>
+      </div>
     </>
   );
 };

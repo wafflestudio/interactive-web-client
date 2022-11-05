@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import MoreIcon from "../../assets/svgs/MoreIcon";
-import styles from "./HomePage.module.scss";
+import MoreIcon from "../../../assets/svgs/MoreIcon";
+import styles from "./Header.module.scss";
 
 // 홈 헤더
 
-const HomeHeader = ({
+const Header = ({
   setIsSidebar,
 }: {
   setIsSidebar: (bool: boolean) => void;
@@ -46,4 +46,4 @@ const HomeHeader = ({
   );
 };
 
-export default HomeHeader;
+export default Header;

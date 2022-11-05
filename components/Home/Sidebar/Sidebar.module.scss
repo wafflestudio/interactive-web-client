@@ -1,0 +1,62 @@
+
+.homeSidebar{
+  position: fixed;
+  left:0;
+  top:0;
+  width:300px;
+  height:100%;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  z-index: 999;
+
+  .closeButton{
+    position: absolute;
+    top:0;
+    right:15px;
+  }
+
+  .label{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height:60px;
+    border-top:1px solid #cecece;
+    border-bottom:1px solid #cecece;
+  }
+  .projectList{
+    .projectItem{
+      display: flex;
+      align-items: center;
+      padding-left:30px;
+      color:gray;
+      height:60px;
+      border-bottom:1px solid #cecece;
+      cursor: pointer;
+      &:hover{
+        background-color: bisque;
+      }
+    }
+  }
+
+  .addButton{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height:60px;
+    padding:20px;
+    border-bottom:1px solid #cecece;
+    &:hover{
+      background-color: lightgrey;
+    }
+  }
+  .addForm{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    button{
+      border:1px solid black;
+    }
+  }
+}

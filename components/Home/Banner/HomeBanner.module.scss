@@ -1,0 +1,35 @@
+
+.bannerContainer {
+  margin: auto;
+  margin-top: 147px;
+  width: 780px;
+  height: 233px;
+  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 202px 66px 179px 61px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  .banner {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    z-index: -1;
+  }
+
+  button {
+    position: absolute;
+    top: 77px;
+
+    &.left {
+      left: 0;
+      transform: rotate(180deg);
+    }
+
+    &.right {
+      right: 0;
+    }
+  }
+}

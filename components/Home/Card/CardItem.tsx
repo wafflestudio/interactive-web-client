@@ -1,10 +1,10 @@
 import React from "react";
 import { dummyCardType } from "../../../dummies/dummyCards";
 import { ProjectDataType } from "../../../types/types";
-import styles from "../HomePage.module.scss";
 import CardImage from "./CardImage";
 import CardInfo from "./CardInfo";
 import CardMark from "./CardMark";
+import styles from "./Card.module.scss";
 
 // 개별 카드 아이템
 const CardItem = ({ card }: { card: dummyCardType }) => {

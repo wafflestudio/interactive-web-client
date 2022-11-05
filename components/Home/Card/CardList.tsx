@@ -3,8 +3,8 @@ import { dummyCards, dummyCardType } from "../../../dummies/dummyCards";
 import { useGetAllProjectQuery } from "../../../modules/api/projectApi";
 import { ProjectDataType } from "../../../types/types";
 import { FetchableComponent } from "../../common/FetchableComponent";
-import styles from "../HomePage.module.scss";
 import CardItem from "./CardItem";
+import styles from "./Card.module.scss";
 
 // 카드 리스트(더미데이터에서 불러옴)
 const projectToDummyCard = (project: ProjectDataType): dummyCardType => ({

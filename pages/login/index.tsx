@@ -1,15 +1,16 @@
+import { NextPage } from "next";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { api, authInstance } from "../api/api";
-import { loginError } from "../api/error";
-import { manageTokens, removeTokens } from "../functions/auth";
-import { signIn } from "../modules/auth";
-import { removeUser } from "../modules/user";
+import { api, authInstance } from "../../api/api";
+import { loginError } from "../../api/error";
+import { manageTokens, removeTokens } from "../../functions/auth";
+import { signIn } from "../../modules/auth";
+import { removeUser } from "../../modules/user";
 import styles from "./loginAndSignup.module.scss";
 
-export default function Login() {
+const Login: NextPage = () => {
   const [user_id, setUserId] = useState("");
   const [password, setPassword] = useState("");
 
@@ -70,4 +71,6 @@ export default function Login() {
       </form>
     </div>
   );
-}
+};
+
+export default Login;

@@ -1,14 +1,13 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { api } from "../../api/api";
-import { loginError, postProjectError } from "../../api/error";
+import { api } from "../../../api/api";
+
 import {
   useGetMyProjectQuery,
   usePostMyProjectMutation,
-} from "../../modules/api/projectApi";
-import { ProjectDataType } from "../../types/types";
-import { FetchableComponent } from "../common/FetchableComponent";
-import styles from "./HomePage.module.scss";
+} from "../../../modules/api/projectApi";
+import { ProjectDataType } from "../../../types/types";
+import { FetchableComponent } from "../../common/FetchableComponent";
+import styles from "./Sidebar.module.scss";
 
 interface HomeSidebarProps {
   setIsSidebar: (bool: boolean) => void;
@@ -32,7 +31,7 @@ const ProjectsLists = ({ projects, onClickProject }: ProjectsListProps) => (
   </ul>
 );
 
-const HomeSidebar = ({ setIsSidebar }: HomeSidebarProps) => {
+const Sidebar = ({ setIsSidebar }: HomeSidebarProps) => {
   const [isTitleModalOpen, setIsTitleModalOpen] = useState<boolean>(false);
   const [titleInput, setTitleInput] = useState<string>("새 프로젝트");
   const [postProject, { error: postProjectError }] = usePostMyProjectMutation();
@@ -108,4 +107,4 @@ const HomeSidebar = ({ setIsSidebar }: HomeSidebarProps) => {
     </aside>
   );
 };
-export default HomeSidebar;
+export default Sidebar;

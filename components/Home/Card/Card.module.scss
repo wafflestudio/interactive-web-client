@@ -1,0 +1,73 @@
+.cardList {
+  margin-top: 220px;
+  width: 1120px;
+  display: grid;
+  column-gap: 28px;
+  row-gap: 96px;
+  grid-template-columns: repeat(4, 1fr);
+
+  .cardItem {
+    cursor: pointer;
+    transition: transform 0.3s ease-out;
+    position: relative;
+
+    .cardMark {
+      position: absolute;
+      z-index: 1;
+      left: 9px;
+      top: -10px;
+      text-align: center;
+
+      .text {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+
+        span {
+          left: 2px;
+          color: white;
+          display: block;
+        }
+      }
+    }
+
+    &:hover {
+      transform: translate(0, -15px);
+    }
+
+    .cardImage {
+      height: 139px;
+      width: 261px;
+      box-shadow: 5px 5px 7px 0px #00000033;
+      filter: drop-shadow(5px 5px 7px rgba(0, 0, 0, 0.2));
+      border-radius: 0px 35px 0px 0px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    .cardInfo {
+      height: 120px;
+      width: 261px;
+      left: 395px;
+      box-shadow: 5px 5px 7px rgba(0, 0, 0, 0.2);
+      border-radius: 0px 0px 0px 35px;
+      color: white;
+      padding: 16px 32px;
+
+      h2 {
+        margin: 0;
+      }
+
+      div {
+        margin-top: 4px;
+      }
+    }
+  }
+}
