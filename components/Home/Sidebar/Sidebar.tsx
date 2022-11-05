@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { api } from "../../../api/api";
 
@@ -32,6 +33,7 @@ const ProjectsLists = ({ projects, onClickProject }: ProjectsListProps) => (
 );
 
 const Sidebar = ({ setIsSidebar }: HomeSidebarProps) => {
+  const router = useRouter();
   const [isTitleModalOpen, setIsTitleModalOpen] = useState<boolean>(false);
   const [titleInput, setTitleInput] = useState<string>("새 프로젝트");
   const [postProject, { error: postProjectError }] = usePostMyProjectMutation();
@@ -50,14 +52,8 @@ const Sidebar = ({ setIsSidebar }: HomeSidebarProps) => {
 
   const onClickProject =
     (id: number): React.MouseEventHandler<HTMLLIElement> =>
-    async () => {
-      try {
-        const { data } = await api._getProject(id);
-        console.log(data);
-      } catch (e) {
-        console.log(e);
-      }
-    };
+    () =>
+      router.push(`/project/${id}`);
 
   useEffect(() => {
     //onLoadProjects();
