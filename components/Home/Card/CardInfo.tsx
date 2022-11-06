@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { dummyCardType } from "../../../dummies/dummyCards";
-import styles from "../HomePage.module.scss";
+import styles from "./Card.module.scss";
 
 // 카드 하단 제목 + 태그
 const CardInfo = ({ card }: { card: dummyCardType }) => {

@@ -1,6 +1,6 @@
 import React from "react";
 import { dummyCardType } from "../../../dummies/dummyCards";
-import styles from "../HomePage.module.scss";
+import styles from "./Card.module.scss";
 
 // 카드 상단 이미지
 const CardImage = ({ card }: { card: dummyCardType }) => {

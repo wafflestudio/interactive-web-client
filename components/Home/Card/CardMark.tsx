@@ -1,7 +1,7 @@
 import React from "react";
 import BookMark from "../../../assets/svgs/BookMark";
 import { CardFeature, dummyCardType } from "../../../dummies/dummyCards";
-import styles from "../HomePage.module.scss";
+import styles from "./Card.module.scss";
 
 const CardMark = ({ card }: { card: dummyCardType }) => {
   return (

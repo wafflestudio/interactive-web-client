@@ -1,41 +1,26 @@
+import { JSXElement } from "@typescript-eslint/types/dist/generated/ast-spec";
+import { ReactElement } from "react";
+
 interface Props {
-  children: JSX.Element;
   data: any;
   isFetching: boolean;
+  successComponent: JSXElement | ReactElement;
+  failComponent: JSXElement | ReactElement;
 }
 
-export const FetchableComponent = ({ children, data, isFetching }: Props) => {
-  if (Array.isArray(children) && children.length > 3) {
-    const components = children as JSX.Element[];
-    const [success, fail, loading, fetching] = components;
-
-    if (!isFetching && data) {
-      return success;
-    } else if (!isFetching && !data) {
-      return fail;
-    } else if (isFetching && !data) {
-      return loading;
-    } else {
-      return fetching;
-    }
+export const FetchableComponent = ({
+  data,
+  isFetching,
+  successComponent,
+  failComponent,
+}: Props) => {
+  if (!isFetching && data) {
+    return successComponent;
+  } else if (!isFetching && !data) {
+    return failComponent;
+  } else if (isFetching && !data) {
+    return <div>loading</div>;
   } else {
-    return <div>Wrong FetchableComponent Call</div>;
+    return <div>fetching</div>;
   }
 };
-
-export const fetchableComponents =
-  <T,>(data: T, isFetching: boolean) =>
-  (SuccessComponent: JSX.Element) =>
-  (FailComponent: JSX.Element) =>
-  (LoadingComponent: JSX.Element) =>
-  (FetchingComponent: JSX.Element) => {
-    if (!isFetching && data) {
-      return SuccessComponent;
-    } else if (!isFetching && !data) {
-      return FailComponent;
-    } else if (isFetching && !data) {
-      return LoadingComponent;
-    } else {
-      return FetchingComponent;
-    }
-  };

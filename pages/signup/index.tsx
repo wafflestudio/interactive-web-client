@@ -1,13 +1,13 @@
-import { useState } from "react";
-import { api } from "../api/api";
-
-import styles from "./loginAndSignup.module.scss";
-import { useDispatch } from "react-redux";
-import { signIn } from "../modules/auth";
 import axios from "axios";
-import { signUpError } from "../api/error";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { api } from "../../api/api";
 
-export default function Login() {
+import { signUpError } from "../../api/error";
+import { signIn } from "../../modules/auth";
+import styles from "../login/loginAndSignup.module.scss";
+
+const Signup = () => {
   const [user_id, setUserId] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -91,4 +91,6 @@ export default function Login() {
       </form>
     </div>
   );
-}
+};
+
+export default Signup;

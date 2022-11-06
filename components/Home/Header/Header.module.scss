@@ -1,0 +1,33 @@
+@use "../../../styles/colors";
+
+.homeHeader {
+  display: flex;
+  justify-content: space-between;
+
+  .moreButton {
+    margin-top: 10px;
+  }
+
+  .user {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    .signButtons {
+      display: flex;
+      gap: 20px;
+
+      button {
+        color: colors.$primary;
+      }
+    }
+
+    .profile {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: colors.$mediumgray;
+      box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.1);
+    }
+  }
+}

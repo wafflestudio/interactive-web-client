@@ -4,11 +4,15 @@ import { closeWs, setMessage, setWs } from "../modules/ws";
 const wsURL = "wss://iwe-server.shop/ws/project/1/"; // [ws://] 또는 [wss://]로 시작해야 합니다
 const wsURLTest =
   "wss://demo.piesocket.com/v3/channel_1?api_key=VCXCEuvhGcBDP7XhiJJUDvR1e1D3eiVjgZ9VRiaV&notify_self";
+const newWsURL = "wss://webgam-server.shop/ws/project/1/";
 
 export const initiateWebSocket = () => {
   const socket = store().getState().ws.current;
   if (!socket) {
-    const newSocket = new WebSocket(wsURLTest);
+    const token = localStorage.getItem("accessToken")
+      ? localStorage.getItem("accessToken")
+      : "no_token";
+    const newSocket = new WebSocket(`${newWsURL}?access_token=${token}`);
     newSocket.onopen = () => {
       console.log("connected to " + wsURL);
       store().dispatch(setWs(newSocket));

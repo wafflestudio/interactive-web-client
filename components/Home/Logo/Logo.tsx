@@ -1,8 +1,8 @@
 import React from "react";
-import styles from "./HomePage.module.scss";
+import styles from "./Logo.module.scss";
 
 // 홈 화면 로고
-const HomeLogo = () => {
+const Logo = () => {
   return (
     <img
       src={"/images/logo/home.png"}
@@ -12,4 +12,4 @@ const HomeLogo = () => {
   );
 };
 
-export default HomeLogo;
+export default Logo;

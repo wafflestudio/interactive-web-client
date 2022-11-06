@@ -1,0 +1,14 @@
+
+.wrapper {
+  width: 100vw;
+  background: url("/images/home_background.png") repeat;
+  padding: 72px 0;
+  position: relative;
+  z-index: 0;
+
+  .container {
+    width: 1130px;
+    margin: auto;
+    text-align: center;
+  }
+}

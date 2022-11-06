@@ -1,6 +1,5 @@
-import React from "react";
-import BannerRigthIcon from "../../assets/svgs/BannerRigthIcon";
-import styles from "./HomePage.module.scss";
+import BannerRigthIcon from "../../../assets/svgs/BannerRigthIcon";
+import styles from "./HomeBanner.module.scss";
 
 // 공지사항 등에 사용될 배너
 const HomeBanner = () => {
