@@ -27,7 +27,7 @@ const Index: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    //    conssole.log(message);
+    //    console.log(message);
   }, [message]);
 
   if (!socket) return null;
