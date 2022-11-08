@@ -40,7 +40,7 @@ const CustomSprite = () => {
   };
   return (
     <Sprite
-      image={"/images/logo/logo.png"}
+      image={"/images/ex_ghost.png"}
       x={200}
       y={200}
       interactive={true}
@@ -58,7 +58,20 @@ const Project: NextPage = () => {
   const { projectId: id } = router.query;
   // const { data, isFetching } = useGetProjectQuery(Number(id));
   const wrapperRef = useRef<HTMLElement>(null);
-  const [ws, setWs] = useState<any>(null);
+  const [ws, setWs] = useState<WebSocket>();
+  const [windowSize, setWindowSize] = useState({
+    width: 0,
+    height: 0,
+  });
+
+  useEffect(() => {
+    const setStageSize = () =>
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+    const onResize = debounce(setStageSize, 200);
+    setStageSize();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   useEffect(() => {
     try {
