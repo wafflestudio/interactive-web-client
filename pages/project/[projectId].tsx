@@ -71,117 +71,55 @@ const Project: NextPage = () => {
         console.log("오픈!");
         setWs(webSocket);
       };
+      webSocket.onmessage = (event) => {
+        console.log(event.data);
+      };
     } catch (e) {}
   }, []);
 
+  if (!ws) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <article className={styles.wrapper} ref={wrapperRef}>
-      <Stage
-        width={wrapperRef.current ? wrapperRef.current.offsetWidth : 100}
-        height={wrapperRef.current ? wrapperRef.current.offsetHeight : 100}
-      >
+      <div className={styles.buttonWrapper}>
+        <button
+          className={styles.wsButton}
+          onClick={(e) => {
+            ws.send(postDummy);
+          }}
+        >
+          생성
+        </button>
+        <button
+          className={styles.wsButton}
+          onClick={(e) => {
+            ws.send(editDummy);
+          }}
+        >
+          수정
+        </button>
+        <button
+          className={styles.wsButton}
+          onClick={(e) => {
+            ws.send(deleteDummy);
+          }}
+        >
+          삭제
+        </button>
+        <button
+          className={styles.wsButton}
+          onClick={(e) => {
+            ws.send(errorDummy);
+          }}
+        >
+          에러
+        </button>
+      </div>
+      <Stage width={windowSize.width} height={windowSize.height}>
         <CustomSprite />
       </Stage>
-      <button
-        onClick={(e) => {
-          ws.send(
-            JSON.stringify({
-              method: "POST",
-              endpoint: "/objects/",
-              data: {
-                project_name: "foo",
-                tag: {
-                  size: "3",
-                  "0": "string",
-                  "1": "array",
-                  "2": "test",
-                  test: "success",
-                },
-                visibility: true,
-                z_index: 5,
-                svg_type: "RE",
-                fill: "rgba(255,255,255,0)",
-                stroke: "rgba(255,255,255,0)",
-                d_string: "M10 10 H 90 V 90 H 10 L 10 10",
-                src_url: "https://webgam.com/dummy-image-source-url",
-                x: 100,
-                y: -100,
-                h: 30,
-                w: 50,
-              },
-            }),
-          );
-        }}
-      >
-        {" "}
-        생성
-      </button>
-      <button
-        onClick={(e) => {
-          ws.send(
-            JSON.stringify({
-              method: "PATCH",
-              endpoint: "/objects/",
-              url_params: { id: 1 },
-              data: {
-                tag: { patch: "test" },
-                visibility: false,
-                z_index: 10,
-              },
-            }),
-          );
-        }}
-      >
-        수정
-      </button>
-      <button
-        onClick={(e) => {
-          ws.send(
-            JSON.stringify({
-              method: "DELETE",
-              endpoint: "/objects/",
-              url_params: { id: 1 },
-            }),
-          );
-        }}
-      >
-        {" "}
-        삭제
-      </button>
-      <button
-        onClick={(e) => {
-          ws.send(
-            JSON.stringify({
-              method: "ERROR",
-              endpoint: "/objects/",
-              data: {
-                project_name: "foo",
-                tag: {
-                  size: "3",
-                  "0": "string",
-                  "1": "array",
-                  "2": "test",
-                  test: "success",
-                },
-                visibility: true,
-                z_index: 5,
-                svg_type: "RE",
-                fill: "rgba(255,255,255,0)",
-                stroke: "rgba(255,255,255,0)",
-                d_string: "M10 10 H 90 V 90 H 10 L 10 10",
-                src_url: "https://webgam.com/dummy-image-source-url",
-                x: 100,
-                y: -100,
-                h: 30,
-                w: 50,
-              },
-            }),
-          );
-        }}
-      >
-        {" "}
-        에러
-      </button>
     </article>
   );
 };
