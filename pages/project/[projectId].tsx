@@ -1,23 +1,100 @@
 import type { NextPage } from "next";
-import { Sprite, Stage, useTick } from "@inlet/react-pixi";
+import { Sprite, Stage } from "@inlet/react-pixi";
 import { useRouter } from "next/router";
 import * as PIXI from "pixi.js";
 
 import { useEffect, useRef, useState } from "react";
-import { useGetProjectQuery } from "../../modules/api/projectApi";
 import styles from "./Project.module.scss";
+import { debounce } from "lodash";
 
 interface Draggable extends PIXI.DisplayObject {
   data: PIXI.InteractionData | null;
   dragging: boolean;
 }
 
+const postDummy = JSON.stringify({
+  method: "POST",
+  endpoint: "/objects/",
+  data: {
+    project_name: "foo",
+    tag: {
+      size: "3",
+      "0": "string",
+      "1": "array",
+      "2": "test",
+      test: "success",
+    },
+    visibility: true,
+    z_index: 5,
+    svg_type: "RE",
+    fill: "rgba(255,255,255,0)",
+    stroke: "rgba(255,255,255,0)",
+    d_string: "M10 10 H 90 V 90 H 10 L 10 10",
+    src_url: "https://webgam.com/dummy-image-source-url",
+    x: 100,
+    y: -100,
+    h: 30,
+    w: 50,
+  },
+});
+
+const editDummy = JSON.stringify({
+  method: "PATCH",
+  endpoint: "/objects/",
+  url_params: { id: 1 },
+  data: {
+    tag: { patch: "test" },
+    visibility: false,
+    z_index: 10,
+  },
+});
+
+const deleteDummy = JSON.stringify({
+  method: "DELETE",
+  endpoint: "/objects/",
+  url_params: { id: 23 },
+});
+
+const errorDummy = JSON.stringify({
+  method: "ERROR",
+  endpoint: "/objects/",
+  data: {
+    project_name: "foo",
+    tag: {
+      size: "3",
+      "0": "string",
+      "1": "array",
+      "2": "test",
+      test: "success",
+    },
+    visibility: true,
+    z_index: 5,
+    svg_type: "RE",
+    fill: "rgba(255,255,255,0)",
+    stroke: "rgba(255,255,255,0)",
+    d_string: "M10 10 H 90 V 90 H 10 L 10 10",
+    src_url: "https://webgam.com/dummy-image-source-url",
+    x: 100,
+    y: -100,
+    h: 30,
+    w: 50,
+  },
+});
+
 const CustomSprite = () => {
   const onDragStart = (event: PIXI.InteractionEvent) => {
-    console.count("start");
     const sprite = event.currentTarget as Draggable;
-    console.log(sprite.x);
-    console.dir(event.data.global.x);
+
+    sprite.anchor.set(
+      (event.data.global.x - sprite.x) / sprite.width,
+      (event.data.global.y - sprite.y) / sprite.height,
+    );
+
+    sprite.position.set(
+      sprite.position.x + sprite.anchor.x * sprite.width,
+      sprite.position.y + sprite.anchor.y * sprite.height,
+    );
+
     sprite.alpha = 0.5;
     sprite.data = event.data;
     sprite.dragging = true;
@@ -28,6 +105,13 @@ const CustomSprite = () => {
     sprite.alpha = 1;
     sprite.dragging = false;
     sprite.data = null;
+
+    sprite.position.set(
+      sprite.position.x - sprite.anchor.x * sprite.width,
+      sprite.position.y - sprite.anchor.y * sprite.height,
+    );
+
+    sprite.anchor.set(0, 0);
   };
 
   const onDragMove = (event: PIXI.InteractionEvent) => {
