@@ -142,20 +142,20 @@ const Project: NextPage = () => {
   const { projectId: id } = router.query;
   // const { data, isFetching } = useGetProjectQuery(Number(id));
   const wrapperRef = useRef<HTMLElement>(null);
+  const [app, setApp] = useState<PIXI.Application>();
   const [ws, setWs] = useState<WebSocket>();
-  const [windowSize, setWindowSize] = useState({
-    width: 0,
-    height: 0,
-  });
 
   useEffect(() => {
-    const setStageSize = () =>
-      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
-    const onResize = debounce(setStageSize, 200);
-    setStageSize();
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
+    if (app) {
+      const setStageSize = () => {
+        app.renderer.resize(window.innerWidth, window.innerHeight);
+      };
+      const onResize = debounce(setStageSize, 200);
+      setStageSize();
+      window.addEventListener("resize", onResize);
+      return () => window.removeEventListener("resize", onResize);
+    }
+  }, [app]);
 
   useEffect(() => {
     try {
@@ -214,7 +214,7 @@ const Project: NextPage = () => {
           에러
         </button>
       </div>
-      <Stage width={windowSize.width} height={windowSize.height}>
+      <Stage onMount={setApp} width={500} height={500}>
         <CustomSprite />
       </Stage>
     </article>
