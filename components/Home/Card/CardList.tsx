@@ -26,7 +26,7 @@ const CardList = () => {
         successComponent={
           <>
             {data?.data.map((project) => (
-              <CardItem card={projectToDummyCard(project)} />
+              <CardItem card={projectToDummyCard(project)} key={project.id} />
             ))}
           </>
         }

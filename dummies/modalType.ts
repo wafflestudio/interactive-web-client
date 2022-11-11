@@ -1,4 +1,4 @@
-import { ObjectDataType } from "./dummyInterface";
+import { ObjectDataType } from "../types/types";
 
 export interface ModalDataType {
   type: ModalType;

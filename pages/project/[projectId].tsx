@@ -1,11 +1,19 @@
 import type { NextPage } from "next";
-import { Sprite, Stage } from "@inlet/react-pixi";
+import { Sprite, Stage, _ReactPixi } from "@inlet/react-pixi";
+import { debounce } from "lodash";
 import { useRouter } from "next/router";
 import * as PIXI from "pixi.js";
 
-import { useEffect, useRef, useState } from "react";
+import { MouseEventHandler, useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import AddModal from "../../components/dev/Modal/AddModal/AddModal";
+import SimpleInfoModal from "../../components/dev/Modal/SimpleInfoModal/SimpleInfoModal";
+import { ModalType } from "../../dummies/modalType";
+import { RootState } from "../../modules";
+import { useGetProjectMessagesQuery } from "../../modules/api/projectWebsocketApi";
+import { openSimpleInfoModal } from "../../modules/modal";
+import { ObjectDataType } from "../../types/types";
 import styles from "./Project.module.scss";
-import { debounce } from "lodash";
 
 interface Draggable extends PIXI.DisplayObject {
   data: PIXI.InteractionData | null;
@@ -82,6 +90,21 @@ const errorDummy = JSON.stringify({
 });
 
 const CustomSprite = () => {
+  const [spriteInfo, setSpriteInfo] = useState<ObjectDataType>({
+    id: 0,
+    name: "ghost",
+    src: "/images/ex_ghost.png",
+    geometry: {
+      x: 0,
+      y: 0,
+      w: 0,
+      h: 0,
+    },
+    opacity: 1,
+    tag: ["ghost"],
+    visibility: true,
+    zIndex: 0,
+  });
   const onDragStart = (event: PIXI.InteractionEvent) => {
     const sprite = event.currentTarget as Draggable;
 
@@ -122,28 +145,83 @@ const CustomSprite = () => {
       sprite.y = newPosition.y;
     }
   };
+
+  //   const dispatch = useDispatch();
+
+  const onRightClick = (event: PIXI.InteractionEvent) => {
+    const sprite = event.currentTarget as PIXI.Sprite;
+    console.log("right click");
+    const spriteObject = {
+      id: 0,
+      name: "ghost",
+      src: "/images/ex_ghost.png",
+      geometry: {
+        x: sprite.x,
+        y: sprite.y,
+        w: sprite.texture.width,
+        h: sprite.texture.height,
+      },
+      opacity: sprite.alpha,
+      tag: ["ghost"],
+      visibility: true,
+      zIndex: sprite.zIndex,
+    };
+    setSpriteInfo(spriteObject);
+    // dispatch(openSimpleInfoModal(spriteObject));
+  };
+
   return (
-    <Sprite
-      image={"/images/ex_ghost.png"}
-      x={200}
-      y={200}
-      interactive={true}
-      buttonMode={true}
-      pointerdown={onDragStart}
-      pointerup={onDragEnd}
-      pointerupoutside={onDragEnd}
-      pointermove={onDragMove}
-    />
+    <>
+      <Sprite
+        image={"/images/ex_ghost.png"}
+        x={200}
+        y={200}
+        interactive={true}
+        buttonMode={true}
+        pointerdown={onDragStart}
+        pointerup={onDragEnd}
+        pointerupoutside={onDragEnd}
+        pointermove={onDragMove}
+        rightclick={onRightClick}
+      />
+      {/* <SimpleInfoModal
+        targetModal={{
+          type: ModalType.OBJECT_SIMPLE_INFO,
+          target: spriteInfo,
+        }}
+      /> */}
+    </>
   );
 };
 
+interface Draggable extends PIXI.DisplayObject {
+  data: PIXI.InteractionData | null;
+  dragging: boolean;
+}
+
 const Project: NextPage = () => {
+  const [windowSize, setWindowSize] = useState({
+    width: 0,
+    height: 0,
+  });
+  const [openAddModal, setOpenAddModal] = useState(false);
   const router = useRouter();
   const { projectId: id } = router.query;
   // const { data, isFetching } = useGetProjectQuery(Number(id));
+  const { data } = useGetProjectMessagesQuery(id, {
+    skip: typeof id !== "string",
+  });
+  console.log(data);
   const wrapperRef = useRef<HTMLElement>(null);
   const [app, setApp] = useState<PIXI.Application>();
-  const [ws, setWs] = useState<WebSocket>();
+
+  const openNewBeadsModal: MouseEventHandler<HTMLCanvasElement> = (e) => {
+    e.preventDefault();
+    // setOpenAddModal(true);
+  };
+
+  const beads = useSelector((state: RootState) => state.staticObjects);
+  console.log(beads);
 
   useEffect(() => {
     if (app) {
@@ -157,68 +235,65 @@ const Project: NextPage = () => {
     }
   }, [app]);
 
-  useEffect(() => {
-    try {
-      const webSocket = new WebSocket(
-        `wss://webgam-server.shop/ws/project/2/?access_token=${String(
-          localStorage.getItem("accessToken"),
-        )}`,
-      );
-      webSocket.onopen = () => {
-        console.log("오픈!");
-        setWs(webSocket);
-      };
-      webSocket.onmessage = (event) => {
-        console.log(event.data);
-      };
-    } catch (e) {}
-  }, []);
-
-  if (!ws) {
-    return <div>Loading...</div>;
-  }
-
   return (
-    <article className={styles.wrapper} ref={wrapperRef}>
-      <div className={styles.buttonWrapper}>
-        <button
-          className={styles.wsButton}
-          onClick={(e) => {
-            ws.send(postDummy);
-          }}
+    <>
+      <article className={styles.wrapper} ref={wrapperRef}>
+        <div className={styles.buttonWrapper}>
+          <button
+            className={styles.wsButton}
+            onClick={(e) => {
+              ws.send(postDummy);
+            }}
+          >
+            생성
+          </button>
+          <button
+            className={styles.wsButton}
+            onClick={(e) => {
+              ws.send(editDummy);
+            }}
+          >
+            수정
+          </button>
+          <button
+            className={styles.wsButton}
+            onClick={(e) => {
+              ws.send(deleteDummy);
+            }}
+          >
+            삭제
+          </button>
+          <button
+            className={styles.wsButton}
+            onClick={(e) => {
+              ws.send(errorDummy);
+            }}
+          >
+            에러
+          </button>
+        </div>
+        <Stage
+          onContextMenu={openNewBeadsModal}
+          onMount={setApp}
+          width={500}
+          height={500}
         >
-          생성
-        </button>
-        <button
-          className={styles.wsButton}
-          onClick={(e) => {
-            ws.send(editDummy);
-          }}
-        >
-          수정
-        </button>
-        <button
-          className={styles.wsButton}
-          onClick={(e) => {
-            ws.send(deleteDummy);
-          }}
-        >
-          삭제
-        </button>
-        <button
-          className={styles.wsButton}
-          onClick={(e) => {
-            ws.send(errorDummy);
-          }}
-        >
-          에러
-        </button>
-      </div>
-      <Stage onMount={setApp} width={500} height={500}>
-        <CustomSprite />
-      </Stage>
-    </article>
+          <CustomSprite />
+          {beads.map((bead) => (
+            <DisplayObjectFromStaticObjects key={bead.id} bead={bead} />
+          ))}
+        </Stage>
+      </article>
+      {openAddModal ? <AddModal setAddModal={setOpenAddModal} /> : null}
+    </>
   );
+};
+
+const DisplayObjectFromStaticObjects = ({ bead }: { bead: ObjectDataType }) => {
+  if (bead.src) {
+    return <Sprite image={bead.src} x={bead.geometry.x} y={bead.geometry.y} />;
+  }
+  return null;
 };
 
 export default Project;
