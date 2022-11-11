@@ -18,9 +18,7 @@ const AddShape = () => {
   const [previewWidth, setPreviewWidth] = useState(150);
   const [previewHeight, setPreviewHeight] = useState(150);
 
-  const { svgData, geometry } = useSelector(
-    (state: RootState) => state.addModal,
-  );
+  const { geometry } = useSelector((state: RootState) => state.addModal);
 
   const dispatch = useDispatch();
 

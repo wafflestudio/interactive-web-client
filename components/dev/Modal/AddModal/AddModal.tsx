@@ -82,7 +82,7 @@ const AddModal = ({ setAddModal }: AddModalProps) => {
             onChange={onNameChange}
           />
         </label>
-        <AddShape />
+        {/* <AddShape /> */}
         <AddImage />
         <AddTag />
         <button className={styles.closeModal} onClick={closeModal}>

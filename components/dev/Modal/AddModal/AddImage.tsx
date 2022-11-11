@@ -88,55 +88,51 @@ const AddImage = () => {
 
   return (
     <>
-      {svgData.svgType === IMAGE ? (
-        <div className={styles.addImage}>
-          이미지
-          <button onClick={clickImageInput}>이미지 추가/변경</button>
-          버튼을 클릭하거나 모달창으로 이미지를 드래그앤드롭하세요
-          <button onClick={removeImage}>이미지 제거</button>
+      {/* {svgData.svgType === IMAGE ? ( */}
+      <div className={styles.addImage}>
+        이미지
+        <button onClick={clickImageInput}>이미지 추가/변경</button>
+        버튼을 클릭하거나 모달창으로 이미지를 드래그앤드롭하세요
+        <button onClick={removeImage}>이미지 제거</button>
+        <input
+          ref={imageInput}
+          id="image"
+          name="image"
+          type="file"
+          accept="image/*"
+          className={styles.imageInput}
+          onChange={handleImageInput}
+        />
+        <label htmlFor="width">
+          너비
           <input
-            ref={imageInput}
-            id="image"
-            name="image"
-            type="file"
-            accept="image/*"
-            className={styles.imageInput}
-            onChange={handleImageInput}
+            type="number"
+            id="width"
+            value={previewWidth}
+            min={1}
+            onChange={onWidthChange}
+            onBlur={onSaveGeometry}
           />
-          <label htmlFor="width">
-            너비
-            <input
-              type="number"
-              id="width"
-              value={previewWidth}
-              min={1}
-              onChange={onWidthChange}
-              onBlur={onSaveGeometry}
-            />
-          </label>
-          <label htmlFor="height">
-            길이
-            <input
-              type="number"
-              id="height"
-              value={previewHeight}
-              min={1}
-              onChange={onHeightChange}
-              onBlur={onSaveGeometry}
-            />
-          </label>
-          <button onClick={onSaveGeometry}>설정</button>
-          <div>
-            {svgData.src ? (
-              <img
-                ref={imagePreviewRef}
-                src={svgData.src}
-                onLoad={onLoadImage}
-              />
-            ) : null}
-          </div>
-        </div>
-      ) : null}
+        </label>
+        <label htmlFor="height">
+          길이
+          <input
+            type="number"
+            id="height"
+            value={previewHeight}
+            min={1}
+            onChange={onHeightChange}
+            onBlur={onSaveGeometry}
+          />
+        </label>
+        <button onClick={onSaveGeometry}>설정</button>
+        {/* <div>
+          {svgData.src ? (
+            <img ref={imagePreviewRef} src={svgData.src} onLoad={onLoadImage} />
+          ) : null}
+        </div> */}
+      </div>
+      {/* ) : null} */}
     </>
   );
 };

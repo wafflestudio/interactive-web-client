@@ -1,18 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ObjectDataType } from "../dummies/dummyInterface";
+import { ObjectDataType } from "../types/types";
 
 const initialState: ObjectDataType = {
   id: 99,
   name: "",
-  svgData: { svgType: "rect", stroke: "#000000", fill: "#ffffff" },
+  src: "https://images.unsplash.com/photo-1668107689369-256339a1f7cf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxN3x8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=60",
+  opacity: 1,
   geometry: { x: 0, y: 0, w: 150, h: 150 },
-  attribute: {} as object,
   tag: [],
   visibility: true,
   zIndex: 99,
 };
 
-type ShapeType = "rect" | "ellipse" | "path" | "drawing" | "image" | "text";
+// type ShapeType = "rect" | "ellipse" | "path" | "drawing" | "image" | "text";
 
 const addModalSlice = createSlice({
   name: "addModal",
@@ -24,9 +24,9 @@ const addModalSlice = createSlice({
     setName: (state, action: PayloadAction<string>) => {
       state.name = action.payload;
     },
-    setShape: (state, action: PayloadAction<ShapeType>) => {
-      state.svgData.svgType = action.payload;
-    },
+    // setShape: (state, action: PayloadAction<ShapeType>) => {
+    //   state.svgData.svgType = action.payload;
+    // },
     setWidth: (state, action: PayloadAction<number>) => {
       state.geometry.w = action.payload;
     },
@@ -39,11 +39,11 @@ const addModalSlice = createSlice({
     setYPos: (state, action: PayloadAction<number>) => {
       state.geometry.y = action.payload;
     },
-    setImage: (state, action: PayloadAction<File | undefined>) => {
-      state.svgData.file = action.payload;
-    },
+    // setImage: (state, action: PayloadAction<File | undefined>) => {
+    //   state.file = action.payload;
+    // },
     setSrc: (state, action: PayloadAction<string>) => {
-      state.svgData.src = action.payload;
+      state.src = action.payload;
     },
     setTags: (state, action: PayloadAction<string[]>) => {
       state.tag = action.payload;

@@ -89,7 +89,7 @@ const errorDummy = JSON.stringify({
   },
 });
 
-const CustomSprite = () => {
+const CustomSprite = ({ bead }: { bead: ObjectDataType | undefined }) => {
   const [spriteInfo, setSpriteInfo] = useState<ObjectDataType>({
     id: 0,
     name: "ghost",
@@ -170,13 +170,38 @@ const CustomSprite = () => {
     setSpriteInfo(spriteObject);
     // dispatch(openSimpleInfoModal(spriteObject));
   };
-
-  return (
-    <>
+  if (!bead)
+    return (
+      <>
+        <Sprite
+          image={"/images/ex_ghost.png"}
+          x={200}
+          y={200}
+          interactive={true}
+          buttonMode={true}
+          pointerdown={onDragStart}
+          pointerup={onDragEnd}
+          pointerupoutside={onDragEnd}
+          pointermove={onDragMove}
+          rightclick={onRightClick}
+        />
+        {/* <SimpleInfoModal
+        targetModal={{
+          type: ModalType.OBJECT_SIMPLE_INFO,
+          target: spriteInfo,
+        }}
+      /> */}
+      </>
+    );
+  else if (bead.src) {
+    console.log(bead.src);
+    return (
       <Sprite
-        image={"/images/ex_ghost.png"}
-        x={200}
-        y={200}
+        image={bead.src}
+        x={bead.geometry.x}
+        y={bead.geometry.y}
+        width={bead.geometry.w}
+        height={bead.geometry.h}
         interactive={true}
         buttonMode={true}
         pointerdown={onDragStart}
@@ -185,14 +210,9 @@ const CustomSprite = () => {
         pointermove={onDragMove}
         rightclick={onRightClick}
       />
-      {/* <SimpleInfoModal
-        targetModal={{
-          type: ModalType.OBJECT_SIMPLE_INFO,
-          target: spriteInfo,
-        }}
-      /> */}
-    </>
-  );
+    );
+  }
+  return null;
 };
 
 interface Draggable extends PIXI.DisplayObject {
@@ -279,22 +299,15 @@ const Project: NextPage = () => {
           width={500}
           height={500}
         >
-          <CustomSprite />
+          <CustomSprite bead={undefined} />
           {beads.map((bead) => (
-            <DisplayObjectFromStaticObjects key={bead.id} bead={bead} />
+            <CustomSprite key={bead.id} bead={bead} />
           ))}
         </Stage>
       </article>
       {openAddModal ? <AddModal setAddModal={setOpenAddModal} /> : null}
     </>
   );
-};
-
-const DisplayObjectFromStaticObjects = ({ bead }: { bead: ObjectDataType }) => {
-  if (bead.src) {
-    return <Sprite image={bead.src} x={bead.geometry.x} y={bead.geometry.y} />;
-  }
-  return null;
 };
 
 export default Project;
