@@ -107,6 +107,7 @@ const CustomSprite = () => {
   });
   const onDragStart = (event: PIXI.InteractionEvent) => {
     const sprite = event.currentTarget as Draggable;
+    console.log("drag start");
 
     sprite.anchor.set(
       (event.data.global.x - sprite.x) / sprite.width,
@@ -217,7 +218,7 @@ const Project: NextPage = () => {
 
   const openNewBeadsModal: MouseEventHandler<HTMLCanvasElement> = (e) => {
     e.preventDefault();
-    // setOpenAddModal(true);
+    setOpenAddModal(true);
   };
 
   const beads = useSelector((state: RootState) => state.staticObjects);
