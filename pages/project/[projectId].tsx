@@ -179,10 +179,10 @@ const CustomSprite = ({ bead }: { bead: ObjectDataType | undefined }) => {
           y={200}
           interactive={true}
           buttonMode={true}
-          pointerdown={onDragStart}
-          pointerup={onDragEnd}
-          pointerupoutside={onDragEnd}
-          pointermove={onDragMove}
+          mousedown={onDragStart}
+          mouseup={onDragEnd}
+          mouseupoutside={onDragEnd}
+          mousemove={onDragMove}
           rightclick={onRightClick}
         />
         {/* <SimpleInfoModal
@@ -204,10 +204,10 @@ const CustomSprite = ({ bead }: { bead: ObjectDataType | undefined }) => {
         height={bead.geometry.h}
         interactive={true}
         buttonMode={true}
-        pointerdown={onDragStart}
-        pointerup={onDragEnd}
-        pointerupoutside={onDragEnd}
-        pointermove={onDragMove}
+        mousedown={onDragStart}
+        mouseup={onDragEnd}
+        mouseupoutside={onDragEnd}
+        mousemove={onDragMove}
         rightclick={onRightClick}
       />
     );
@@ -215,7 +215,7 @@ const CustomSprite = ({ bead }: { bead: ObjectDataType | undefined }) => {
   return null;
 };
 
-interface Draggable extends PIXI.DisplayObject {
+interface Draggable extends PIXI.Sprite {
   data: PIXI.InteractionData | null;
   dragging: boolean;
 }
