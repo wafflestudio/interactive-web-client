@@ -5,12 +5,13 @@ import { useRouter } from "next/router";
 import * as PIXI from "pixi.js";
 
 import { MouseEventHandler, useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import AddModal from "../../components/dev/Modal/AddModal/AddModal";
-import { RootState } from "../../modules";
+import { RootState, store } from "../../modules";
 import { useGetProjectMessagesQuery } from "../../modules/api/projectWebsocketApi";
 import { ObjectDataType } from "../../types/types";
 import styles from "./Project.module.scss";
+import { openSimpleInfoModal } from "../../modules/modal";
 
 interface Draggable extends PIXI.Sprite {
   data: PIXI.InteractionData | null;
@@ -18,21 +19,7 @@ interface Draggable extends PIXI.Sprite {
 }
 
 const CustomSprite = ({ bead }: { bead: ObjectDataType | undefined }) => {
-  const [spriteInfo, setSpriteInfo] = useState<ObjectDataType>({
-    id: 0,
-    name: "ghost",
-    src: "/images/ex_ghost.png",
-    geometry: {
-      x: 0,
-      y: 0,
-      w: 0,
-      h: 0,
-    },
-    opacity: 1,
-    tag: ["ghost"],
-    visibility: true,
-    zIndex: 0,
-  });
+  const dispatch = useDispatch();
   const onDragStart = (event: PIXI.InteractionEvent) => {
     const sprite = event.currentTarget as Draggable;
     console.log("drag start");
@@ -75,8 +62,6 @@ const CustomSprite = ({ bead }: { bead: ObjectDataType | undefined }) => {
     }
   };
 
-  //   const dispatch = useDispatch();
-
   const onRightClick = (event: PIXI.InteractionEvent) => {
     const sprite = event.currentTarget as PIXI.Sprite;
     console.log("right click");
@@ -95,8 +80,8 @@ const CustomSprite = ({ bead }: { bead: ObjectDataType | undefined }) => {
       visibility: true,
       zIndex: sprite.zIndex,
     };
-    setSpriteInfo(spriteObject);
-    // dispatch(openSimpleInfoModal(spriteObject));
+    console.log("dispatch");
+    dispatch(openSimpleInfoModal(spriteObject));
   };
   if (!bead)
     return (
@@ -144,10 +129,6 @@ const CustomSprite = ({ bead }: { bead: ObjectDataType | undefined }) => {
 };
 
 const Project: NextPage = () => {
-  const [windowSize, setWindowSize] = useState({
-    width: 0,
-    height: 0,
-  });
   const [openAddModal, setOpenAddModal] = useState(false);
   const router = useRouter();
   const { projectId: id } = router.query;
@@ -155,7 +136,7 @@ const Project: NextPage = () => {
   const { data } = useGetProjectMessagesQuery(parseInt(id as string), {
     skip: typeof id !== "string",
   });
-  console.log(data);
+  // console.log(data);
   const wrapperRef = useRef<HTMLElement>(null);
   const [app, setApp] = useState<PIXI.Application>();
 
@@ -165,10 +146,10 @@ const Project: NextPage = () => {
   };
 
   const beads = useSelector((state: RootState) => state.staticObjects);
-  console.log(beads);
+  // console.log(beads);
 
   useEffect(() => {
-    if (app) {
+    if (app?.renderer) {
       const setStageSize = () => {
         app.renderer.resize(window.innerWidth, window.innerHeight);
       };
@@ -183,15 +164,17 @@ const Project: NextPage = () => {
     <>
       <article className={styles.wrapper} ref={wrapperRef}>
         <Stage
-          onContextMenu={openNewBeadsModal}
+          // onContextMenu={openNewBeadsModal}
           onMount={setApp}
           width={500}
           height={500}
         >
-          <CustomSprite bead={undefined} />
-          {beads.map((bead) => (
-            <CustomSprite key={bead.id} bead={bead} />
-          ))}
+          <Provider store={store()}>
+            <CustomSprite bead={undefined} />
+            {beads.map((bead) => (
+              <CustomSprite key={bead.id} bead={bead} />
+            ))}
+          </Provider>
         </Stage>
       </article>
       {openAddModal ? <AddModal setAddModal={setOpenAddModal} /> : null}
