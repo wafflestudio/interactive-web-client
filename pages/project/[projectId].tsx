@@ -7,15 +7,13 @@ import * as PIXI from "pixi.js";
 import { MouseEventHandler, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AddModal from "../../components/dev/Modal/AddModal/AddModal";
-import SimpleInfoModal from "../../components/dev/Modal/SimpleInfoModal/SimpleInfoModal";
-import { ModalType } from "../../dummies/modalType";
 import { RootState } from "../../modules";
 import { useGetProjectMessagesQuery } from "../../modules/api/projectWebsocketApi";
 import { openSimpleInfoModal } from "../../modules/modal";
 import { ObjectDataType } from "../../types/types";
 import styles from "./Project.module.scss";
 
-interface Draggable extends PIXI.DisplayObject {
+interface Draggable extends PIXI.Sprite {
   data: PIXI.InteractionData | null;
   dragging: boolean;
 }
