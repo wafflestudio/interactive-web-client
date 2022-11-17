@@ -152,7 +152,7 @@ const Project: NextPage = () => {
   const router = useRouter();
   const { projectId: id } = router.query;
   // const { data, isFetching } = useGetProjectQuery(Number(id));
-  const { data } = useGetProjectMessagesQuery(id, {
+  const { data } = useGetProjectMessagesQuery(parseInt(id as string), {
     skip: typeof id !== "string",
   });
   console.log(data);
