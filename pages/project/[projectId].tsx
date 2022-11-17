@@ -143,11 +143,6 @@ const CustomSprite = ({ bead }: { bead: ObjectDataType | undefined }) => {
   return null;
 };
 
-interface Draggable extends PIXI.Sprite {
-  data: PIXI.InteractionData | null;
-  dragging: boolean;
-}
-
 const Project: NextPage = () => {
   const [windowSize, setWindowSize] = useState({
     width: 0,
