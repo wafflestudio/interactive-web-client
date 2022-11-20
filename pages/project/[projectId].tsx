@@ -1,110 +1,25 @@
 import type { NextPage } from "next";
-import { Sprite, Stage, _ReactPixi } from "@inlet/react-pixi";
+import { Sprite, Stage } from "@inlet/react-pixi";
 import { debounce } from "lodash";
 import { useRouter } from "next/router";
 import * as PIXI from "pixi.js";
 
 import { MouseEventHandler, useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import AddModal from "../../components/dev/Modal/AddModal/AddModal";
-import SimpleInfoModal from "../../components/dev/Modal/SimpleInfoModal/SimpleInfoModal";
-import { ModalType } from "../../dummies/modalType";
-import { RootState } from "../../modules";
+import { RootState, store } from "../../modules";
 import { useGetProjectMessagesQuery } from "../../modules/api/projectWebsocketApi";
-import { openSimpleInfoModal } from "../../modules/modal";
 import { ObjectDataType } from "../../types/types";
 import styles from "./Project.module.scss";
+import { openSimpleInfoModal } from "../../modules/modal";
 
-interface Draggable extends PIXI.DisplayObject {
+interface Draggable extends PIXI.Sprite {
   data: PIXI.InteractionData | null;
   dragging: boolean;
 }
 
-const postDummy = JSON.stringify({
-  method: "POST",
-  endpoint: "/objects/",
-  data: {
-    project_name: "foo",
-    tag: {
-      size: "3",
-      "0": "string",
-      "1": "array",
-      "2": "test",
-      test: "success",
-    },
-    visibility: true,
-    z_index: 5,
-    svg_type: "RE",
-    fill: "rgba(255,255,255,0)",
-    stroke: "rgba(255,255,255,0)",
-    d_string: "M10 10 H 90 V 90 H 10 L 10 10",
-    src_url: "https://webgam.com/dummy-image-source-url",
-    x: 100,
-    y: -100,
-    h: 30,
-    w: 50,
-  },
-});
-
-const editDummy = JSON.stringify({
-  method: "PATCH",
-  endpoint: "/objects/",
-  url_params: { id: 1 },
-  data: {
-    tag: { patch: "test" },
-    visibility: false,
-    z_index: 10,
-  },
-});
-
-const deleteDummy = JSON.stringify({
-  method: "DELETE",
-  endpoint: "/objects/",
-  url_params: { id: 23 },
-});
-
-const errorDummy = JSON.stringify({
-  method: "ERROR",
-  endpoint: "/objects/",
-  data: {
-    project_name: "foo",
-    tag: {
-      size: "3",
-      "0": "string",
-      "1": "array",
-      "2": "test",
-      test: "success",
-    },
-    visibility: true,
-    z_index: 5,
-    svg_type: "RE",
-    fill: "rgba(255,255,255,0)",
-    stroke: "rgba(255,255,255,0)",
-    d_string: "M10 10 H 90 V 90 H 10 L 10 10",
-    src_url: "https://webgam.com/dummy-image-source-url",
-    x: 100,
-    y: -100,
-    h: 30,
-    w: 50,
-  },
-});
-
 const CustomSprite = ({ bead }: { bead: ObjectDataType | undefined }) => {
-  const [spriteInfo, setSpriteInfo] = useState<ObjectDataType>({
-    id: 0,
-    name: "ghost",
-    src: "/images/ex_ghost.png",
-    geometry: {
-      x: 0,
-      y: 0,
-      w: 0,
-      h: 0,
-    },
-    opacity: 1,
-    tag: ["ghost"],
-    visibility: true,
-    zIndex: 0,
-  });
+  const dispatch = useDispatch();
   const onDragStart = (event: PIXI.InteractionEvent) => {
     const sprite = event.currentTarget as Draggable;
     console.log("drag start");
@@ -147,8 +62,6 @@ const CustomSprite = ({ bead }: { bead: ObjectDataType | undefined }) => {
     }
   };
 
-  //   const dispatch = useDispatch();
-
   const onRightClick = (event: PIXI.InteractionEvent) => {
     const sprite = event.currentTarget as PIXI.Sprite;
     console.log("right click");
@@ -167,8 +80,8 @@ const CustomSprite = ({ bead }: { bead: ObjectDataType | undefined }) => {
       visibility: true,
       zIndex: sprite.zIndex,
     };
-    setSpriteInfo(spriteObject);
-    // dispatch(openSimpleInfoModal(spriteObject));
+    console.log("dispatch");
+    dispatch(openSimpleInfoModal(spriteObject));
   };
   if (!bead)
     return (
@@ -179,10 +92,10 @@ const CustomSprite = ({ bead }: { bead: ObjectDataType | undefined }) => {
           y={200}
           interactive={true}
           buttonMode={true}
-          pointerdown={onDragStart}
-          pointerup={onDragEnd}
-          pointerupoutside={onDragEnd}
-          pointermove={onDragMove}
+          mousedown={onDragStart}
+          mouseup={onDragEnd}
+          mouseupoutside={onDragEnd}
+          mousemove={onDragMove}
           rightclick={onRightClick}
         />
         {/* <SimpleInfoModal
@@ -204,10 +117,10 @@ const CustomSprite = ({ bead }: { bead: ObjectDataType | undefined }) => {
         height={bead.geometry.h}
         interactive={true}
         buttonMode={true}
-        pointerdown={onDragStart}
-        pointerup={onDragEnd}
-        pointerupoutside={onDragEnd}
-        pointermove={onDragMove}
+        mousedown={onDragStart}
+        mouseup={onDragEnd}
+        mouseupoutside={onDragEnd}
+        mousemove={onDragMove}
         rightclick={onRightClick}
       />
     );
@@ -215,24 +128,15 @@ const CustomSprite = ({ bead }: { bead: ObjectDataType | undefined }) => {
   return null;
 };
 
-interface Draggable extends PIXI.DisplayObject {
-  data: PIXI.InteractionData | null;
-  dragging: boolean;
-}
-
 const Project: NextPage = () => {
-  const [windowSize, setWindowSize] = useState({
-    width: 0,
-    height: 0,
-  });
   const [openAddModal, setOpenAddModal] = useState(false);
   const router = useRouter();
   const { projectId: id } = router.query;
   // const { data, isFetching } = useGetProjectQuery(Number(id));
-  const { data } = useGetProjectMessagesQuery(id, {
+  const { data } = useGetProjectMessagesQuery(parseInt(id as string), {
     skip: typeof id !== "string",
   });
-  console.log(data);
+  // console.log(data);
   const wrapperRef = useRef<HTMLElement>(null);
   const [app, setApp] = useState<PIXI.Application>();
 
@@ -242,10 +146,10 @@ const Project: NextPage = () => {
   };
 
   const beads = useSelector((state: RootState) => state.staticObjects);
-  console.log(beads);
+  // console.log(beads);
 
   useEffect(() => {
-    if (app) {
+    if (app?.renderer) {
       const setStageSize = () => {
         app.renderer.resize(window.innerWidth, window.innerHeight);
       };
@@ -259,50 +163,18 @@ const Project: NextPage = () => {
   return (
     <>
       <article className={styles.wrapper} ref={wrapperRef}>
-        <div className={styles.buttonWrapper}>
-          <button
-            className={styles.wsButton}
-            onClick={(e) => {
-              ws.send(postDummy);
-            }}
-          >
-            생성
-          </button>
-          <button
-            className={styles.wsButton}
-            onClick={(e) => {
-              ws.send(editDummy);
-            }}
-          >
-            수정
-          </button>
-          <button
-            className={styles.wsButton}
-            onClick={(e) => {
-              ws.send(deleteDummy);
-            }}
-          >
-            삭제
-          </button>
-          <button
-            className={styles.wsButton}
-            onClick={(e) => {
-              ws.send(errorDummy);
-            }}
-          >
-            에러
-          </button>
-        </div>
         <Stage
-          onContextMenu={openNewBeadsModal}
+          // onContextMenu={openNewBeadsModal}
           onMount={setApp}
           width={500}
           height={500}
         >
-          <CustomSprite bead={undefined} />
-          {beads.map((bead) => (
-            <CustomSprite key={bead.id} bead={bead} />
-          ))}
+          <Provider store={store()}>
+            <CustomSprite bead={undefined} />
+            {beads.map((bead) => (
+              <CustomSprite key={bead.id} bead={bead} />
+            ))}
+          </Provider>
         </Stage>
       </article>
       {openAddModal ? <AddModal setAddModal={setOpenAddModal} /> : null}
