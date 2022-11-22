@@ -1,9 +1,4 @@
 import React from "react";
-import {
-  GeometryType,
-  ObjectDataType,
-  SvgDataType,
-} from "../dummies/dummyInterface";
 
 export interface UserDataType {
   user_id: string;
@@ -39,14 +34,17 @@ export interface ModalDataType {
 }
 
 export interface ObjectDataType {
-  id: number; //중복 없게
-  name: string;
-  src: string;
-  geometry: GeometryType;
-  opacity: number;
-  tag: string[];
+  object_name: string;
+  tag: unknown;
   visibility: boolean;
-  zIndex?: number;
+  z_index: number;
+  opacity: number;
+  src_url: string;
+  x: number;
+  y: number;
+  h: number;
+  w: number;
+  image: File | null;
 }
 
 export enum ModalType {

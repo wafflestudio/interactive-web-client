@@ -15,6 +15,10 @@ const nextConfig = {
         source: "/api/:path*",
         destination: "https://webgam-server.shop/api/v1/:path*/",
       },
+      {
+        source: "/aws-image/:path*",
+        destination: "https://webgam-server.s3.amazonaws.com/:path*",
+      },
     ];
   },
 };

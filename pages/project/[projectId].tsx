@@ -9,9 +9,9 @@ import { Provider, useDispatch, useSelector } from "react-redux";
 import AddModal from "../../components/dev/Modal/AddModal/AddModal";
 import { RootState, store } from "../../modules";
 import { useGetProjectMessagesQuery } from "../../modules/api/projectWebsocketApi";
+import { openSimpleInfoModal } from "../../modules/modal";
 import { ObjectDataType } from "../../types/types";
 import styles from "./Project.module.scss";
-import { openSimpleInfoModal } from "../../modules/modal";
 
 interface Draggable extends PIXI.Sprite {
   data: PIXI.InteractionData | null;
@@ -164,7 +164,7 @@ const Project: NextPage = () => {
     <>
       <article className={styles.wrapper} ref={wrapperRef}>
         <Stage
-          // onContextMenu={openNewBeadsModal}
+          onContextMenu={openNewBeadsModal}
           onMount={setApp}
           width={500}
           height={500}
