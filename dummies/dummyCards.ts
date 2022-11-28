@@ -1,5 +1,7 @@
 // 홈 화면 카드들 더미데이터
 
+import { ProjectDataType } from "../types/types";
+
 export enum CardFeature {
   HITS,
   LIKES,
@@ -12,6 +14,16 @@ export interface dummyCardType {
   src: string;
   feature?: CardFeature;
 }
+
+export const projectToDummyCard = (
+  project: ProjectDataType,
+): dummyCardType => ({
+  id: project.id,
+  title: project.title,
+  tags: [],
+  background: "#37204E",
+  src: "",
+});
 
 export const dummyCards = [
   {
