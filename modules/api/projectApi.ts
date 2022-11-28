@@ -21,11 +21,11 @@ const projectApi = api.injectEndpoints({
       query: (id) => ({ url: `/project/${id}` }),
       providesTags: [{ type: "Project/current" }],
     }),
-    postMyProject: build.mutation<ProjectDataType, { title: string }>({
-      query: ({ title }) => ({
+    postMyProject: build.mutation<ProjectDataType, FormData>({
+      query: (data) => ({
         method: "POST",
         url: `/project/`,
-        body: { title },
+        body: data,
       }),
       invalidatesTags: [{ type: "Project/me" }],
     }),
