@@ -1,14 +1,16 @@
+"use client";
+
 import axios from "axios";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { api } from "../api/api";
-import { setUser } from "../modules/user";
-import styles from "./loginAndSignup.module.scss";
+import { api } from "../../api/api";
+import { setUser } from "../../modules/user";
+import styles from "../loginAndSignup.module.scss";
 
 export const onPing = async () => {
   try {
-    const response = axios.get("/ping");
+    const response = await axios.get("/ping");
     console.log(response);
   } catch (e) {
     console.log(e);

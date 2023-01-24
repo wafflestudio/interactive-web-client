@@ -8,6 +8,9 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  experimental: {
+    appDir: true,
+  },
   async rewrites() {
     console.log("rewrites called");
     return [
@@ -17,7 +20,6 @@ const nextConfig = {
       },
       {
         source: "/api/:path*",
-
         destination: "https://iwe-server.shop/api/v1/:path*/",
       },
     ];

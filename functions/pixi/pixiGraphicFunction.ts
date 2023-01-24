@@ -2,7 +2,7 @@ import { string2hex } from "@pixi/utils";
 import * as PIXI from "pixi.js";
 import { GeometryType } from "../../dummies/dummyInterface";
 import { saveCanvasRef } from "../../modules/canvasRef";
-import { store } from "../../pages/_app";
+import { store } from "../../app/provider";
 import { InteractionDataType } from "../../types/types";
 
 export const createPixiApp = (width: number, height: number) => {

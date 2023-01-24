@@ -1,6 +1,8 @@
+"use client";
+
 import type { NextPage } from "next";
 
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { initiateWebSocket } from "../../api/websocket";

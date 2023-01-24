@@ -1,8 +1,10 @@
-import { useState } from "react";
-import { api } from "../api/api";
+"use client";
 
-import { onPing } from "./login";
-import styles from "./loginAndSignup.module.scss";
+import { useState } from "react";
+import { api } from "../../api/api";
+
+import { onPing } from "../login/page";
+import styles from "../loginAndSignup.module.scss";
 
 export default function Login() {
   const [user_id, setUserId] = useState("");

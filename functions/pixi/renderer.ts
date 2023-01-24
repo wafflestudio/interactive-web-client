@@ -1,5 +1,5 @@
 import { Graphics } from "pixi.js";
-import { store } from "../../pages/_app";
+import { store } from "../../app/provider";
 import { InteractionDataType, MouseEventType } from "../../types/types";
 import { convertObjectToGraphics, drawEllipse } from "./pixiGraphicFunction";
 

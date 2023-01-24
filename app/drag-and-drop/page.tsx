@@ -1,3 +1,5 @@
+"use client";
+
 import DynamicCanvas from "../../components/dev/DynamicCanvas/DynamicCanvas";
 
 import StaticContainer from "../../components/dev/StaticContainer/StaticContainer";

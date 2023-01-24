@@ -1,5 +1,5 @@
+import { store } from "../app/provider";
 import { closeWs, setMessage, setWs } from "../modules/ws";
-import { store } from "../pages/_app";
 
 const wsURL = "wss://iwe-server.shop/ws/project/1/"; // [ws://] 또는 [wss://]로 시작해야 합니다
 const wsURLTest =

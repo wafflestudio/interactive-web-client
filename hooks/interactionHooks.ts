@@ -5,7 +5,7 @@ import {
   EffectType,
 } from "../functions/pixi/renderer";
 import { endDrag, moveDrag, startDrag } from "../modules/drag";
-import { store } from "../pages/_app";
+import { store } from "../app/provider";
 import { InteractionDataType, MouseEventType } from "../types/types";
 
 export const interactDrag: () => {

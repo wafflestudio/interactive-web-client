@@ -1,11 +1,12 @@
-import type { NextPage } from "next";
-import { useEffect } from "react";
+"use client";
+
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { api } from "../api/api";
 import HomePage from "../components/Home/HomePage";
 import { setUser } from "../modules/user";
 
-const Home: NextPage = () => {
+const Page = () => {
   const dispatch = useDispatch();
 
   const checkLogin = async () => {
@@ -20,6 +21,7 @@ const Home: NextPage = () => {
   useEffect(() => {
     checkLogin();
   }, []);
+
   return (
     <>
       <HomePage />
@@ -27,4 +29,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Page;
