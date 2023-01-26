@@ -26,9 +26,7 @@ const Header = ({
       <div className={styles.user}>
         <div className={`${styles.signButtons} sign-font`}>
           <button className={`${styles.signin}`}>
-            <Link href={"/login"}>
-              <a>로그인</a>
-            </Link>
+            <Link href={"/login"}>로그인</Link>
           </button>
           |
           <button className={`${styles.signup}`}>
