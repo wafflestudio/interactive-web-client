@@ -1,11 +1,12 @@
-
-.wrapper {
+.Home {
+  //sizing & position
   width: 100vw;
-  background: url("/images/home_background.png") repeat;
-  padding: 72px 0;
   position: relative;
   z-index: 0;
-
+  //content
+  padding: 72px 0;
+  //styling
+  background: url("/images/home_background.png") repeat;
   .container {
     width: 1130px;
     margin: auto;
