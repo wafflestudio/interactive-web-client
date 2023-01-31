@@ -51,7 +51,7 @@ export const api = createApi({
     "Project/all",
     "Project/current",
   ],
-  endpoints: () => ({}),
+  endpoints: () => ({}), //empty endpoint for injection
 });
 
 export const {

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ObjectDataType } from "../dummies/dummyInterface";
 import { ModalDataType, ModalType } from "../dummies/modalType";
+import { ObjectDataType } from "../types/types";
 
 type ModalState = {
   modals: ModalDataType[];

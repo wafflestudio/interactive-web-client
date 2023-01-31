@@ -1,5 +1,9 @@
 import React from "react";
-import { dummyCards, dummyCardType } from "../../../dummies/dummyCards";
+import {
+  dummyCards,
+  dummyCardType,
+  projectToDummyCard,
+} from "../../../dummies/dummyCards";
 import { useGetAllProjectQuery } from "../../../modules/api/projectApi";
 import { ProjectDataType } from "../../../types/types";
 import { FetchableComponent } from "../../common/FetchableComponent";
@@ -7,13 +11,6 @@ import CardItem from "./CardItem";
 import styles from "./Card.module.scss";
 
 // 카드 리스트(더미데이터에서 불러옴)
-const projectToDummyCard = (project: ProjectDataType): dummyCardType => ({
-  id: project.id,
-  title: project.title,
-  tags: [],
-  background: "#37204E",
-  src: "",
-});
 
 const CardList = () => {
   const { isFetching, data } = useGetAllProjectQuery();
@@ -26,7 +23,7 @@ const CardList = () => {
         successComponent={
           <>
             {data?.data.map((project) => (
-              <CardItem card={projectToDummyCard(project)} />
+              <CardItem card={projectToDummyCard(project)} key={project.id} />
             ))}
           </>
         }

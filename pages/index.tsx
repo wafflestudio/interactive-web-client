@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import HomeBanner from "../components/Home/Banner/HomeBanner";
 import CardList from "../components/Home/Card/CardList";
@@ -16,14 +16,14 @@ const Home = () => {
   return (
     <>
       <HomeHead />
-      <div className={styles.wrapper}>
-        <div className={styles.container}>
+      <div className={styles.Home}>
+        <article className={styles.container}>
           <Header setIsSidebar={setIsSideBar} />
           {isSideBar && <Sidebar setIsSidebar={setIsSideBar} />}
           <Logo />
           <HomeBanner />
           <CardList />
-        </div>
+        </article>
       </div>
     </>
   );

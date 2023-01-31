@@ -1,15 +1,39 @@
-.container{
-  display: flex;
-  margin-top:120px;
-  justify-content: center;
-}
-.form{
+@mixin simple {
+  width: 360px;
+  height: 640px;
+  border-radius: 30px;
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+  position: relative;
   display: flex;
   flex-direction: column;
-  label{
-    margin-bottom: 20px;
+  align-items: center;
+}
+
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.login {
+  @include simple;
+  .form {
+    display: flex;
+    flex-direction: column;
+    label {
+      margin-bottom: 20px;
+    }
+    button {
+      margin-bottom: 20px;
+    }
   }
-  button{
-    margin-bottom: 20px;
-  }
+}
+.websocket {
+  @include simple;
+}
+.result {
+  @include simple;
 }

@@ -1,6 +1,4 @@
-import React from "react";
-
-const BannerRigthIcon = () => {
+const BannerRightIcon = () => {
   return (
     <svg
       width="49"
@@ -21,4 +19,4 @@ const BannerRigthIcon = () => {
   );
 };
 
-export default BannerRigthIcon;
+export default BannerRightIcon;

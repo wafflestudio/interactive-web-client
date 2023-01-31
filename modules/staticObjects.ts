@@ -1,7 +1,7 @@
 // div(container) 안에 있는 svg 모음입니다
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ObjectDataType } from "../dummies/dummyInterface";
+import { ObjectDataType } from "../types/types";
 
 const initialState: ObjectDataType[] = [];
 

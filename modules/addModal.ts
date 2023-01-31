@@ -1,66 +1,61 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ObjectDataType } from "../dummies/dummyInterface";
+import { ObjectDataType } from "../types/types";
 
 const initialState: ObjectDataType = {
-  id: 99,
-  name: "",
-  svgData: { svgType: "rect", stroke: "#000000", fill: "#ffffff" },
-  geometry: { x: 0, y: 0, w: 150, h: 150 },
-  attribute: {} as object,
-  tag: [],
+  object_name: "",
+  tag: JSON.stringify({
+    size: "3",
+    "0": "string",
+    "1": "array",
+    "2": "test",
+    test: "success",
+  }),
   visibility: true,
-  zIndex: 99,
+  z_index: 1,
+  opacity: 1,
+  src_url: "https://webgam.com/dummy-image-source-url",
+  x: 0,
+  y: 0,
+  h: 0,
+  w: 0,
+  image: null,
 };
-
-type ShapeType = "rect" | "ellipse" | "path" | "drawing" | "image" | "text";
 
 const addModalSlice = createSlice({
   name: "addModal",
   initialState,
   reducers: {
-    setId: (state, action: PayloadAction<number>) => {
-      state.id = action.payload;
-    },
+    initialize: () => initialState,
     setName: (state, action: PayloadAction<string>) => {
-      state.name = action.payload;
-    },
-    setShape: (state, action: PayloadAction<ShapeType>) => {
-      state.svgData.svgType = action.payload;
+      state.object_name = action.payload;
     },
     setWidth: (state, action: PayloadAction<number>) => {
-      state.geometry.w = action.payload;
+      state.w = action.payload;
     },
     setHeight: (state, action: PayloadAction<number>) => {
-      state.geometry.h = action.payload;
+      state.h = action.payload;
     },
     setXPos: (state, action: PayloadAction<number>) => {
-      state.geometry.x = action.payload;
+      state.x = action.payload;
     },
     setYPos: (state, action: PayloadAction<number>) => {
-      state.geometry.y = action.payload;
+      state.y = action.payload;
     },
-    setImage: (state, action: PayloadAction<File | undefined>) => {
-      state.svgData.file = action.payload;
+    setImage: (state, action: PayloadAction<File | null>) => {
+      state.image = action.payload;
     },
     setSrc: (state, action: PayloadAction<string>) => {
-      state.svgData.src = action.payload;
+      state.src_url = action.payload;
     },
-    setTags: (state, action: PayloadAction<string[]>) => {
+    setTags: (state, action: PayloadAction<JSON>) => {
       state.tag = action.payload;
-    },
-    setStroke: (state, action: PayloadAction<string>) => {
-      state.svgData.stroke = action.payload;
-    },
-    setFill: (state, action: PayloadAction<string>) => {
-      state.svgData.fill = action.payload;
     },
   },
 });
 
 export const {
-  setId,
+  initialize,
   setName,
-  setShape,
   setWidth,
   setHeight,
   setXPos,
@@ -68,7 +63,5 @@ export const {
   setImage,
   setSrc,
   setTags,
-  setStroke,
-  setFill,
 } = addModalSlice.actions;
 export default addModalSlice.reducer;
