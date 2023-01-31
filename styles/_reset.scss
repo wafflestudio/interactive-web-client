@@ -1,43 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
-@import "./fonts";
-
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: "Inter", sans-serif;
-  cursor: url("/cursor.cur"), auto;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-button {
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 0;
-}
-
-ul,
-li {
-  list-style: none;
-  padding: 0;
-  padding-inline-start: 0;
-  margin-block-start: 0;
-  margin-block-end: 0;
-  margin-inline-start: 0;
-  margin-inline-end: 0;
-  margin: 0;
-  display: block;
-}
-
 @mixin reset-input {
   padding: 0;
   margin: 0;
@@ -50,8 +10,7 @@ li {
     outline: 0;
   }
 }
-/*
-input[type="text"] {
+@mixin input-text {
   @include reset-input();
 
   font: inherit;
@@ -65,24 +24,21 @@ input[type="text"] {
   }
 }
 
-input[type="range"] {
+@mixin input-range {
   @include reset-input();
   color: transparent;
-
   &::-webkit-slider-thumb {
     appearance: none; // 슬라이더의 thumb 설정(크롬 등)
   }
-
   &::-moz-range-thumb {
     // 슬라이더의 thumb 설정(파폭)
     background-color: transparent;
     border: 0;
   }
 }
-input[type="number"] {
+@mixin input-number {
   @include reset-input();
 }
-input[type="checkbox"] {
+@mixin input-checkbox {
   @include reset-input();
 }
-*/

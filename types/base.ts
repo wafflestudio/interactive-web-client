@@ -2,44 +2,61 @@ type TupleObject = Record<string, readonly (number | boolean | string)[]>;
 type ObjectToEnum<T extends TupleObject> = {
   [Key in keyof T]: T[Key][number];
 };
-type PickByType<T, U> = { [P in keyof T as T[P] extends U ? P : never]: T[P] };
 
-/*********** ***********/
+export type PickByType<T, U> = {
+  [P in keyof T as T[P] extends U ? (U extends T[P] ? P : never) : never]: T[P];
+};
 
-type TestPlain = {
-  id: number;
+export type IProject = {
+  readonly id: number;
+  readonly owner_id: number;
+  title: string;
+  variables: string[]; //미정
+  pages: IPage[];
+  events: string[]; //미정
+};
+
+export type IPage = {
+  readonly id: number;
   name: string;
+  readonly projectId: number;
+  objects: IObject[];
 };
 
-const testEnum = {
-  selectable: ["option1", "option2"],
-} as const;
-
-type TestEnum = ObjectToEnum<typeof testEnum>;
-
-export type ITest = TestPlain & TestEnum;
-
-const testInstance: ITest = {
-  id: 1,
-  name: "oldName",
-  selectable: "option1",
+type ICommonObject = {
+  readonly id: number;
+  name: string;
+  isInteractive: boolean;
+  position: { x: number; y: number };
+  width: number;
+  height: number;
+  zIndex: number;
 };
+export type ITextObject = ICommonObject & {
+  type: "text";
+  textContent: string;
+  fontSize: number;
+};
+export type IImageObject = ICommonObject & {
+  type: "image";
+  imageSource: string;
+};
+export type IObject = ITextObject | IImageObject;
 
-const manipulate =
+export const manipulate =
   <S, T extends string | number | boolean>(data: S) =>
   (property: keyof PickByType<S, T>, value: T): S => {
     return { ...data, [property]: value };
   };
 
-const manipulate2 =
-  <T extends TupleObject>(data: T) =>
-  (property: keyof T, value: T[]): T => {
-    return { ...data, [property]: value };
-  };
-
-manipulate<TestPlain, string>(testInstance)("name", "newName");
-manipulate2<TestEnum>(testInstance)("selectable", "option2");
-
 /*
-manipulate2<TestEnum>(testInstance)()
- */
+const dummyProject: IProject = {
+  id: 0,
+  owner_id: 0,
+  events: [],
+  variables: [],
+  title: "abc",
+  pages: [],
+};
+manipulate<IProject, string>(dummyProject)("title", "newName");
+*/
