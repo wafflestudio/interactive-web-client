@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import CheckboxButton from "../components/common/Button/Checkbox/CheckboxButton/CheckboxButton";
+import CheckboxComponent from "../components/common/Button/Checkbox/CheckboxComponent/CheckboxComponent";
 import ClickableButton from "../components/common/Button/ClickableButton/ClickableButton";
 
 const Buttons = () => {
@@ -32,6 +33,7 @@ const Buttons = () => {
         }
         dark={false}
       />
+      <CheckboxComponent />
     </div>
   );
 };
