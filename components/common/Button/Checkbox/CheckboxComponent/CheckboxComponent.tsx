@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "../../Button.module.scss";
-import ClickableButton from "../../ClickableButton/ClickableButton";
+import ControlAllButton from "../../ControlAllButton/ControlAllButton";
 import CheckboxButton from "../CheckboxButton/CheckboxButton";
 
 const dummy = ["check1", "check2", "check3", "check4"];
@@ -18,13 +18,8 @@ const CheckboxComponent = () => {
 
   return (
     <div className={styles.checkboxComponent}>
-      <ClickableButton
+      <ControlAllButton
         text="모두 선택"
-        withIcon={false}
-        iconSrc={undefined}
-        active
-        big={false}
-        dark
         onClick={() => {
           setChecked((checked) => {
             Object.keys(checked).forEach((key) => {
@@ -34,13 +29,8 @@ const CheckboxComponent = () => {
           });
         }}
       />
-      <ClickableButton
+      <ControlAllButton
         text="모두 선택 해제"
-        withIcon={false}
-        iconSrc={undefined}
-        active
-        big={false}
-        dark
         onClick={() => {
           setChecked((checked) => {
             Object.keys(checked).forEach((key) => {
