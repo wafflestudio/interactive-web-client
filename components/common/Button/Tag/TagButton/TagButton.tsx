@@ -1,13 +1,7 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 import Cancel from "../../../../../assets/svgs/Cancel";
-
 import styles from "../../Button.module.scss";
-
-type TagButtonProps = {
-  text: string;
-  dark: boolean;
-  onClick: Dispatch<SetStateAction<unknown>>;
-};
+import { TagButtonProps } from "../../types";
 
 const TagButton = ({ text, dark, onClick }: TagButtonProps) => {
   return (

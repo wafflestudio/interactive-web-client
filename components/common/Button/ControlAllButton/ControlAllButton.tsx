@@ -1,14 +1,9 @@
-import React, { Dispatch, SetStateAction } from "react";
-
+import React from "react";
 import ClickableButton from "../ClickableButton/ClickableButton";
 
-const ControlAllButton = ({
-  text,
-  onClick,
-}: {
-  text: string;
-  onClick: Dispatch<SetStateAction<unknown>>;
-}) => {
+import { ButtonProps } from "../types";
+
+const ControlAllButton = ({ text, onClick }: ButtonProps) => {
   return (
     <ClickableButton
       text={text}

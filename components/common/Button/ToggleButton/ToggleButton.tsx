@@ -1,8 +1,9 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 import ToggleOff from "../../../../assets/svgs/ToggleOff";
 import ToggleOn from "../../../../assets/svgs/ToggleOn";
 
 import styles from "../Button.module.scss";
+import { ToggleButtonProps } from "../types";
 
 const ToggleButton = ({
   text,
@@ -10,13 +11,7 @@ const ToggleButton = ({
   dark,
   active,
   onClick,
-}: {
-  text: string;
-  state: boolean;
-  dark: boolean;
-  active: boolean;
-  onClick: Dispatch<SetStateAction<boolean>>;
-}) => {
+}: ToggleButtonProps) => {
   return (
     <button
       onClick={onClick}

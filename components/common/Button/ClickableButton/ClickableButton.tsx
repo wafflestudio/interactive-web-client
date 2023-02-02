@@ -1,15 +1,6 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
 import styles from "../Button.module.scss";
-
-export type ClickableButtonProps = {
-  text: string;
-  active: boolean;
-  onClick: Dispatch<SetStateAction<unknown>>;
-  withIcon: boolean;
-  iconSrc: undefined | string;
-  big: boolean;
-  dark: boolean;
-};
+import { ClickableButtonProps } from "../types";
 
 const ClickableButton = ({
   text,
