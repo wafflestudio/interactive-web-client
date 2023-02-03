@@ -42,3 +42,9 @@
 @mixin input-checkbox {
   @include reset-input();
 }
+
+@mixin select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}

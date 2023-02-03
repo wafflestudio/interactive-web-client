@@ -1,0 +1,44 @@
+@use "./styles/reset";
+@use "./styles/colors";
+
+.Wrapper {
+  position: relative;
+  width: 150px;
+  height: 25px;
+}
+
+.SelectBox {
+  @include reset.select;
+  width: 100%;
+  border: 1px solid colors.$black;
+  border-radius: 4px;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 24px;
+  padding-left: 4px;
+  outline: none;
+  &:focus {
+    border: 1px solid colors.$point;
+  }
+  .Option {
+    appearance: none;
+    font: inherit;
+    background-color: colors.$point;
+    color: white;
+    box-shadow: none;
+    &:focus {
+      background-color: colors.$semi-point;
+    }
+  }
+}
+
+.arrow {
+  position: absolute;
+  width: 12px;
+  height: 7px;
+  background-color: gray;
+  top: calc(50% - 3px);
+  right: 12px;
+}
