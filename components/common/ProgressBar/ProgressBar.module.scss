@@ -1,0 +1,45 @@
+@use "./styles/reset";
+@use "./styles/colors";
+
+.container {
+  height: 20px;
+  width: 100%;
+}
+
+.ProgressText {
+  @include reset.input-text;
+  position: relative;
+  float: right;
+  font-size: 12px;
+  font-weight: bold;
+  color: colors.$black;
+}
+
+.ProgressBar {
+  @include reset.input-range;
+  height: 10px;
+  background-color: #d9d9d9;
+  overflow: hidden;
+
+  &::-webkit-slider-thumb {
+    background: colors.$black;
+    height: 10px;
+    width: 18px;
+    cursor: pointer;
+    box-shadow: -100vw 0 0 100vw colors.$black;
+  }
+  &::-moz-range-thumb {
+    background: colors.$black;
+    height: 10px;
+    width: 18px;
+    cursor: pointer;
+    box-shadow: -100vw 0 0 100vw colors.$black;
+  }
+  &::-ms-thumb {
+    background: colors.$black;
+    height: 10px;
+    width: 18px;
+    cursor: pointer;
+    box-shadow: -100vw 0 0 100vw colors.$black;
+  }
+}

@@ -26,14 +26,28 @@
 
 @mixin input-range {
   @include reset-input();
+  width: 100%;
+  -webkit-appearance: none;
+  background: transparent;
+  
+  &:focus {
+  outline: none;
+  }
+  
+  &::-ms-track {
+  width: 100%;
+  cursor: pointer;
+  border-color: transparent;
   color: transparent;
+  }
+
   &::-webkit-slider-thumb {
-    appearance: none; // 슬라이더의 thumb 설정(크롬 등)
+   -webkit-appearance: none;
   }
   &::-moz-range-thumb {
-    // 슬라이더의 thumb 설정(파폭)
     background-color: transparent;
     border: 0;
+    border-radius: 0;
   }
 }
 @mixin input-number {

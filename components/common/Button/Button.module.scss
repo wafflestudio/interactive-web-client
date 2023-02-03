@@ -1,0 +1,53 @@
+@use "../../../styles/colors";
+
+.commonButton {
+  height: 28px;
+  border: 1px solid colors.$black;
+  border-radius: 28px;
+  color: colors.$black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  font-weight: 400;
+  font-size: 12px;
+  padding: 0 25px;
+
+  &.checkboxButton {
+    border-radius: 7px;
+
+    svg {
+      user-select: none;
+    }
+  }
+
+  &.big {
+    height: 38px;
+  }
+
+  &.active {
+    background: colors.$point;
+    color: #ffffff;
+    border: none;
+  }
+
+  &.dark {
+    background: colors.$black;
+  }
+}
+
+.checkboxComponent {
+  display: flex;
+  gap: 10px;
+}
+
+.tagComponent {
+  display: flex;
+  gap: 10px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
