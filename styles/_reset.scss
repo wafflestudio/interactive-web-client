@@ -1,0 +1,58 @@
+@mixin reset-input {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  appearance: none;
+  background-color: transparent;
+
+  &:focus,
+  &:active {
+    outline: 0;
+  }
+}
+@mixin input-text {
+  @include reset-input();
+
+  font: inherit;
+  font-size: 100%;
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important; // 크롬에서 autocomplete 시 배경색 안 나타나도록 함
+  }
+}
+
+@mixin input-range {
+  @include reset-input();
+  width: 100%;
+  -webkit-appearance: none;
+  background: transparent;
+  
+  &:focus {
+  outline: none;
+  }
+  
+  &::-ms-track {
+  width: 100%;
+  cursor: pointer;
+  border-color: transparent;
+  color: transparent;
+  }
+
+  &::-webkit-slider-thumb {
+   -webkit-appearance: none;
+  }
+  &::-moz-range-thumb {
+    background-color: transparent;
+    border: 0;
+    border-radius: 0;
+  }
+}
+@mixin input-number {
+  @include reset-input();
+}
+@mixin input-checkbox {
+  @include reset-input();
+}

@@ -37,3 +37,52 @@ li {
   margin: 0;
   display: block;
 }
+
+@mixin reset-input {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  appearance: none;
+  background-color: transparent;
+
+  &:focus,
+  &:active {
+    outline: 0;
+  }
+}
+/*
+input[type="text"] {
+  @include reset-input();
+
+  font: inherit;
+  font-size: 100%;
+
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important; // 크롬에서 autocomplete 시 배경색 안 나타나도록 함
+  }
+}
+
+input[type="range"] {
+  @include reset-input();
+  color: transparent;
+
+  &::-webkit-slider-thumb {
+    appearance: none; // 슬라이더의 thumb 설정(크롬 등)
+  }
+
+  &::-moz-range-thumb {
+    // 슬라이더의 thumb 설정(파폭)
+    background-color: transparent;
+    border: 0;
+  }
+}
+input[type="number"] {
+  @include reset-input();
+}
+input[type="checkbox"] {
+  @include reset-input();
+}
+*/
