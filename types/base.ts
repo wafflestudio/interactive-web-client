@@ -27,7 +27,9 @@ type ICommonObject = {
   readonly id: number;
   name: string;
   isInteractive: boolean;
-  position: { x: number; y: number };
+  // position: { x: number; y: number };
+  positionX: number;
+  positionY: number;
   width: number;
   height: number;
   zIndex: number;

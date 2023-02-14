@@ -11,6 +11,7 @@ import drag2 from "./drag2";
 import logMiddleware from "./middlewares/logMiddleware";
 //import staticsMiddleware from "./middlewares/staticsMiddleware";
 import modal from "./modal";
+import newObject from "./newObject";
 import pixiGraphics from "./pixiGraphics";
 import staticObjects from "./staticObjects";
 import user from "./user";
@@ -31,6 +32,7 @@ export const store = () =>
       staticObjects,
       user,
       ws,
+      newObject,
       [api.reducerPath]: api.reducer,
     },
     middleware: (getDefaultMiddleware) =>
