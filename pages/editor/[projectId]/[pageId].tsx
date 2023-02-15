@@ -1,40 +1,14 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { initiateWebSocket } from "../../../api/websocket";
-import DynamicCanvas from "../../../components/dev/DynamicCanvas/DynamicCanvas";
-import Modals from "../../../components/dev/Modal/Modals";
-import PixiCanvas from "../../../components/Editor/PixiCanvas/PixiCanvas";
-import StaticContainer from "../../../components/Editor/StaticContainer/StaticContainer";
-import { sampleObjectDummy } from "../../../dummies/sampleObjectDummy";
-import { RootState } from "../../../modules";
-import { saveObjects } from "../../../modules/staticObjects";
-
+import styles from "./EditorPage.module.scss";
 const EditorPage = () => {
-  const dispatch = useDispatch();
-  const socket = useSelector((state: RootState) => state.ws.current);
-  const message = useSelector((state: RootState) => {
-    return state.ws.recentMessage;
-  });
-  //API 호출을 통한 데이터 로드를 대신하는 부분
-
-  useEffect(() => {
-    initiateWebSocket();
-    dispatch(saveObjects(sampleObjectDummy));
-    return () => socket?.close();
-  }, []);
-
-  useEffect(() => {
-    //    console.log(message);
-  }, [message]);
-
-  if (!socket) return null;
-
   return (
-    <>
-      <StaticContainer />
-      <Modals />
-      <PixiCanvas />
-    </>
+    <main className={styles.container}>
+      <div className={styles.tabs} />
+      <div className={styles.workSpace}>
+        <div className={styles.toolbar} />
+        <div className={styles.canvasWrapper}>canvas</div>
+        <div className={styles.toolbar} />
+      </div>
+    </main>
   );
 };
 

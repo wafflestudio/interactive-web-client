@@ -1,0 +1,32 @@
+.container {
+  width: 100%;
+  min-height: 100vh;
+  background: #4f4f4f;
+  padding: 20px;
+}
+.tabs {
+  width: 100%;
+  height: 80px;
+  margin-bottom: 20px;
+  border: 1px solid black;
+}
+.workSpace {
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  height: calc(100vh - 140px);
+  .toolbar {
+    width: 40vh;
+    height: 100%;
+    border: 1px solid black;
+  }
+  .canvasWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(100vh - 140px);
+    height: 100%;
+    border: 1px solid black;
+  }
+}
