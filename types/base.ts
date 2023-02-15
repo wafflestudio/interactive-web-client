@@ -11,9 +11,9 @@ export type IProject = {
   readonly id: number;
   readonly owner_id: number;
   title: string;
-  variables: string[]; //미정
+  variables: Record<string, number | string | boolean>;
   pages: IPage[];
-  events: string[]; //미정
+  events: string[];
 };
 
 export type IPage = {
@@ -39,10 +39,18 @@ export type ITextObject = ICommonObject & {
   type: "text";
   textContent: string;
   fontSize: number;
+  fontFamily: string;
+  lineHeight: number;
+  letterSpacing: number;
+  backgroundColor: string;
+  strokeWidth: number;
+  strokeColor: string;
 };
 export type IImageObject = ICommonObject & {
   type: "image";
   imageSource: string;
+  isReversed: boolean;
+  rotateDegree: number;
 };
 export type IObject = ITextObject | IImageObject;
 
@@ -51,15 +59,3 @@ export const manipulate =
   (property: keyof PickByType<S, T>, value: T): S => {
     return { ...data, [property]: value };
   };
-
-/*
-const dummyProject: IProject = {
-  id: 0,
-  owner_id: 0,
-  events: [],
-  variables: [],
-  title: "abc",
-  pages: [],
-};
-manipulate<IProject, string>(dummyProject)("title", "newName");
-*/
