@@ -2,6 +2,7 @@
 
 const prevAPI = "https://webgam-server.shop/api/v1/:path*/";
 const currentAPI = "https://webgam-api-dev.wafflestudio.com/api/v1/:path*/";
+const backendLocalAPI = "http://localhost:8080/:path*/";
 
 const nextConfig = {
   reactStrictMode: true,
@@ -17,7 +18,7 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: currentAPI,
+        destination: backendLocalAPI,
       },
       {
         source: "/aws-image/:path*",

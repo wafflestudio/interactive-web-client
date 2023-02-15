@@ -5,6 +5,7 @@ import { ProjectDataType, UserDataType } from "../types/types";
 interface LoginRequest {
   user_id: string;
   password: string;
+  auto: boolean;
 }
 
 export interface TokensType {
@@ -47,18 +48,17 @@ export const api = {
     return response;
   },
 
-  _login: async ({ user_id, password }: LoginRequest) => {
+  _login: async ({ user_id, password, auto }: LoginRequest) => {
     const response = await instance.post<LoginResponse>("/api/login/", {
       user_id,
       password,
+      auto,
     });
     return response;
   },
 
-  _refresh: async (refresh_token: string) => {
-    const response = await instance.post<RefreshResponse>("/api/refresh/", {
-      refresh_token,
-    });
+  _refresh: async () => {
+    const response = await instance.post<RefreshResponse>("/api/refresh/", {});
     return response;
   },
 

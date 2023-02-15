@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import axios, { AxiosError } from "axios";
+import axios, from "axios";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,7 +10,6 @@ import { RootState } from "../../modules";
 import { useGetMeQuery } from "../../modules/api/usersApi";
 import { signIn } from "../../modules/auth";
 import { removeUser } from "../../modules/user";
-import { setWs } from "../../modules/ws";
 import styles from "./loginAndSignup.module.scss";
 
 const Login: NextPage = () => {
@@ -18,6 +17,7 @@ const Login: NextPage = () => {
   const [password, setPassword] = useState<string>("");
   const { data, status } = useGetMeQuery();
   const [username, setUsername] = useState<string>("");
+  const [isAuto, setIsAuto] = useState<boolean>(false);
   const dispatch = useDispatch();
   const router = useRouter();
   const wsStore = useSelector((state: RootState) => state.ws);
@@ -31,29 +31,29 @@ const Login: NextPage = () => {
   const onLogin: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await api._login({ user_id, password });
+      const { data } = await api._login({ user_id, password, auto: isAuto });
       console.log(data);
       manageTokens(data.token);
       dispatch(signIn());
       setUsername(data.user.username);
-      // await router.push("/");
     } catch (e) {
       if (axios.isAxiosError(e)) loginError(e);
     }
   };
+  const onRefresh:React.MouseEventHandler<HTMLButtonElement> = async(e) => {
+    e.preventDefault();
+    try {
+      const { data } = await api._refresh();
+      console.log(data);
+    } catch (e) {
+      if (axios.isAxiosError(e)) loginError(e);
+    }
+  }
   const onLogout: React.MouseEventHandler<HTMLButtonElement> = async (e) => {
     e.preventDefault();
     dispatch(removeUser());
     removeTokens();
     setUsername("");
-  };
-
-  const onWS = async () => {
-    const token = localStorage.getItem("accessToken");
-    const ws = await new WebSocket(
-      `wss://webgam-api-dev.wafflestudio.com/ws/ping/?access_token=${token}`,
-    );
-    setWs(ws);
   };
 
   useEffect(() => {
@@ -87,22 +87,16 @@ const Login: NextPage = () => {
               onChange={onPasswordChange}
             />
           </label>
+          <label htmlFor="isAuto">
+            <input type="checkbox" checked={isAuto} onClick={() => {
+              setIsAuto(!isAuto);
+            }}/>
+            자동 로그인
+          </label>
           <button type="submit">로그인</button>
+          <button onClick={onRefresh}>리프레시</button>
           <button onClick={onLogout}>로그아웃</button>
         </form>
-      </div>
-      <div className={styles.websocket}>
-        <h1>웹소켓</h1>
-        <button onClick={onWS}>연결</button>
-      </div>
-      <div className={styles.result}>
-        <h1>결과</h1>
-        <div>
-          로그인 결과: {username.length > 0 ? `성공 as ${username}` : `실패`}
-        </div>
-        <div>웹소켓 결과: {}</div>
-        <div>웹소켓 메시지: {wsStore.recentMessage}</div>
-        <div>가나다</div>
       </div>
     </div>
   );
