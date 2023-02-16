@@ -1,6 +1,6 @@
 import { Container, Sprite, Stage, Text, Graphics } from "@inlet/react-pixi";
 import { Graphics as GraphicsType, TextStyle } from "pixi.js";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import { IObject, ITextObject } from "../../../types/base";
 import { onDragEnd, onDragMove, onDragStart } from "./drag";
 
@@ -43,17 +43,19 @@ const dummyObjects: IObject[] = [
 ];
 
 const PixiCanvas = () => {
-  const [state, setState] = useState(1);
-  const draw = (g: GraphicsType, object: ITextObject) => {
-    g.clear();
-    g.beginFill(0xff700b, 1);
-    g.drawRect(object.positionX, object.positionY, object.width, object.height);
-  };
-
-  useEffect(() => {
-    setState((state) => state + 1);
-  }, [dummyObjects[1].positionX]);
-  console.log(state);
+  //   const draw = useCallback(
+  //     () => (g: GraphicsType, object: ITextObject) => {
+  //       g.clear();
+  //       g.beginFill(0xff700b, 1);
+  //       g.drawRect(
+  //         object.positionX,
+  //         object.positionY,
+  //         object.width,
+  //         object.height,
+  //       );
+  //     },
+  //     [],
+  //   );
 
   return (
     <Stage>
@@ -76,34 +78,45 @@ const PixiCanvas = () => {
             />
           );
         } else if (object.type === "text") {
+          const draw = (g: GraphicsType) => {
+            g.clear();
+            g.beginFill(0xff700b, 1);
+            g.drawRect(
+              object.positionX,
+              object.positionY,
+              object.width,
+              object.height,
+            );
+          };
+
           return (
-            <Container>
-              <Graphics draw={(g) => draw(g, object)} />
-              <Text
-                key={object.id}
-                x={object.positionX}
-                y={object.positionY}
-                text={object.textContent}
-                interactive={true}
-                buttonMode={true}
-                mousedown={onDragStart}
-                mouseup={onDragEnd}
-                mouseupoutside={onDragEnd}
-                mousemove={onDragMove}
-                width={object.width}
-                height={object.height}
-                style={
-                  new TextStyle({
-                    fontFamily: object.fontFamily,
-                    fontSize: object.fontSize,
-                    stroke: object.strokeColor,
-                    strokeThickness: object.strokeWidth,
-                    letterSpacing: object.letterSpacing,
-                    lineHeight: object.lineHeight,
-                  })
-                }
-              />
-            </Container>
+            // <Container>
+            //   <Graphics draw={draw} />
+            <Text
+              key={object.id}
+              x={object.positionX}
+              y={object.positionY}
+              text={object.textContent}
+              interactive={true}
+              buttonMode={true}
+              mousedown={onDragStart}
+              mouseup={onDragEnd}
+              mouseupoutside={onDragEnd}
+              mousemove={onDragMove}
+              width={object.width}
+              height={object.height}
+              style={
+                new TextStyle({
+                  fontFamily: object.fontFamily,
+                  fontSize: object.fontSize,
+                  stroke: object.strokeColor,
+                  strokeThickness: object.strokeWidth,
+                  letterSpacing: object.letterSpacing,
+                  lineHeight: object.lineHeight,
+                })
+              }
+            />
+            // </Container>
           );
         }
       })}
