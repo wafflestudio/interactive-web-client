@@ -42,9 +42,12 @@ export type ITextObject = ICommonObject & {
   fontFamily: string;
   lineHeight: number;
   letterSpacing: number;
-  backgroundColor: string;
+  color: string;
   strokeWidth: number;
   strokeColor: string;
+  backgroundColor: string;
+  borderWidth: number;
+  borderColor: string;
 };
 export type IImageObject = ICommonObject & {
   type: "image";
