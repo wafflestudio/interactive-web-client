@@ -12,8 +12,19 @@ const Buttons = () => {
   const [toggle1State, setToggle1State] = useState(true);
   const [toggle2State, setToggle2State] = useState(false);
 
+  const ping = () => fetch("/msw-ping", { method: "POST" });
+
   return (
     <div className={styles.container}>
+      <ClickableButton
+        text="Ping!"
+        withIcon={false}
+        big={false}
+        iconSrc={undefined}
+        active={true}
+        onClick={ping}
+        dark={false}
+      />
       <ClickableButton
         text={clickableButtonState ? "버튼 ON" : "버튼 OFF"}
         withIcon={false}

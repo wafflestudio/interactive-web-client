@@ -8,7 +8,7 @@ const Cancel = () => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <path d="M9 1L1 9M9 9L1 1" stroke="#7E7E7E" stroke-linecap="round" />
+    <path d="M9 1L1 9M9 9L1 1" stroke="#7E7E7E" strokeLinecap="round" />
   </svg>
 );
 
