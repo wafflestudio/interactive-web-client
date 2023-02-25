@@ -26,13 +26,13 @@ const dummyObjects: IObject[] = [
     isInteractive: true,
     positionX: 150,
     positionY: 150,
-    width: 500,
+    width: 1900,
     height: 100,
     zIndex: 2,
     opacity: 1,
     type: "text",
     textContent: "I am a ghost",
-    fontSize: 32,
+    fontSize: 20,
     fontFamily: "sans-serif",
     lineHeight: 1.2,
     letterSpacing: 20,
@@ -103,8 +103,8 @@ const PixiCanvas = () => {
               mouseup={onDragEnd}
               mouseupoutside={onDragEnd}
               mousemove={onDragMove}
-              width={object.width}
-              height={object.height}
+              // width={object.width}
+              // height={object.height}
               style={
                 new TextStyle({
                   fontFamily: object.fontFamily,
