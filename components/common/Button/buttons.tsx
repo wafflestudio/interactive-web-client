@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import styles from "../components/common/Button/Button.module.scss";
-import CheckboxButton from "../components/common/Button/Checkbox/CheckboxButton/CheckboxButton";
-import CheckboxComponent from "../components/common/Button/Checkbox/CheckboxComponent/CheckboxComponent";
-import ClickableButton from "../components/common/Button/ClickableButton/ClickableButton";
-import TagComponent from "../components/common/Button/Tag/TagComponent.tsx/TagComponent";
-import ToggleButton from "../components/common/Button/ToggleButton/ToggleButton";
+import CheckboxButton from "./Checkbox/CheckboxButton/CheckboxButton";
+import CheckboxComponent from "./Checkbox/CheckboxComponent/CheckboxComponent";
+import ClickableButton from "./ClickableButton/ClickableButton";
+import TagComponent from "./Tag/TagComponent.tsx/TagComponent";
+import ToggleButton from "./ToggleButton/ToggleButton";
+import styles from "./Button.module.scss";
 
 const Buttons = () => {
   const [clickableButtonState, setClickableButtonState] = useState(false);
