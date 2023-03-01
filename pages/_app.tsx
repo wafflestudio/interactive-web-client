@@ -8,6 +8,10 @@ import "../styles/globals.scss";
 import { signIn, signOut } from "../modules/auth";
 import { setUser } from "../modules/user";
 
+if (process.env.NEXT_PUBLIC_API_MOCKING === "enabled") {
+  require("../api/mocks");
+}
+
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const dispatch = useDispatch();
 
