@@ -36,9 +36,12 @@ const dummyObjects: IObject[] = [
     fontFamily: "sans-serif",
     lineHeight: 1.2,
     letterSpacing: 20,
-    backgroundColor: "yellow",
+    color: "#04f3e4",
     strokeWidth: 5,
     strokeColor: "#01d27e",
+    backgroundColor: "#c34d32",
+    borderWidth: 10,
+    borderColor: "#e19230",
   },
 ];
 
@@ -80,7 +83,11 @@ const PixiCanvas = () => {
         } else if (object.type === "text") {
           const draw = (g: GraphicsType) => {
             g.clear();
-            g.beginFill(0xff700b, 1);
+            g.lineStyle(
+              object.borderWidth,
+              Number("0x" + object.borderColor.substring(1)),
+            );
+            g.beginFill(Number("0x" + object.backgroundColor.substring(1)), 1);
             g.drawRect(
               object.positionX,
               object.positionY,
@@ -90,33 +97,32 @@ const PixiCanvas = () => {
           };
 
           return (
-            // <Container>
-            //   <Graphics draw={draw} />
-            <Text
-              key={object.id}
-              x={object.positionX}
-              y={object.positionY}
-              text={object.textContent}
-              interactive={true}
-              buttonMode={true}
-              mousedown={onDragStart}
-              mouseup={onDragEnd}
-              mouseupoutside={onDragEnd}
-              mousemove={onDragMove}
-              // width={object.width}
-              // height={object.height}
-              style={
-                new TextStyle({
-                  fontFamily: object.fontFamily,
-                  fontSize: object.fontSize,
-                  stroke: object.strokeColor,
-                  strokeThickness: object.strokeWidth,
-                  letterSpacing: object.letterSpacing,
-                  lineHeight: object.lineHeight,
-                })
-              }
-            />
-            // </Container>
+            <Container>
+              <Graphics draw={draw} />
+              <Text
+                key={object.id}
+                x={object.positionX}
+                y={object.positionY}
+                text={object.textContent}
+                interactive={true}
+                buttonMode={true}
+                mousedown={onDragStart}
+                mouseup={onDragEnd}
+                mouseupoutside={onDragEnd}
+                mousemove={onDragMove}
+                style={
+                  new TextStyle({
+                    fontFamily: object.fontFamily,
+                    fontSize: object.fontSize,
+                    stroke: object.strokeColor,
+                    strokeThickness: object.strokeWidth,
+                    letterSpacing: object.letterSpacing,
+                    lineHeight: object.lineHeight,
+                    fill: object.color,
+                  })
+                }
+              />
+            </Container>
           );
         }
       })}
