@@ -1,10 +1,15 @@
+import axios from "axios";
 import React, { useState } from "react";
-import CheckboxButton from "./Checkbox/CheckboxButton/CheckboxButton";
-import CheckboxComponent from "./Checkbox/CheckboxComponent/CheckboxComponent";
-import ClickableButton from "./ClickableButton/ClickableButton";
-import TagComponent from "./Tag/TagComponent.tsx/TagComponent";
-import ToggleButton from "./ToggleButton/ToggleButton";
-import styles from "./Button.module.scss";
+import {
+  MswBooleanRequestResponseType,
+  MswPingResponseType,
+} from "../api/mocks/types";
+import styles from "../components/common/Button/Button.module.scss";
+import CheckboxButton from "../components/common/Button/Checkbox/CheckboxButton/CheckboxButton";
+import CheckboxComponent from "../components/common/Button/Checkbox/CheckboxComponent/CheckboxComponent";
+import ClickableButton from "../components/common/Button/ClickableButton/ClickableButton";
+import TagComponent from "../components/common/Button/Tag/TagComponent.tsx/TagComponent";
+import ToggleButton from "../components/common/Button/ToggleButton/ToggleButton";
 
 const Buttons = () => {
   const [clickableButtonState, setClickableButtonState] = useState(false);
@@ -12,7 +17,28 @@ const Buttons = () => {
   const [toggle1State, setToggle1State] = useState(true);
   const [toggle2State, setToggle2State] = useState(false);
 
-  const ping = () => fetch("/msw-ping", { method: "POST" });
+  const mswPing = async () => {
+    try {
+      const { data } = await axios.get<MswPingResponseType>("/msw-ping");
+      console.log(data.message);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const mswBoolean = async () => {
+    try {
+      const { data } = await axios.post<MswBooleanRequestResponseType>(
+        "/msw-boolean",
+        { success: clickableButtonState },
+      );
+      console.log(data);
+      setClickableButtonState(false);
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response)
+        console.log(error.response.data);
+      setClickableButtonState(true);
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -22,20 +48,16 @@ const Buttons = () => {
         big={false}
         iconSrc={undefined}
         active={true}
-        onClick={ping}
+        onClick={mswPing}
         dark={false}
       />
       <ClickableButton
-        text={clickableButtonState ? "버튼 ON" : "버튼 OFF"}
+        text={clickableButtonState ? "Success" : "Fail"}
         withIcon={false}
         big={false}
         iconSrc={undefined}
         active={clickableButtonState}
-        onClick={() =>
-          setClickableButtonState(
-            (clickableButtonState) => !clickableButtonState,
-          )
-        }
+        onClick={mswBoolean}
         dark={false}
       />
       <CheckboxButton
