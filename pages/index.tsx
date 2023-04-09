@@ -22,7 +22,7 @@ const Home = () => {
           {isSideBar && <Sidebar setIsSidebar={setIsSideBar} />}
           <Logo />
           <HomeBanner />
-          <CardList />
+          {/* <CardList /> */}
         </article>
       </div>
     </>

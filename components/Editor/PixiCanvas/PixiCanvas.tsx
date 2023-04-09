@@ -1,8 +1,14 @@
 import { Container, Sprite, Stage, Text, Graphics } from "@inlet/react-pixi";
-import { Graphics as GraphicsType, TextStyle } from "pixi.js";
-import { useCallback } from "react";
-import { IObject, ITextObject } from "../../../types/base";
-import { onDragEnd, onDragMove, onDragStart } from "./drag";
+import { Graphics as GraphicsType, TextMetrics, TextStyle } from "pixi.js";
+import { IImageObject, IObject, ITextObject } from "../../../types/base";
+import {
+  onContainerDragEnd,
+  onContainerDragMove,
+  onContainerDragStart,
+  onDragEnd,
+  onDragMove,
+  onDragStart,
+} from "./drag";
 
 const dummyObjects: IObject[] = [
   {
@@ -46,84 +52,13 @@ const dummyObjects: IObject[] = [
 ];
 
 const PixiCanvas = () => {
-  //   const draw = useCallback(
-  //     () => (g: GraphicsType, object: ITextObject) => {
-  //       g.clear();
-  //       g.beginFill(0xff700b, 1);
-  //       g.drawRect(
-  //         object.positionX,
-  //         object.positionY,
-  //         object.width,
-  //         object.height,
-  //       );
-  //     },
-  //     [],
-  //   );
-
   return (
     <Stage>
       {dummyObjects.map((object) => {
         if (object.type === "image") {
-          return (
-            <Sprite
-              key={object.id}
-              image={object.imageSource}
-              x={object.positionX}
-              y={object.positionY}
-              width={object.width}
-              height={object.height}
-              interactive={true}
-              buttonMode={true}
-              mousedown={onDragStart}
-              mouseup={onDragEnd}
-              mouseupoutside={onDragEnd}
-              mousemove={onDragMove}
-            />
-          );
+          return <ImageObject object={object} />;
         } else if (object.type === "text") {
-          const draw = (g: GraphicsType) => {
-            g.clear();
-            g.lineStyle(
-              object.borderWidth,
-              Number("0x" + object.borderColor.substring(1)),
-            );
-            g.beginFill(Number("0x" + object.backgroundColor.substring(1)), 1);
-            g.drawRect(
-              object.positionX,
-              object.positionY,
-              object.width,
-              object.height,
-            );
-          };
-
-          return (
-            <Container>
-              <Graphics draw={draw} />
-              <Text
-                key={object.id}
-                x={object.positionX}
-                y={object.positionY}
-                text={object.textContent}
-                interactive={true}
-                buttonMode={true}
-                mousedown={onDragStart}
-                mouseup={onDragEnd}
-                mouseupoutside={onDragEnd}
-                mousemove={onDragMove}
-                style={
-                  new TextStyle({
-                    fontFamily: object.fontFamily,
-                    fontSize: object.fontSize,
-                    stroke: object.strokeColor,
-                    strokeThickness: object.strokeWidth,
-                    letterSpacing: object.letterSpacing,
-                    lineHeight: object.lineHeight,
-                    fill: object.color,
-                  })
-                }
-              />
-            </Container>
-          );
+          return <TextContainer object={object} />;
         }
       })}
     </Stage>
@@ -131,3 +66,77 @@ const PixiCanvas = () => {
 };
 
 export default PixiCanvas;
+
+const ImageObject = ({ object }: { object: IImageObject }) => (
+  <Sprite
+    key={object.id}
+    image={object.imageSource}
+    x={object.positionX}
+    y={object.positionY}
+    width={object.width}
+    height={object.height}
+    interactive={true}
+    buttonMode={true}
+    mousedown={onDragStart}
+    mouseup={onDragEnd}
+    mouseupoutside={onDragEnd}
+    mousemove={onDragMove}
+  />
+);
+
+const TextContainer = ({ object }: { object: ITextObject }) => {
+  const style = new TextStyle({
+    fontFamily: object.fontFamily,
+    fontSize: object.fontSize,
+    stroke: object.strokeColor,
+    strokeThickness: object.strokeWidth,
+    letterSpacing: object.letterSpacing,
+    lineHeight: object.lineHeight,
+    fill: object.color,
+  });
+
+  const textMetrics = TextMetrics.measureText(object.textContent, style);
+
+  const draw = (g: GraphicsType) => {
+    // Graphics를 그리는 함수
+    g.clear();
+    // 테두리
+    g.lineStyle(
+      object.borderWidth,
+      Number("0x" + object.borderColor.substring(1)), // 색을 hex color로 표현
+    );
+    // 안에 색깔
+    g.beginFill(Number("0x" + object.backgroundColor.substring(1)), 1);
+    // 배경 위치 및 크기
+    g.drawRect(
+      object.positionX,
+      object.positionY,
+      textMetrics.width + object.strokeWidth * 2,
+      textMetrics.height + object.strokeWidth * 2,
+    );
+  };
+
+  return (
+    <Container
+      interactive={true}
+      buttonMode={true}
+      mousedown={onContainerDragStart}
+      mouseup={onContainerDragEnd}
+      mouseupoutside={onContainerDragEnd}
+      mousemove={onContainerDragMove}
+    >
+      {/* 텍스트의 배경색 표현 */}
+      <Graphics draw={draw} />
+      {/* 텍스트 표현 */}
+      <Text
+        key={object.id}
+        x={object.positionX + object.strokeWidth}
+        y={object.positionY + object.strokeWidth}
+        text={object.textContent}
+        interactive={true}
+        buttonMode={true}
+        style={style}
+      />
+    </Container>
+  );
+};
