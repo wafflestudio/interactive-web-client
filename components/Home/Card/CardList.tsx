@@ -6,7 +6,7 @@ import {
 } from "../../../dummies/dummyCards";
 import { useGetAllProjectQuery } from "../../../modules/api/projectApi";
 import { ProjectDataType } from "../../../types/types";
-import { FetchableComponent } from "../../common/FetchableComponent";
+// import { FetchableComponent } from "../../common/FetchableComponent";
 import CardItem from "./CardItem";
 import styles from "./Card.module.scss";
 

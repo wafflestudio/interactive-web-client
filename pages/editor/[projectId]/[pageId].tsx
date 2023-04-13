@@ -1,4 +1,5 @@
 import PixiCanvas from "../../../components/Editor/PixiCanvas/PixiCanvas";
+import ToolBar from "../../../components/Editor/ToolBar/ToolBar";
 import styles from "./EditorPage.module.scss";
 
 const EditorPage = () => {
@@ -10,7 +11,7 @@ const EditorPage = () => {
         <div className={styles.canvasWrapper}>
           <PixiCanvas />
         </div>
-        <div className={styles.toolbar} />
+        <ToolBar />
       </div>
     </main>
   );
