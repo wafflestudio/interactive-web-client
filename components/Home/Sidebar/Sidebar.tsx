@@ -7,7 +7,7 @@ import {
   usePostMyProjectMutation,
 } from "../../../modules/api/projectApi";
 import { ProjectDataType } from "../../../types/types";
-//import { FetchableComponent } from "../../common/FetchableComponent";
+import { FetchableComponent } from "../../common/FetchableComponent";
 import styles from "./Sidebar.module.scss";
 
 interface HomeSidebarProps {
