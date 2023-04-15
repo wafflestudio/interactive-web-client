@@ -7,7 +7,11 @@ import {
   usePostMyProjectMutation,
 } from "../../../modules/api/projectApi";
 import { ProjectDataType } from "../../../types/types";
+<<<<<<< HEAD
 // import { FetchableComponent } from "../../common/FetchableComponent";
+=======
+//import { FetchableComponent } from "../../common/FetchableComponent";
+>>>>>>> 29d78ac (setter 간단히 구현 & 테스트 적용)
 import styles from "./Sidebar.module.scss";
 
 interface HomeSidebarProps {
