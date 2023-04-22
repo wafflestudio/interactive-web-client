@@ -1,14 +1,14 @@
 import PIXI from "pixi.js";
 
 // Sprite를 드래그할 시 (기본적으로 anchor 속성이 있는 오브젝트를 드래그할 시)
-interface Draggable extends PIXI.Sprite {
+interface SpriteDraggable extends PIXI.Sprite {
   data: PIXI.InteractionData | null;
   dragging: boolean;
 }
 
-export const onDragStart = (event: PIXI.InteractionEvent) => {
+export const onSpriteDragStart = (event: PIXI.InteractionEvent) => {
   // 드래그 시작 시
-  const object = event.currentTarget as Draggable;
+  const object = event.currentTarget as SpriteDraggable;
 
   // 클릭했을 때 마우스 커서가 오브젝트에서 있는 위치(0~1 사이의 값)
   object.anchor.set(
@@ -28,9 +28,9 @@ export const onDragStart = (event: PIXI.InteractionEvent) => {
   object.dragging = true;
 };
 
-export const onDragEnd = (event: PIXI.InteractionEvent) => {
+export const onSpriteDragEnd = (event: PIXI.InteractionEvent) => {
   // 드래그 끝났을 때
-  const object = event.currentTarget as Draggable;
+  const object = event.currentTarget as SpriteDraggable;
   object.alpha = 1;
   object.dragging = false;
   object.data = null;
@@ -43,9 +43,9 @@ export const onDragEnd = (event: PIXI.InteractionEvent) => {
   object.anchor.set(0);
 };
 
-export const onDragMove = (event: PIXI.InteractionEvent) => {
+export const onSpriteDragMove = (event: PIXI.InteractionEvent) => {
   // 마우스를 클릭한 채로 움직일 때
-  const object = event.currentTarget as Draggable;
+  const object = event.currentTarget as SpriteDraggable;
   if (object.dragging && object.data) {
     const newPosition = object.data.getLocalPosition(object.parent);
     object.x = newPosition.x;

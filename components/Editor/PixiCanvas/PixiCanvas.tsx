@@ -5,9 +5,9 @@ import {
   onContainerDragEnd,
   onContainerDragMove,
   onContainerDragStart,
-  onDragEnd,
-  onDragMove,
-  onDragStart,
+  onSpriteDragEnd,
+  onSpriteDragMove,
+  onSpriteDragStart,
 } from "./drag";
 
 const dummyObjects: IObject[] = [
@@ -77,10 +77,10 @@ const ImageObject = ({ object }: { object: IImageObject }) => (
     height={object.height}
     interactive={true}
     buttonMode={true}
-    mousedown={onDragStart}
-    mouseup={onDragEnd}
-    mouseupoutside={onDragEnd}
-    mousemove={onDragMove}
+    mousedown={onSpriteDragStart}
+    mouseup={onSpriteDragEnd}
+    mouseupoutside={onSpriteDragEnd}
+    mousemove={onSpriteDragMove}
   />
 );
 
