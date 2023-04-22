@@ -7,7 +7,7 @@ import {
   usePostMyProjectMutation,
 } from "../../../modules/api/projectApi";
 import { ProjectDataType } from "../../../types/types";
-import { FetchableComponent } from "../../common/FetchableComponent";
+// import { FetchableComponent } from "../../common/FetchableComponent";
 import styles from "./Sidebar.module.scss";
 
 interface HomeSidebarProps {
@@ -72,14 +72,14 @@ const Sidebar = ({ setIsSidebar }: HomeSidebarProps) => {
       </button>
       <div className={styles.label}>내 프로젝트</div>
 
-      <FetchableComponent
+      {/* <FetchableComponent
         data={projects}
         isFetching={isFetching}
         successComponent={
           <ProjectsLists projects={projects} onClickProject={onClickProject} />
         }
         failComponent={<div>no projects</div>}
-      />
+      /> */}
 
       <button
         className={styles.addButton}

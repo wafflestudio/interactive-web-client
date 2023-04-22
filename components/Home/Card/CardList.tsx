@@ -17,7 +17,7 @@ const CardList = () => {
 
   return (
     <div className={styles.cardList}>
-      <FetchableComponent
+      {/* <FetchableComponent
         data={data?.data}
         isFetching={isFetching}
         successComponent={
@@ -34,7 +34,7 @@ const CardList = () => {
             ))}
           </>
         }
-      />
+      /> */}
 
       {}
     </div>
