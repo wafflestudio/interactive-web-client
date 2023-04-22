@@ -1,6 +1,6 @@
 import PIXI from "pixi.js";
 
-// Sprite나 개별 Text를 드래그할 시 (기본적으로 anchor 속성이 있는 오브젝트를 드래그할 시)
+// Sprite를 드래그할 시 (기본적으로 anchor 속성이 있는 오브젝트를 드래그할 시)
 interface Draggable extends PIXI.Sprite {
   data: PIXI.InteractionData | null;
   dragging: boolean;
@@ -10,17 +10,20 @@ export const onDragStart = (event: PIXI.InteractionEvent) => {
   // 드래그 시작 시
   const object = event.currentTarget as Draggable;
 
+  // 클릭했을 때 마우스 커서가 오브젝트에서 있는 위치(0~1 사이의 값)
   object.anchor.set(
     (event.data.global.x - object.x) / object.width,
     (event.data.global.y - object.y) / object.height,
   );
+  // console.log(object.anchor)
 
+  // 마우스 커서와 object의 위치가 클릭했을 때 그대로 있도록 함(position: coordinate of the object relative to the local coordinates of the parent)
   object.position.set(
     object.position.x + object.anchor.x * object.width,
     object.position.y + object.anchor.y * object.height,
   );
 
-  object.alpha = 0.5;
+  object.alpha = 0.5; // 오브젝트의 투명도
   object.data = event.data;
   object.dragging = true;
 };
@@ -37,7 +40,7 @@ export const onDragEnd = (event: PIXI.InteractionEvent) => {
     object.position.y - object.anchor.y * object.height,
   );
 
-  object.anchor.set(0, 0);
+  object.anchor.set(0);
 };
 
 export const onDragMove = (event: PIXI.InteractionEvent) => {
@@ -50,7 +53,7 @@ export const onDragMove = (event: PIXI.InteractionEvent) => {
   }
 };
 
-// Container를 드래그할 시 (직접 anchor 속성을 추가함)
+// Container(Text + Graphics)를 드래그할 시 (직접 anchor 속성을 추가함)
 interface ContainerDraggable extends PIXI.Container {
   data: PIXI.InteractionData | null;
   dragging: boolean;

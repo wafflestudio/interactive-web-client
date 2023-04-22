@@ -19,7 +19,7 @@ const Home = () => {
       <div className={styles.Home}>
         <article className={styles.container}>
           <Header setIsSidebar={setIsSideBar} />
-          {isSideBar && <Sidebar setIsSidebar={setIsSideBar} />}
+          {/* {isSideBar && <Sidebar setIsSidebar={setIsSideBar} />} */}
           <Logo />
           <HomeBanner />
           {/* <CardList /> */}

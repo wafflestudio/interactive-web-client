@@ -85,6 +85,7 @@ const ImageObject = ({ object }: { object: IImageObject }) => (
 );
 
 const TextContainer = ({ object }: { object: ITextObject }) => {
+  // 텍스트의 스타일
   const style = new TextStyle({
     fontFamily: object.fontFamily,
     fontSize: object.fontSize,
@@ -95,17 +96,17 @@ const TextContainer = ({ object }: { object: ITextObject }) => {
     fill: object.color,
   });
 
-  const textMetrics = TextMetrics.measureText(object.textContent, style);
+  const textMetrics = TextMetrics.measureText(object.textContent, style); // 배경색을 제외한 텍스트 자체의 크기
 
+  // Graphics를 그리는 함수
   const draw = (g: GraphicsType) => {
-    // Graphics를 그리는 함수
     g.clear();
     // 테두리
     g.lineStyle(
       object.borderWidth,
       Number("0x" + object.borderColor.substring(1)), // 색을 hex color로 표현
     );
-    // 안에 색깔
+    // 배경색
     g.beginFill(Number("0x" + object.backgroundColor.substring(1)), 1);
     // 배경 위치 및 크기
     g.drawRect(
