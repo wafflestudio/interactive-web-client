@@ -43,7 +43,7 @@ export const onSpriteDragEnd = (event: PIXI.InteractionEvent) => {
   object.anchor.set(0);
 };
 
-export const onSpriteDragMove = (event: PIXI.InteractionEvent, globalMouse, borderBarrier) => {
+export const onSpriteDragMove = (event: PIXI.InteractionEvent, globalMouse) => {
   // 마우스를 클릭한 채로 움직일 때
   const object = event.currentTarget as SpriteDraggable;
   if (object.dragging && object.data) {
@@ -53,7 +53,6 @@ export const onSpriteDragMove = (event: PIXI.InteractionEvent, globalMouse, bord
     if (globalMouse == true)
     {
       onSpriteDragEnd(event);
-      borderBarrier();
     }
   }
 };
@@ -93,7 +92,7 @@ export const onContainerDragEnd = (event: PIXI.InteractionEvent) => {
   object.anchor = { x: 0, y: 0 };
 };
 
-export const onContainerDragMove = (event: PIXI.InteractionEvent, globalMouse, borderBarrier) => {
+export const onContainerDragMove = (event: PIXI.InteractionEvent, globalMouse) => {
   // 마우스를 클릭한 채로 움직일 때
   const object = event.currentTarget as ContainerDraggable;
   if (object.dragging && object.data) {
@@ -104,7 +103,6 @@ export const onContainerDragMove = (event: PIXI.InteractionEvent, globalMouse, b
     if (globalMouse == true)
     {
       onContainerDragEnd(event);
-      borderBarrier();
     }
   }
 

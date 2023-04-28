@@ -54,16 +54,13 @@ const dummyObjects: IObject[] = [
 
 const PixiCanvas = () => {
   const [globalMouse, setGlobalMouse] = useState<boolean>(false);
-  const borderBarrier = () => {
-    setGlobalMouse((x)=>(!x));
-  }
   return (
-    <Stage onMouseOut={borderBarrier}>
+    <Stage onMouseOut={()=>{setGlobalMouse(true);}} onMouseEnter={()=>{setGlobalMouse(false);}}>
       {dummyObjects.map((object) => {
         if (object.type === "image") {
-          return <ImageObject object={object} globalMouse={globalMouse} borderBarrier={borderBarrier}/>;
+          return <ImageObject object={object} globalMouse={globalMouse}/>;
         } else if (object.type === "text") {
-          return <TextContainer object={object} globalMouse={globalMouse} borderBarrier={borderBarrier}/>;
+          return <TextContainer object={object} globalMouse={globalMouse}/>;
         }
       })}
     </Stage>
@@ -72,7 +69,7 @@ const PixiCanvas = () => {
 
 export default PixiCanvas;
 
-const ImageObject = ({ object, globalMouse, borderBarrier }: { object: IImageObject, globalMouse: boolean, borderBarrier:()=>void }) => (
+const ImageObject = ({ object, globalMouse}: { object: IImageObject, globalMouse: boolean,}) => (
   <Sprite
     key={object.id}
     image={object.imageSource}
@@ -84,11 +81,11 @@ const ImageObject = ({ object, globalMouse, borderBarrier }: { object: IImageObj
     buttonMode={true}
     mousedown={onSpriteDragStart}
     mouseup={onSpriteDragEnd}
-    mousemove={(e)=>{onSpriteDragMove(e, globalMouse, borderBarrier)}}
+    mousemove={(e)=>{onSpriteDragMove(e, globalMouse)}}
   />
 );
 
-const TextContainer = ({ object, globalMouse, borderBarrier }: { object: ITextObject, globalMouse: boolean, borderBarrier: ()=>void }) => {
+const TextContainer = ({ object, globalMouse}: { object: ITextObject, globalMouse: boolean }) => {
   // 텍스트의 스타일
   const style = new TextStyle({
     fontFamily: object.fontFamily,
@@ -127,7 +124,7 @@ const TextContainer = ({ object, globalMouse, borderBarrier }: { object: ITextOb
       buttonMode={true}
       mousedown={onContainerDragStart}
       mouseup={onContainerDragEnd}
-      mousemove={(e)=>{onContainerDragMove(e, globalMouse, borderBarrier)}}
+      mousemove={(e)=>{onContainerDragMove(e, globalMouse)}}
     >
       {/* 텍스트의 배경색 표현 */}
       <Graphics draw={draw} />
