@@ -36,8 +36,8 @@ export const onSpriteDragEnd = (event: PIXI.InteractionEvent) => {
   object.data = null;
 
   object.position.set(
-    object.position.x - object.anchor.x * object.width,
-    object.position.y - object.anchor.y * object.height,
+      object.position.x - object.anchor.x * object.width,
+      object.position.y - object.anchor.y * object.height,
   );
 
   object.anchor.set(0);
