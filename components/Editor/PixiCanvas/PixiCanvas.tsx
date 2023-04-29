@@ -51,16 +51,16 @@ const dummyObjects: IObject[] = [
     borderColor: "#e19230",
   },
 ];
+const SIZE = {width: 800, height: 600};
 
 const PixiCanvas = () => {
-  const [globalMouse, setGlobalMouse] = useState<boolean>(false);
   return (
-    <Stage onMouseOut={()=>{setGlobalMouse(true);}} onMouseEnter={()=>{setGlobalMouse(false);}}>
+    <Stage width={SIZE.width} height={SIZE.height}>
       {dummyObjects.map((object) => {
         if (object.type === "image") {
-          return <ImageObject object={object} globalMouse={globalMouse}/>;
+          return <ImageObject object={object} SIZE={SIZE}/>;
         } else if (object.type === "text") {
-          return <TextContainer object={object} globalMouse={globalMouse}/>;
+          return <TextContainer object={object} SIZE={SIZE}/>;
         }
       })}
     </Stage>
@@ -69,7 +69,7 @@ const PixiCanvas = () => {
 
 export default PixiCanvas;
 
-const ImageObject = ({ object, globalMouse}: { object: IImageObject, globalMouse: boolean,}) => (
+const ImageObject = ({ object, SIZE }: { object: IImageObject, SIZE: {width: number, height: number}}) => (
   <Sprite
     key={object.id}
     image={object.imageSource}
@@ -81,11 +81,11 @@ const ImageObject = ({ object, globalMouse}: { object: IImageObject, globalMouse
     buttonMode={true}
     mousedown={onSpriteDragStart}
     mouseup={onSpriteDragEnd}
-    mousemove={(e)=>{onSpriteDragMove(e, globalMouse)}}
+    mousemove={(e)=>{onSpriteDragMove(e, SIZE);}}
   />
 );
 
-const TextContainer = ({ object, globalMouse}: { object: ITextObject, globalMouse: boolean }) => {
+const TextContainer = ({ object, SIZE }: { object: ITextObject, SIZE: {width: number, height: number}}) => {
   // 텍스트의 스타일
   const style = new TextStyle({
     fontFamily: object.fontFamily,
@@ -124,7 +124,7 @@ const TextContainer = ({ object, globalMouse}: { object: ITextObject, globalMous
       buttonMode={true}
       mousedown={onContainerDragStart}
       mouseup={onContainerDragEnd}
-      mousemove={(e)=>{onContainerDragMove(e, globalMouse)}}
+      mousemove={(e)=>{onContainerDragMove(e,SIZE)}}
     >
       {/* 텍스트의 배경색 표현 */}
       <Graphics draw={draw} />

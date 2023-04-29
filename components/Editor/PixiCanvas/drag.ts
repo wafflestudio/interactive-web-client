@@ -43,17 +43,19 @@ export const onSpriteDragEnd = (event: PIXI.InteractionEvent) => {
   object.anchor.set(0);
 };
 
-export const onSpriteDragMove = (event: PIXI.InteractionEvent, globalMouse) => {
+export const onSpriteDragMove = (event: PIXI.InteractionEvent, SIZE: {width: number, height: number}) => {
   // 마우스를 클릭한 채로 움직일 때
   const object = event.currentTarget as SpriteDraggable;
   if (object.dragging && object.data) {
     const newPosition = object.data.getLocalPosition(object.parent);
     object.x = newPosition.x;
     object.y = newPosition.y;
-    if (globalMouse == true)
-    {
-      onSpriteDragEnd(event);
-    }
+    console.log(newPosition.y);
+    if (newPosition.x < 0) object.x = 20
+    if (newPosition.x > SIZE.width) object.x = SIZE.width-20
+    if (newPosition.y < 0) object.y = 20
+    if (newPosition.y > SIZE.height) object.y = SIZE.height-20
+
   }
 };
 
@@ -92,7 +94,7 @@ export const onContainerDragEnd = (event: PIXI.InteractionEvent) => {
   object.anchor = { x: 0, y: 0 };
 };
 
-export const onContainerDragMove = (event: PIXI.InteractionEvent, globalMouse) => {
+export const onContainerDragMove = (event: PIXI.InteractionEvent, SIZE: {width: number, height: number}) => {
   // 마우스를 클릭한 채로 움직일 때
   const object = event.currentTarget as ContainerDraggable;
   if (object.dragging && object.data) {
@@ -100,10 +102,11 @@ export const onContainerDragMove = (event: PIXI.InteractionEvent, globalMouse) =
     object.x = newPosition.x - object.width * object.anchor.x;
     object.y = newPosition.y - object.height * object.anchor.y;
 
-    if (globalMouse == true)
-    {
-      onContainerDragEnd(event);
-    }
+    console.log(newPosition.y)
+    if (newPosition.x < 0) object.x = 20 - object.width * object.anchor.x
+    if (newPosition.x > SIZE.width) object.x = SIZE.width-20 - object.width * object.anchor.x
+    if (newPosition.y < 0) object.y = 20 - object.height * object.anchor.y;
+    if (newPosition.y > SIZE.height) object.y = SIZE.height-20 - object.height * object.anchor.y;
   }
 
 };
