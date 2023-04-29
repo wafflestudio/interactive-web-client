@@ -7,6 +7,7 @@ import {
   useState,
 } from "react";
 import { IObject, IPage, IProject } from "../../types/base";
+import { isPartialDifferent } from "./calculate";
 
 const dummy: IProject = {
   id: 0,
@@ -63,7 +64,7 @@ const isInitiated = false;
 let listenerId = 0;
 
 const listeners: IListeners = {
-  page: [{ listenerId: 0, dependentId: 5, forceUpdate: () => {} }],
+  page: [],
 };
 
 /*** Hooks ***/
@@ -74,19 +75,28 @@ export const useSinglePage: IPageSingleDataHook = (id: number) => {
   const getter =
     projectData.pages.find((page) => page.id === pageId.current) ?? null;
   const setter: SetterType<IPage> = (value) => {
-    //(1. 값 비교: pageValue.current랑 새로 들어온 value랑 비교한다 -> 최적화 관련)
-    //2. 전역 project 객체의 값을 찾아서 바꾼다
+    //1. 전역 project 객체의 값을 찾아서 바꾼다
     projectData = {
       ...projectData,
       pages: projectData.pages.map((page) =>
         page.id === pageId.current ? { ...page, ...value } : page,
       ),
     };
-    //3. listeners 배열에서 같은 페이지 아이디를 구독하고 있는 모든 리스너들을 업데이트 시킨다(forceUpdate 이용)
+    //2. listeners 배열에서 같은 페이지 아이디를 구독하고 있는 모든 리스너들을 업데이트 시킨다(forceUpdate 이용)
     listeners.page.forEach((listener) => {
-      if (listener.dependentId === pageId.current) {
-        listener.forceUpdate();
-      }
+      if (listener.dependentId === pageId.current) listener.forceUpdate();
+    });
+  };
+  //삭제에 관한 기능은 따로 제공한다.
+  const destroy = () => {
+    //1. 전역 project 객체의 값을 찾아서 바꾼다
+    projectData = {
+      ...projectData,
+      pages: projectData.pages.filter((page) => page.id !== pageId.current),
+    };
+    //2. 모든 listener를 리렌더한다
+    listeners.page.forEach((listener) => {
+      listener.forceUpdate();
     });
   };
 
@@ -102,7 +112,7 @@ export const useSinglePage: IPageSingleDataHook = (id: number) => {
     }
   }, [isInitiated]);
 
-  return [getter, setter];
+  return [getter, setter, destroy];
 };
 
 //useSingleObject
