@@ -50,7 +50,7 @@ export const onSpriteDragMove = (event: PIXI.InteractionEvent, SIZE: {width: num
     const newPosition = object.data.getLocalPosition(object.parent);
     object.x = newPosition.x;
     object.y = newPosition.y;
-    console.log(newPosition.y);
+    
     if (newPosition.x < 0) object.x = 20
     if (newPosition.x > SIZE.width) object.x = SIZE.width-20
     if (newPosition.y < 0) object.y = 20
@@ -102,7 +102,7 @@ export const onContainerDragMove = (event: PIXI.InteractionEvent, SIZE: {width: 
     object.x = newPosition.x - object.width * object.anchor.x;
     object.y = newPosition.y - object.height * object.anchor.y;
 
-    console.log(newPosition.y)
+
     if (newPosition.x < 0) object.x = 20 - object.width * object.anchor.x
     if (newPosition.x > SIZE.width) object.x = SIZE.width-20 - object.width * object.anchor.x
     if (newPosition.y < 0) object.y = 20 - object.height * object.anchor.y;
