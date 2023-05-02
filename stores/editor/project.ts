@@ -119,13 +119,29 @@ export const useSinglePage: IPageSingleDataHook = (id: number) => {
 
 type PageSliceType = (page: IPage) => Partial<IPage>;
 
-type AllPagesReturnType<T> = [T[], SetterType<IPage[]>];
+type AllSetterType<T> = (value: T) => void;
 
-type IAllPagesHook = <T>(slice?: PageSliceType) => AllPagesReturnType<T>;
+type IAllPagesHook = (
+  slice?: PageSliceType,
+) => [Partial<IPage>[], AllSetterType<Partial<IPage>[]>];
+
+type AllListenerType = {
+  listenerId: number;
+  dependentSlice: undefined | PageSliceType;
+  forceUpdate: () => void;
+};
+type IAllListeners = {
+  page: AllListenerType[];
+};
+
+const allPageListeners: IAllListeners = {
+  page: [{ listenerId: 0, dependentSlice: undefined, forceUpdate: () => {} }],
+};
 
 export const useAllPages: IAllPagesHook = (slice) => {
   const [, forceUpdate] = useReducer((c: number): number => c + 1, 0);
 
+  // useMemo로 렌더링 최적화
   const getter = useMemo(() => {
     if (slice) {
       return () => projectData.pages.map((page) => slice(page));
@@ -133,68 +149,104 @@ export const useAllPages: IAllPagesHook = (slice) => {
     return () => projectData.pages;
   }, [slice]);
 
-  const setter: SetterType<IPage[]> = (value) => {
-    projectData = {
-      ...projectData,
-      pages: value,
-    };
+  const setter: AllSetterType<Partial<IPage>[]> = (value) => {
+    if (slice) {
+      projectData = {
+        ...projectData,
+        pages: projectData.pages.map((page) =>
+          !value.some((v) => v.id === page.id)
+            ? page
+            : JSON.stringify(
+                slice(value.find((v) => v.id === page.id) as IPage),
+              ) === JSON.stringify(slice(page))
+            ? page
+            : (value.find((v) => v.id === page.id) as IPage),
+        ),
+      };
+    } else {
+      projectData = {
+        ...projectData,
+        pages: projectData.pages.map((page) =>
+          !value.some((v) => v.id === page.id)
+            ? page
+            : JSON.stringify(value.find((v) => v.id === page.id)) ===
+              JSON.stringify(page)
+            ? // 깊은 비교를 위해서
+              page
+            : (value.find((v) => v.id === page.id) as IPage),
+        ),
+      };
+    }
 
-    listeners.page.forEach((listener) => {
-      if (!listener.dependentId) {
-        listener.forceUpdate();
-      } else if (
-        Array.isArray(listener.dependentId) &&
-        listener.dependentId.some((id) => value.find((page) => page.id === id))
-      ) {
-        listener.forceUpdate();
-      } else if (value.find((page) => page.id === listener.dependentId)) {
+    allPageListeners.page.forEach((listener) => {
+      if (listener.dependentSlice === slice) {
         listener.forceUpdate();
       }
     });
   };
 
   useEffect(() => {
-    const id = listenerId++;
-    listeners.page.push({
-      listenerId: id,
-      dependentId: -1,
-      forceUpdate,
-    });
-
-    return () => {
-      listeners.page = listeners.page.filter(
-        (listener) => listener.listenerId !== id,
-      );
-    };
-  }, []);
+    if (!isInitiated) {
+      allPageListeners.page.push({
+        listenerId: listenerId,
+        dependentSlice: slice,
+        forceUpdate,
+      });
+      listenerId++;
+    }
+  }, [isInitiated]);
 
   return [getter(), setter];
 };
 
+//AllObject Method
+
 type ObjectSliceType = (value: IObject) => Partial<IObject>;
 
-type IObjectSingleDataHook = (id: number) => SingleDataHookReturnType<IObject>;
-
-type IObjectAllDataHook = (
+type IAllObjectsHook = (
   slice?: ObjectSliceType,
-) => SingleDataHookReturnType<IObject[]>;
+) => [Partial<IObject>[][], AllSetterType<Partial<IObject>[]>];
 
-export const useAllObjects: IObjectAllDataHook = (slice) => {
+const allObjectListeners: IAllListeners = {
+  page: [{ listenerId: 0, dependentSlice: undefined, forceUpdate: () => {} }],
+};
+
+export const useAllObjects: IAllObjectsHook = (slice) => {
   const [, forceUpdate] = useReducer((c: number) => c + 1, 0);
 
-  const getter = slice
-    ? projectData.pages.map((page) => page.objects.map((obj) => slice(obj)))
-    : projectData.pages.map((page) => page.objects);
+  const getter = useMemo(() => {
+    if (slice) {
+      return () =>
+        projectData.pages.map((page) => page.objects.map((obj) => slice(obj)));
+    }
+    return () => projectData.pages.map((page) => page.objects);
+  }, [slice]);
 
-  const setter = (value: Partial<IObject>) => {
+  const setter: AllSetterType<Partial<IObject>[]> = (value) => {
+    // 해당 value를 포함하는 page를 찾음
     const pageContainingObject = projectData.pages.find((page) =>
-      page.objects.some((obj) => obj.id === value.id),
+      page.objects.find((obj) => value.find((v) => v.id === obj.id)),
     );
 
     if (pageContainingObject) {
-      const updatedObjects = pageContainingObject.objects.map((obj) =>
-        obj.id === value.id ? { ...obj, ...value } : obj,
-      );
+      let updatedObjects: IObject[];
+      if (slice) {
+        updatedObjects = pageContainingObject.objects.map((obj) =>
+          JSON.stringify(
+            slice(value.find((v) => v.id === obj.id) as IObject),
+          ) === JSON.stringify(slice(obj))
+            ? obj
+            : (value.find((v) => v.id === obj.id) as IObject),
+        );
+      } else {
+        updatedObjects = pageContainingObject.objects.map((obj) =>
+          JSON.stringify(value.find((v) => v.id === obj.id)) ===
+          JSON.stringify(obj)
+            ? obj
+            : (value.find((v) => v.id === obj.id) as IObject),
+        );
+      }
+
       const updatedPages = projectData.pages.map((page) =>
         page.id === pageContainingObject.id
           ? { ...page, objects: updatedObjects }
@@ -215,5 +267,5 @@ export const useAllObjects: IObjectAllDataHook = (slice) => {
     listenerId++;
   }, []);
 
-  return [getter, setter];
+  return [getter(), setter];
 };
