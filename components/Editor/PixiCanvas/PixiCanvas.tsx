@@ -9,7 +9,7 @@ import {
   onSpriteDragMove,
   onSpriteDragStart,
 } from "./drag";
-import {useState} from "react";
+import { useState } from "react";
 
 const dummyObjects: IObject[] = [
   {
@@ -50,17 +50,32 @@ const dummyObjects: IObject[] = [
     borderWidth: 10,
     borderColor: "#e19230",
   },
+  {
+    id: 2,
+    name: "host",
+    isInteractive: true,
+    positionX: 100,
+    positionY: 100,
+    width: 100,
+    height: 100,
+    zIndex: 2,
+    opacity: 1,
+    type: "image",
+    imageSource: "/images/ex_ghost.png",
+    isReversed: false,
+    rotateDegree: 0,
+  },
 ];
-const SIZE = {width: 800, height: 600};
+const SIZE = { width: 800, height: 600 };
 
 const PixiCanvas = () => {
   return (
     <Stage width={SIZE.width} height={SIZE.height}>
       {dummyObjects.map((object) => {
         if (object.type === "image") {
-          return <ImageObject object={object} SIZE={SIZE}/>;
+          return <ImageObject object={object} SIZE={SIZE} />;
         } else if (object.type === "text") {
-          return <TextContainer object={object} SIZE={SIZE}/>;
+          return <TextContainer object={object} SIZE={SIZE} />;
         }
       })}
     </Stage>
@@ -69,7 +84,13 @@ const PixiCanvas = () => {
 
 export default PixiCanvas;
 
-const ImageObject = ({ object, SIZE }: { object: IImageObject, SIZE: {width: number, height: number}}) => (
+const ImageObject = ({
+  object,
+  SIZE,
+}: {
+  object: IImageObject;
+  SIZE: { width: number; height: number };
+}) => (
   <Sprite
     key={object.id}
     image={object.imageSource}
@@ -81,11 +102,20 @@ const ImageObject = ({ object, SIZE }: { object: IImageObject, SIZE: {width: num
     buttonMode={true}
     mousedown={onSpriteDragStart}
     mouseup={onSpriteDragEnd}
-    mousemove={(e)=>{onSpriteDragMove(e, SIZE);}}
+    mousemove={(e) => {
+      onSpriteDragMove(e, SIZE);
+    }}
+    mouseout={onSpriteDragEnd}
   />
 );
 
-const TextContainer = ({ object, SIZE }: { object: ITextObject, SIZE: {width: number, height: number}}) => {
+const TextContainer = ({
+  object,
+  SIZE,
+}: {
+  object: ITextObject;
+  SIZE: { width: number; height: number };
+}) => {
   // 텍스트의 스타일
   const style = new TextStyle({
     fontFamily: object.fontFamily,
@@ -124,7 +154,10 @@ const TextContainer = ({ object, SIZE }: { object: ITextObject, SIZE: {width: nu
       buttonMode={true}
       mousedown={onContainerDragStart}
       mouseup={onContainerDragEnd}
-      mousemove={(e)=>{onContainerDragMove(e,SIZE)}}
+      mousemove={(e) => {
+        onContainerDragMove(e, SIZE);
+      }}
+      mouseout={onContainerDragEnd}
     >
       {/* 텍스트의 배경색 표현 */}
       <Graphics draw={draw} />
