@@ -49,15 +49,38 @@ export const onSpriteDragMove = (
 ) => {
   // 마우스를 클릭한 채로 움직일 때
   const object = event.currentTarget as SpriteDraggable;
+  const drop = () => {
+    object.alpha = 1;
+    object.dragging = false;
+    object.data = null;
+
+    object.position.set(
+      object.position.x - object.anchor.x * object.width,
+      object.position.y - object.anchor.y * object.height,
+    );
+    object.anchor.set(0);
+  };
   if (object.dragging && object.data) {
     const newPosition = object.data.getLocalPosition(object.parent);
     object.x = newPosition.x;
     object.y = newPosition.y;
 
-    if (newPosition.x < 0) object.x = 20;
-    if (newPosition.x > SIZE.width) object.x = SIZE.width - 20;
-    if (newPosition.y < 0) object.y = 20;
-    if (newPosition.y > SIZE.height) object.y = SIZE.height - 20;
+    if (newPosition.x < 0) {
+      object.x = 20;
+      drop();
+    }
+    if (newPosition.x > SIZE.width) {
+      object.x = SIZE.width - 20;
+      drop();
+    }
+    if (newPosition.y < 0) {
+      object.y = 20;
+      drop();
+    }
+    if (newPosition.y > SIZE.height) {
+      object.y = SIZE.height - 20;
+      drop();
+    }
   }
 };
 
@@ -101,16 +124,33 @@ export const onContainerDragMove = (
 ) => {
   // 마우스를 클릭한 채로 움직일 때
   const object = event.currentTarget as ContainerDraggable;
+  const drop = () => {
+    object.alpha = 1;
+    object.dragging = false;
+    object.data = null;
+
+    object.anchor = { x: 0, y: 0 };
+  };
   if (object.dragging && object.data) {
     const newPosition = object.data.getLocalPosition(object.parent);
     object.x = newPosition.x - object.width * object.anchor.x;
     object.y = newPosition.y - object.height * object.anchor.y;
 
-    if (newPosition.x < 0) object.x = 20 - object.width * object.anchor.x;
-    if (newPosition.x > SIZE.width)
+    if (newPosition.x < 0) {
+      object.x = 20 - object.width * object.anchor.x;
+      drop();
+    }
+    if (newPosition.x > SIZE.width) {
       object.x = SIZE.width - 20 - object.width * object.anchor.x;
-    if (newPosition.y < 0) object.y = 20 - object.height * object.anchor.y;
-    if (newPosition.y > SIZE.height)
+      drop();
+    }
+    if (newPosition.y < 0) {
+      object.y = 20 - object.height * object.anchor.y;
+      drop();
+    }
+    if (newPosition.y > SIZE.height) {
       object.y = SIZE.height - 20 - object.height * object.anchor.y;
+      drop();
+    }
   }
 };
