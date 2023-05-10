@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import { IObject, IPage, IProject } from "../../types/base";
-import { isPartialDifferent } from "./calculate";
+import { isPartialDifferent, safeApply } from "./calculate";
 
 const dummy: IProject = {
   id: 0,
@@ -54,9 +54,13 @@ type IListeners = {
 type SetterType<T> = (value: Partial<T>) => void;
 type SliceType<T> = (value: T) => Partial<T>;
 
-type SingleDataHookReturnType<T> = [T | null, SetterType<T>]; //useState랑 동일
+type SingleDataHookReturnType<T> = [T | null, SetterType<T>, () => void]; //useState랑 동일 + destroy 추가
 
 type IPageSingleDataHook = (id: number) => SingleDataHookReturnType<IPage>;
+type IObjectSingleDataHook = (
+  parentId: number,
+  myId: number,
+) => SingleDataHookReturnType<IObject>;
 
 /*** Data ***/
 let projectData: IProject = dummy;
@@ -116,6 +120,64 @@ export const useSinglePage: IPageSingleDataHook = (id: number) => {
 };
 
 //useSingleObject
+export const useSingleObject: IObjectSingleDataHook = (parentId, myId) => {
+  const [, forceUpdate] = useReducer((c: number): number => c + 1, 0);
+  const pageId = useRef<number>(parentId);
+  const objectId = useRef<number>(myId);
+
+  const getParentPage = () =>
+    projectData.pages.find((page) => page.id === pageId.current) ?? null;
+
+  const getter = () => {
+    const parent = getParentPage();
+    if (!parent) {
+      return null;
+    }
+    return (
+      parent.objects.find((object) => object.id === objectId.current) ?? null
+    );
+  };
+
+  const setter: SetterType<IObject> = (value) => {
+    const parent = getParentPage();
+    if (!parent) {
+      return null;
+    }
+    const newPage: IPage = {
+      ...parent,
+      objects: parent.objects.map((object) =>
+        object.id === objectId.current ? safeApply(object, value) : object,
+      ),
+    };
+    projectData = {
+      ...projectData,
+      pages: projectData.pages.map((page) =>
+        page.id === pageId.current ? newPage : page,
+      ),
+    };
+  };
+
+  const destroy = () => {
+    const parent = getParentPage();
+    if (!parent) {
+      return null;
+    }
+    const newPage: IPage = {
+      ...parent,
+      objects: parent.objects.filter(
+        (object) => object.id !== objectId.current,
+      ),
+    };
+    projectData = {
+      ...projectData,
+      pages: projectData.pages.map((page) =>
+        page.id === pageId.current ? newPage : page,
+      ),
+    };
+  };
+
+  return [getter(), setter, destroy];
+};
 
 //useAllPages, useAllObjects: 구현이 위에 꺼랑은 다를 듯
 

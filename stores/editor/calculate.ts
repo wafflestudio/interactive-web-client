@@ -20,3 +20,23 @@ export const isPartialDifferent = <T extends object>(
   }
   return false;
 };
+
+export const safeApply = <T extends Record<string, any>>(
+  currentObject: T,
+  partialValue: Record<string, any>,
+): T => {
+  const originalKeys = Object.keys(currentObject);
+  const partialEntries = Object.entries(partialValue);
+
+  const newObject = currentObject;
+
+  for (const [key, value] of partialEntries) {
+    if (originalKeys.includes(key)) {
+      const validKey = key as keyof typeof newObject;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      newObject[validKey] = value;
+    }
+  }
+
+  return newObject;
+};
