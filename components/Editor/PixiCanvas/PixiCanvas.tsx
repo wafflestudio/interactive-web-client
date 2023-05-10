@@ -105,6 +105,7 @@ const ImageObject = ({
     mousemove={(e) => {
       onSpriteDragMove(e, SIZE);
     }}
+    mouseupoutside={onSpriteDragEnd}
   />
 );
 
@@ -156,6 +157,7 @@ const TextContainer = ({
       mousemove={(e) => {
         onContainerDragMove(e, SIZE);
       }}
+      mouseupoutside={onContainerDragEnd}
     >
       {/* 텍스트의 배경색 표현 */}
       <Graphics draw={draw} />
