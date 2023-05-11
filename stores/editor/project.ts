@@ -9,6 +9,9 @@ import {
 import { IObject, IPage, IProject } from "../../types/base";
 import { isPartialDifferent, safeApply } from "./calculate";
 
+/**
+ * 테스트를 위한 빈 프로젝트 데이터
+ */
 const dummy: IProject = {
   id: 0,
   owner_id: 100,
@@ -48,8 +51,15 @@ type PageListenerType = {
   dependentId: number | null | undefined;
   forceUpdate: () => void;
 };
+type ObjectListenerType = {
+  listenerId: number;
+  dependentParentId: number;
+  dependentMyId: number;
+  forceUpdate: () => void;
+};
 type IListeners = {
   page: PageListenerType[];
+  object: ObjectListenerType[];
 };
 type SetterType<T> = (value: Partial<T>) => void;
 type SliceType<T> = (value: T) => Partial<T>;
@@ -63,48 +73,71 @@ type IObjectSingleDataHook = (
 ) => SingleDataHookReturnType<IObject>;
 
 /*** Data ***/
-let projectData: IProject = dummy;
-const isInitiated = false;
-let listenerId = 0;
 
+/**
+ * 전체 프로젝트 데이터의 객체
+ * @todo 서버에서 가져온 초기값 로드하는 함수 만들기
+ */
+let projectData: IProject = dummy;
+
+const isInitiated = false;
+
+/**
+ * page, object의 listener 모음
+ * @todo new Set()으로 리팩토링해서 리스너 중복 관리하기
+ */
 const listeners: IListeners = {
   page: [],
+  object: [],
 };
+let listenerId = 0;
 
 /*** Hooks ***/
+
+/**
+ * id를 이용하여 페이지 하나의 값을 가져오고 변경한다.
+ *
+ * @param {number} id 페이지의 id값
+ * @return {[get, set, destroy]} [getState, setState, destroy] 반환. destroy는 해당 페이지를 삭제하는 함수.
+ */
 export const useSinglePage: IPageSingleDataHook = (id: number) => {
   const [, forceUpdate] = useReducer((c: number): number => c + 1, 0);
   const pageId = useRef<number>(id);
 
-  const getter =
+  /** page의 현재 값 가져오기 */
+  const getter = () =>
     projectData.pages.find((page) => page.id === pageId.current) ?? null;
+
+  /**
+   * page의 값 변경하기
+   * @param {Partial<IPage>} value page 객체의 일부(Partial)
+   */
   const setter: SetterType<IPage> = (value) => {
-    //1. 전역 project 객체의 값을 찾아서 바꾼다
     projectData = {
       ...projectData,
       pages: projectData.pages.map((page) =>
         page.id === pageId.current ? { ...page, ...value } : page,
       ),
     };
-    //2. listeners 배열에서 같은 페이지 아이디를 구독하고 있는 모든 리스너들을 업데이트 시킨다(forceUpdate 이용)
     listeners.page.forEach((listener) => {
       if (listener.dependentId === pageId.current) listener.forceUpdate();
     });
   };
-  //삭제에 관한 기능은 따로 제공한다.
+
+  /** page 삭제하기 */
   const destroy = () => {
-    //1. 전역 project 객체의 값을 찾아서 바꾼다
     projectData = {
       ...projectData,
       pages: projectData.pages.filter((page) => page.id !== pageId.current),
     };
-    //2. 모든 listener를 리렌더한다
     listeners.page.forEach((listener) => {
       listener.forceUpdate();
     });
   };
 
-  //훅이 최초로 콜 되었을 때
+  /** 훅이 최초로 call 되었을 때 리스너를 등록
+   * @todo 리스너 사용 방식 통일하기
+   */
   useEffect(() => {
     if (!isInitiated) {
       listeners.page.push({
@@ -116,18 +149,26 @@ export const useSinglePage: IPageSingleDataHook = (id: number) => {
     }
   }, [isInitiated]);
 
-  return [getter, setter, destroy];
+  return [getter(), setter, destroy];
 };
 
-//useSingleObject
+/**
+ * id를 이용하여 오브젝트 하나의 값을 가져오고 변경한다.
+ *
+ * @param {number} parentId 부모 page의 id값
+ * @param {number} myId 오브젝트의 id값
+ * @return {[get, set, destroy]} [getState, setState, destroy] 반환. destroy는 해당 object 삭제하는 함수.
+ */
 export const useSingleObject: IObjectSingleDataHook = (parentId, myId) => {
   const [, forceUpdate] = useReducer((c: number): number => c + 1, 0);
   const pageId = useRef<number>(parentId);
   const objectId = useRef<number>(myId);
 
+  /** 부모 page 찾기 */
   const getParentPage = () =>
     projectData.pages.find((page) => page.id === pageId.current) ?? null;
 
+  /** object의 현재 값 가져오기 */
   const getter = () => {
     const parent = getParentPage();
     if (!parent) {
@@ -138,6 +179,10 @@ export const useSingleObject: IObjectSingleDataHook = (parentId, myId) => {
     );
   };
 
+  /**
+   * object의 값 변경하기
+   * @param {Partial<IObject>} value object 객체의 일부(Partial)
+   */
   const setter: SetterType<IObject> = (value) => {
     const parent = getParentPage();
     if (!parent) {
@@ -157,6 +202,7 @@ export const useSingleObject: IObjectSingleDataHook = (parentId, myId) => {
     };
   };
 
+  /** page 삭제하기 */
   const destroy = () => {
     const parent = getParentPage();
     if (!parent) {
@@ -176,18 +222,23 @@ export const useSingleObject: IObjectSingleDataHook = (parentId, myId) => {
     };
   };
 
+  /** 훅이 최초로 call 되었을 때 리스너를 등록
+   * @todo 리스너 사용 방식 통일하기
+   */
+  useEffect(() => {
+    if (!isInitiated) {
+      listeners.object.push({
+        listenerId: listenerId,
+        dependentParentId: pageId.current,
+        dependentMyId: objectId.current,
+        forceUpdate,
+      });
+      listenerId++;
+    }
+  }, [isInitiated]);
+
   return [getter(), setter, destroy];
 };
-
-//useAllPages, useAllObjects: 구현이 위에 꺼랑은 다를 듯
-
-/***
- * 고민 거리
- * 1. useSingleObject와 Page 사이의 분리
- * 2. 값의 깊은 비교를 할까? (동일한 객체를 setter에 넣으면 아무 변화도 일어나지 않게)
- * 3. 전역 project 값으
- * 3a. 자바스크립트 내장 객체 Map 공부해보기
- */
 
 type PageSliceType = (page: IPage) => Partial<IPage>;
 
