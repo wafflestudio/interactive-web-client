@@ -1,8 +1,15 @@
 import { Container, Sprite, Stage, Text, Graphics } from "@inlet/react-pixi";
-import { Graphics as GraphicsType, TextStyle } from "pixi.js";
-import { useCallback } from "react";
-import { IObject, ITextObject } from "../../../types/base";
-import { onDragEnd, onDragMove, onDragStart } from "./drag";
+import { Graphics as GraphicsType, TextMetrics, TextStyle } from "pixi.js";
+import { IImageObject, IObject, ITextObject } from "../../../types/base";
+import {
+  onContainerDragEnd,
+  onContainerDragMove,
+  onContainerDragStart,
+  onSpriteDragEnd,
+  onSpriteDragMove,
+  onSpriteDragStart,
+} from "./drag";
+import { useState } from "react";
 
 const dummyObjects: IObject[] = [
   {
@@ -43,87 +50,32 @@ const dummyObjects: IObject[] = [
     borderWidth: 10,
     borderColor: "#e19230",
   },
+  {
+    id: 2,
+    name: "host",
+    isInteractive: true,
+    positionX: 100,
+    positionY: 100,
+    width: 100,
+    height: 100,
+    zIndex: 2,
+    opacity: 1,
+    type: "image",
+    imageSource: "/images/ex_ghost.png",
+    isReversed: false,
+    rotateDegree: 0,
+  },
 ];
+const SIZE = { width: 800, height: 600 };
 
 const PixiCanvas = () => {
-  //   const draw = useCallback(
-  //     () => (g: GraphicsType, object: ITextObject) => {
-  //       g.clear();
-  //       g.beginFill(0xff700b, 1);
-  //       g.drawRect(
-  //         object.positionX,
-  //         object.positionY,
-  //         object.width,
-  //         object.height,
-  //       );
-  //     },
-  //     [],
-  //   );
-
   return (
-    <Stage>
+    <Stage width={SIZE.width} height={SIZE.height}>
       {dummyObjects.map((object) => {
         if (object.type === "image") {
-          return (
-            <Sprite
-              key={object.id}
-              image={object.imageSource}
-              x={object.positionX}
-              y={object.positionY}
-              width={object.width}
-              height={object.height}
-              interactive={true}
-              buttonMode={true}
-              mousedown={onDragStart}
-              mouseup={onDragEnd}
-              mouseupoutside={onDragEnd}
-              mousemove={onDragMove}
-            />
-          );
+          return <ImageObject object={object} SIZE={SIZE} />;
         } else if (object.type === "text") {
-          const draw = (g: GraphicsType) => {
-            g.clear();
-            g.lineStyle(
-              object.borderWidth,
-              Number("0x" + object.borderColor.substring(1)),
-            );
-            g.beginFill(Number("0x" + object.backgroundColor.substring(1)), 1);
-            g.drawRect(
-              object.positionX,
-              object.positionY,
-              object.width,
-              object.height,
-            );
-          };
-
-          return (
-            <Container>
-              <Graphics draw={draw} />
-              <Text
-                key={object.id}
-                x={object.positionX}
-                y={object.positionY}
-                text={object.textContent}
-                interactive={true}
-                buttonMode={true}
-                mousedown={onDragStart}
-                mouseup={onDragEnd}
-                mouseupoutside={onDragEnd}
-                mousemove={onDragMove}
-                style={
-                  new TextStyle({
-                    fontFamily: object.fontFamily,
-                    fontSize: object.fontSize,
-                    stroke: object.strokeColor,
-                    strokeThickness: object.strokeWidth,
-                    letterSpacing: object.letterSpacing,
-                    lineHeight: object.lineHeight,
-                    fill: object.color,
-                  })
-                }
-              />
-            </Container>
-          );
+          return <TextContainer object={object} SIZE={SIZE} />;
         }
       })}
     </Stage>
@@ -131,3 +83,94 @@ const PixiCanvas = () => {
 };
 
 export default PixiCanvas;
+
+const ImageObject = ({
+  object,
+  SIZE,
+}: {
+  object: IImageObject;
+  SIZE: { width: number; height: number };
+}) => (
+  <Sprite
+    key={object.id}
+    image={object.imageSource}
+    x={object.positionX}
+    y={object.positionY}
+    width={object.width}
+    height={object.height}
+    interactive={true}
+    buttonMode={true}
+    mousedown={onSpriteDragStart}
+    mouseup={onSpriteDragEnd}
+    mousemove={(e) => {
+      onSpriteDragMove(e, SIZE);
+    }}
+    mouseupoutside={onSpriteDragEnd}
+  />
+);
+
+const TextContainer = ({
+  object,
+  SIZE,
+}: {
+  object: ITextObject;
+  SIZE: { width: number; height: number };
+}) => {
+  // 텍스트의 스타일
+  const style = new TextStyle({
+    fontFamily: object.fontFamily,
+    fontSize: object.fontSize,
+    stroke: object.strokeColor,
+    strokeThickness: object.strokeWidth,
+    letterSpacing: object.letterSpacing,
+    lineHeight: object.lineHeight,
+    fill: object.color,
+  });
+
+  const textMetrics = TextMetrics.measureText(object.textContent, style); // 배경색을 제외한 텍스트 자체의 크기
+
+  // Graphics를 그리는 함수
+  const draw = (g: GraphicsType) => {
+    g.clear();
+    // 테두리
+    g.lineStyle(
+      object.borderWidth,
+      Number("0x" + object.borderColor.substring(1)), // 색을 hex color로 표현
+    );
+    // 배경색
+    g.beginFill(Number("0x" + object.backgroundColor.substring(1)), 1);
+    // 배경 위치 및 크기
+    g.drawRect(
+      object.positionX,
+      object.positionY,
+      textMetrics.width + object.strokeWidth * 2,
+      textMetrics.height + object.strokeWidth * 2,
+    );
+  };
+
+  return (
+    <Container
+      interactive={true}
+      buttonMode={true}
+      mousedown={onContainerDragStart}
+      mouseup={onContainerDragEnd}
+      mousemove={(e) => {
+        onContainerDragMove(e, SIZE);
+      }}
+      mouseupoutside={onContainerDragEnd}
+    >
+      {/* 텍스트의 배경색 표현 */}
+      <Graphics draw={draw} />
+      {/* 텍스트 표현 */}
+      <Text
+        key={object.id}
+        x={object.positionX + object.strokeWidth}
+        y={object.positionY + object.strokeWidth}
+        text={object.textContent}
+        interactive={true}
+        buttonMode={true}
+        style={style}
+      />
+    </Container>
+  );
+};
