@@ -1,13 +1,19 @@
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useMemo, useReducer, useRef } from "react";
 import { IObject, IPage, IProject } from "../../types/base";
 import { isPartialDifferent, safeApply } from "./calculate";
+import {
+  AllObjectListenerType,
+  AllPageListenerType,
+  AllSetterType,
+  IAllObjectHook,
+  IAllPageHook,
+  IListeners,
+  ISingleObjectHook,
+  ISinglePageHook,
+  SingleObjectListenerType,
+  SinglePageListenerType,
+  SingleSetterType,
+} from "./types";
 
 /**
  * 테스트를 위한 빈 프로젝트 데이터
@@ -45,33 +51,6 @@ const dummy: IProject = {
   events: [],
 };
 
-/*** Type ***/
-type PageListenerType = {
-  listenerId: number;
-  dependentId: number | null | undefined;
-  forceUpdate: () => void;
-};
-type ObjectListenerType = {
-  listenerId: number;
-  dependentParentId: number;
-  dependentMyId: number;
-  forceUpdate: () => void;
-};
-type IListeners = {
-  page: PageListenerType[];
-  object: ObjectListenerType[];
-};
-type SetterType<T> = (value: Partial<T>) => void;
-type SliceType<T> = (value: T) => Partial<T>;
-
-type SingleDataHookReturnType<T> = [T | null, SetterType<T>, () => void]; //useState랑 동일 + destroy 추가
-
-type IPageSingleDataHook = (id: number) => SingleDataHookReturnType<IPage>;
-type IObjectSingleDataHook = (
-  parentId: number,
-  myId: number,
-) => SingleDataHookReturnType<IObject>;
-
 /*** Data ***/
 
 /**
@@ -87,8 +66,10 @@ const isInitiated = false;
  * @todo new Set()으로 리팩토링해서 리스너 중복 관리하기
  */
 const listeners: IListeners = {
-  page: [],
-  object: [],
+  allPage: [],
+  singlePage: [],
+  allObject: [],
+  singleObject: [],
 };
 let listenerId = 0;
 
@@ -100,9 +81,9 @@ let listenerId = 0;
  * @param {number} id 페이지의 id값
  * @return {[get, set, destroy]} [getState, setState, destroy] 반환. destroy는 해당 페이지를 삭제하는 함수.
  */
-export const useSinglePage: IPageSingleDataHook = (id: number) => {
+export const useSinglePage: ISinglePageHook = (targetId) => {
   const [, forceUpdate] = useReducer((c: number): number => c + 1, 0);
-  const pageId = useRef<number>(id);
+  const pageId = useRef<number>(targetId);
 
   /** page의 현재 값 가져오기 */
   const getter = () =>
@@ -112,15 +93,23 @@ export const useSinglePage: IPageSingleDataHook = (id: number) => {
    * page의 값 변경하기
    * @param {Partial<IPage>} value page 객체의 일부(Partial)
    */
-  const setter: SetterType<IPage> = (value) => {
+  const setter: SingleSetterType<IPage> = (value) => {
     projectData = {
       ...projectData,
       pages: projectData.pages.map((page) =>
         page.id === pageId.current ? { ...page, ...value } : page,
       ),
     };
-    listeners.page.forEach((listener) => {
+    /** 리스너 작동 */
+    const valueForSlice = value as IPage;
+    listeners.singlePage.forEach((listener) => {
       if (listener.dependentId === pageId.current) listener.forceUpdate();
+    });
+    listeners.allPage.forEach((listener) => {
+      if (!listener.dependentSlice) {
+        listener.forceUpdate();
+      } else if (listener.dependentSlice(valueForSlice) !== undefined);
+      listener.forceUpdate();
     });
   };
 
@@ -130,17 +119,19 @@ export const useSinglePage: IPageSingleDataHook = (id: number) => {
       ...projectData,
       pages: projectData.pages.filter((page) => page.id !== pageId.current),
     };
-    listeners.page.forEach((listener) => {
+    /** 리스너 작동 */
+    listeners.allPage.forEach((listener) => {
       listener.forceUpdate();
     });
+    listeners.singlePage.forEach((listener) => listener.forceUpdate());
   };
 
-  /** 훅이 최초로 call 되었을 때 리스너를 등록
-   * @todo 리스너 사용 방식 통일하기
+  /**
+   * 훅이 최초로 call 되었을 때 리스너를 등록
    */
   useEffect(() => {
     if (!isInitiated) {
-      listeners.page.push({
+      listeners.singlePage.push({
         listenerId: listenerId,
         dependentId: pageId.current,
         forceUpdate,
@@ -159,10 +150,13 @@ export const useSinglePage: IPageSingleDataHook = (id: number) => {
  * @param {number} myId 오브젝트의 id값
  * @return {[get, set, destroy]} [getState, setState, destroy] 반환. destroy는 해당 object 삭제하는 함수.
  */
-export const useSingleObject: IObjectSingleDataHook = (parentId, myId) => {
+export const useSingleObject: ISingleObjectHook = (
+  targetObjectId,
+  targetPageId,
+) => {
   const [, forceUpdate] = useReducer((c: number): number => c + 1, 0);
-  const pageId = useRef<number>(parentId);
-  const objectId = useRef<number>(myId);
+  const pageId = useRef<number>(targetPageId);
+  const objectId = useRef<number>(targetObjectId);
 
   /** 부모 page 찾기 */
   const getParentPage = () =>
@@ -183,11 +177,10 @@ export const useSingleObject: IObjectSingleDataHook = (parentId, myId) => {
    * object의 값 변경하기
    * @param {Partial<IObject>} value object 객체의 일부(Partial)
    */
-  const setter: SetterType<IObject> = (value) => {
+  const setter: SingleSetterType<IObject> = (value) => {
     const parent = getParentPage();
-    if (!parent) {
-      return null;
-    }
+    if (!parent) return null;
+
     const newPage: IPage = {
       ...parent,
       objects: parent.objects.map((object) =>
@@ -200,6 +193,23 @@ export const useSingleObject: IObjectSingleDataHook = (parentId, myId) => {
         page.id === pageId.current ? newPage : page,
       ),
     };
+    /**
+     * 리스너 작동
+     */
+    const valueForSlice = value as IObject;
+    listeners.singleObject.forEach((listener) => {
+      if (
+        listener.parentId === pageId.current &&
+        listener.dependentId === objectId.current
+      )
+        listener.forceUpdate();
+    });
+    listeners.allObject.forEach((listener) => {
+      if (!listener.dependentSlice) {
+        listener.forceUpdate();
+      } else if (listener.dependentSlice(valueForSlice) !== undefined)
+        listener.forceUpdate();
+    });
   };
 
   /** page 삭제하기 */
@@ -220,6 +230,11 @@ export const useSingleObject: IObjectSingleDataHook = (parentId, myId) => {
         page.id === pageId.current ? newPage : page,
       ),
     };
+    /** 리스너 작동 */
+    listeners.allObject.forEach((listener) => {
+      listener.forceUpdate();
+    });
+    listeners.singleObject.forEach((listener) => listener.forceUpdate());
   };
 
   /** 훅이 최초로 call 되었을 때 리스너를 등록
@@ -227,10 +242,10 @@ export const useSingleObject: IObjectSingleDataHook = (parentId, myId) => {
    */
   useEffect(() => {
     if (!isInitiated) {
-      listeners.object.push({
+      listeners.singleObject.push({
         listenerId: listenerId,
-        dependentParentId: pageId.current,
-        dependentMyId: objectId.current,
+        dependentId: objectId.current,
+        parentId: pageId.current,
         forceUpdate,
       });
       listenerId++;
@@ -240,28 +255,11 @@ export const useSingleObject: IObjectSingleDataHook = (parentId, myId) => {
   return [getter(), setter, destroy];
 };
 
-type PageSliceType = (page: IPage) => Partial<IPage>;
-
-type AllSetterType<T> = (value: T) => void;
-
-type IAllPagesHook = (
-  slice?: PageSliceType,
-) => [Partial<IPage>[], AllSetterType<Partial<IPage>[]>];
-
-type AllListenerType = {
-  listenerId: number;
-  dependentSlice: undefined | PageSliceType;
-  forceUpdate: () => void;
-};
-type IAllListeners = {
-  page: AllListenerType[];
-};
-
-const allPageListeners: IAllListeners = {
-  page: [{ listenerId: 0, dependentSlice: undefined, forceUpdate: () => {} }],
-};
-
-export const useAllPages: IAllPagesHook = (slice) => {
+/**
+ * 모든 페이지 값 가져오기
+ * @param slice 페이지 값 일부를 가져오는 slice 함수
+ */
+export const useAllPages: IAllPageHook = (slice) => {
   const [, forceUpdate] = useReducer((c: number): number => c + 1, 0);
 
   // useMemo로 렌더링 최적화
@@ -272,7 +270,7 @@ export const useAllPages: IAllPagesHook = (slice) => {
     return () => projectData.pages;
   }, [slice]);
 
-  const setter: AllSetterType<Partial<IPage>[]> = (value) => {
+  const setter: AllSetterType<IPage> = (value) => {
     if (slice) {
       projectData = {
         ...projectData,
@@ -300,19 +298,19 @@ export const useAllPages: IAllPagesHook = (slice) => {
         ),
       };
     }
-
-    allPageListeners.page.forEach((listener) => {
+    listeners.allPage.forEach((listener) => {
       if (listener.dependentSlice === slice) {
         listener.forceUpdate();
       }
     });
+    listeners.singlePage.forEach((listener) => listener.forceUpdate());
   };
 
   useEffect(() => {
     if (!isInitiated) {
-      allPageListeners.page.push({
+      listeners.allPage.push({
         listenerId: listenerId,
-        dependentSlice: slice,
+        dependentSlice: slice ?? null, //수정: 의미상 slice
         forceUpdate,
       });
       listenerId++;
@@ -322,30 +320,30 @@ export const useAllPages: IAllPagesHook = (slice) => {
   return [getter(), setter];
 };
 
-//AllObject Method
-
-type ObjectSliceType = (value: IObject) => Partial<IObject>;
-
-type IAllObjectsHook = (
-  slice?: ObjectSliceType,
-) => [Partial<IObject>[][], AllSetterType<Partial<IObject>[]>];
-
-const allObjectListeners: IAllListeners = {
-  page: [{ listenerId: 0, dependentSlice: undefined, forceUpdate: () => {} }],
-};
-
-export const useAllObjects: IAllObjectsHook = (slice) => {
+/**
+ * 전체 오브젝트를 가져오는 훅
+ * @param pageId 부모 페이지 id
+ * @param slice object의 일부를 가져오는 slice 함수
+ */
+export const useAllObjects: IAllObjectHook = (pageId, slice) => {
   const [, forceUpdate] = useReducer((c: number) => c + 1, 0);
 
-  const getter = useMemo(() => {
-    if (slice) {
-      return () =>
-        projectData.pages.map((page) => page.objects.map((obj) => slice(obj)));
+  /** 부모 page 찾기 */
+  const getParentPage = () =>
+    projectData.pages.find((page) => page.id === pageId) ?? null;
+
+  const getter: () => Partial<IObject>[] = useMemo(() => {
+    const objects = getParentPage()?.objects;
+    if (objects) {
+      if (slice) {
+        return () => objects.map((obj) => slice(obj));
+      }
+      return () => objects;
     }
-    return () => projectData.pages.map((page) => page.objects);
+    return () => [];
   }, [slice]);
 
-  const setter: AllSetterType<Partial<IObject>[]> = (value) => {
+  const setter: AllSetterType<IObject> = (value) => {
     // 해당 value를 포함하는 page를 찾음
     const pageContainingObject = projectData.pages.find((page) =>
       page.objects.find((obj) => value.find((v) => v.id === obj.id)),
@@ -380,13 +378,25 @@ export const useAllObjects: IAllObjectsHook = (slice) => {
         ...projectData,
         pages: updatedPages,
       };
-
-      forceUpdate();
+      /**
+       * 리스너 작동
+       */
+      listeners.allObject.forEach((listener) => {
+        if (listener.dependentSlice === slice) {
+          listener.forceUpdate();
+        }
+      });
+      listeners.singleObject.forEach((listener) => listener.forceUpdate());
     }
   };
 
   useEffect(() => {
-    listeners.page.push({ listenerId, dependentId: null, forceUpdate });
+    listeners.allObject.push({
+      listenerId,
+      dependentSlice: slice ?? null,
+      parentId: pageId,
+      forceUpdate,
+    });
     listenerId++;
   }, []);
 
