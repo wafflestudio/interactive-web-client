@@ -34,6 +34,7 @@ type ICommonObject = {
   height: number;
   zIndex: number;
   opacity: number;
+  page_id: number;
 };
 export type ITextObject = ICommonObject & {
   type: "text";
