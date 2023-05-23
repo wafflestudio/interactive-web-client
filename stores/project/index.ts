@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useReducer, useRef } from "react";
 import { IObject, IPage, IProject } from "../../types/base";
 import { isPartialDifferent, safeApply } from "./calculate";
+import { dummyProject } from "./dummy";
 import {
   AllObjectListenerType,
   AllPageListenerType,
@@ -18,38 +19,6 @@ import {
 /**
  * 테스트를 위한 빈 프로젝트 데이터
  */
-const dummy: IProject = {
-  id: 0,
-  owner_id: 100,
-  title: "test project",
-  variables: {},
-  pages: [
-    {
-      id: 1,
-      name: "test page",
-      projectId: 0,
-      objects: [
-        {
-          id: 2,
-          type: "image",
-          name: "test object",
-          isInteractive: false,
-          positionX: 100,
-          positionY: 200,
-          width: 10,
-          height: 20,
-          zIndex: 5,
-          opacity: 0.5,
-          page_id: 1,
-          imageSource: "source",
-          isReversed: false,
-          rotateDegree: 0,
-        },
-      ],
-    },
-  ],
-  events: [],
-};
 
 /*** Data ***/
 
@@ -57,7 +26,7 @@ const dummy: IProject = {
  * 전체 프로젝트 데이터의 객체
  * @todo 서버에서 가져온 초기값 로드하는 함수 만들기
  */
-let projectData: IProject = dummy;
+let projectData: IProject = dummyProject;
 
 const isInitiated = false;
 
@@ -108,8 +77,8 @@ export const useSinglePage: ISinglePageHook = (targetId) => {
     listeners.allPage.forEach((listener) => {
       if (!listener.dependentSlice) {
         listener.forceUpdate();
-      } else if (listener.dependentSlice(valueForSlice) !== undefined);
-      listener.forceUpdate();
+      } else if (listener.dependentSlice(valueForSlice) !== undefined)
+        listener.forceUpdate();
     });
   };
 

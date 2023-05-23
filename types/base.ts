@@ -27,7 +27,6 @@ type ICommonObject = {
   readonly id: number;
   name: string;
   isInteractive: boolean;
-  // position: { x: number; y: number };
   positionX: number;
   positionY: number;
   width: number;
@@ -45,10 +44,10 @@ export type ITextObject = ICommonObject & {
   letterSpacing: number;
   color: string;
   strokeWidth: number;
-  strokeColor: string;
-  backgroundColor: string;
+  strokeColor: string | null;
+  backgroundColor: string | null;
   borderWidth: number;
-  borderColor: string;
+  borderColor: string | null;
 };
 export type IImageObject = ICommonObject & {
   type: "image";
