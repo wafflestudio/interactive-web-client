@@ -77,8 +77,8 @@ export const useSinglePage: ISinglePageHook = (targetId) => {
     listeners.allPage.forEach((listener) => {
       if (!listener.dependentSlice) {
         listener.forceUpdate();
-      } else if (listener.dependentSlice(valueForSlice) !== undefined);
-      listener.forceUpdate();
+      } else if (listener.dependentSlice(valueForSlice) !== undefined)
+        listener.forceUpdate();
     });
   };
 
