@@ -20,9 +20,11 @@ const EditorPage = () => {
       <div className={styles.workSpace}>
         <div className={styles.toolbar} />
         <div className={styles.canvasWrapper}>
-          <PixiCanvas />
+          {selectedPageId !== null && (
+            <PixiCanvas selectedPageId={selectedPageId} />
+          )}
         </div>
-        <ToolBar />
+        {/* <ToolBar /> */}
       </div>
     </main>
   );

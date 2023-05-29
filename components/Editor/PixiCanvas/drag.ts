@@ -41,6 +41,7 @@ export const onSpriteDragEnd = (event: PIXI.InteractionEvent) => {
   );
 
   object.anchor.set(0);
+  return object.position;
 };
 
 export const onSpriteDragMove = (
@@ -113,9 +114,14 @@ export const onContainerDragEnd = (event: PIXI.InteractionEvent) => {
   const object = event.currentTarget as ContainerDraggable;
   object.alpha = 1;
   object.dragging = false;
+  const position = object.data?.getLocalPosition(object.parent);
+  const x = position!.x - object.width * object.anchor.x;
+  const y = position!.y - object.height * object.anchor.y;
   object.data = null;
 
   object.anchor = { x: 0, y: 0 };
+
+  return { x, y };
 };
 
 export const onContainerDragMove = (
